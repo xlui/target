@@ -11,7 +11,7 @@ public class Target implements Serializable {
 
 	private long tid;				// target id
 	private long uid;				// user id
-	private String avatar;			// target avatar
+//	private String avatar;			// target avatar
 	private String title;			// target title
 	private String description;		// target description
 	private LocalDate startDate;	// target start date
@@ -37,14 +37,6 @@ public class Target implements Serializable {
 
 	public void setUid(long uid) {
 		this.uid = uid;
-	}
-
-	public String getAvatar() {
-		return avatar;
-	}
-
-	public void setAvatar(String avatar) {
-		this.avatar = avatar;
 	}
 
 	public String getTitle() {

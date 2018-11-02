@@ -3,7 +3,7 @@ package app.xlui.target.entity;
 import app.xlui.target.entity.enums.Gender;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -12,7 +12,7 @@ public class User implements Serializable {
 //	private String avatar;			// 头像
 	private String nickname;		// 昵称
 	private Gender gender;			// 性别
-	private LocalDateTime birthday;	// 生日
+	private LocalDate birthday;		// 生日
 	private String username;		// 用户名
 	private String password;		// 密码
 //	private String salt;			// 密码的盐
@@ -51,11 +51,11 @@ public class User implements Serializable {
 		this.gender = gender;
 	}
 
-	public LocalDateTime getBirthday() {
+	public LocalDate getBirthday() {
 		return birthday;
 	}
 
-	public void setBirthday(LocalDateTime birthday) {
+	public void setBirthday(LocalDate birthday) {
 		this.birthday = birthday;
 	}
 
