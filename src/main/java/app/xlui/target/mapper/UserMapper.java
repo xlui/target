@@ -18,7 +18,7 @@ public interface UserMapper {
 	User findByUID(@Param("uid") long uid);
 
 	@Insert("INSERT INTO t_user(nickname, gender, birthday, username, password) VALUES(#{nickname}, #{gender}, #{birthday}, #{username}, #{password})")
-	void insert(User user);
+	int insert(User user);
 
 	@Delete("DELETE FROM t_user WHERE uid = #{uid}")
 	void delete(@Param("uid") long uid);

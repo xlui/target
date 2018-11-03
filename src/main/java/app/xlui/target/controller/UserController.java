@@ -1,0 +1,37 @@
+package app.xlui.target.controller;
+
+import app.xlui.target.entity.ApiResponse;
+import app.xlui.target.entity.User;
+import app.xlui.target.exception.AssertException;
+import app.xlui.target.service.UserService;
+import app.xlui.target.util.AssertUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.constraints.NotNull;
+
+@RestController
+public class UserController {
+	private final UserService userService;
+
+	@Autowired
+	public UserController(UserService userService) {
+		this.userService = userService;
+	}
+
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	public ApiResponse register(@RequestBody @NotNull User param) {
+		AssertUtils.requireNotNull(param.getUsername(), () -> new AssertException("Username must be not empty!"));
+		AssertUtils.requireNotNull(param.getPassword(), () -> new AssertException("Password must be not empty!"));
+		User user = new User(param.getUsername(), param.getPassword());
+		if (userService.register(user)) {
+			return new ApiResponse(HttpStatus.OK, "Successfully register! Welcome!");
+		} else {
+			return new ApiResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Oops! An error occurs while registering...");
+		}
+	}
+}
