@@ -11,6 +11,6 @@ public class TargetApplicationTests {
 
 	@Test
 	public void contextLoads() {
+		System.out.println("Successfully load server.");
 	}
-
 }
