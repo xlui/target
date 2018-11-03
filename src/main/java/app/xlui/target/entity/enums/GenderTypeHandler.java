@@ -8,6 +8,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Type handler, convert Gender to int in order to store into database
+ * When <code>select</code> the column in database, this class will be
+ * called to convert int to Gender.
+ */
 public class GenderTypeHandler extends BaseTypeHandler<Gender> {
 	@Override
 	public void setNonNullParameter(PreparedStatement ps, int i, Gender parameter, JdbcType jdbcType) throws SQLException {

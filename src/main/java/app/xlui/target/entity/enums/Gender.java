@@ -1,5 +1,7 @@
 package app.xlui.target.entity.enums;
 
+import java.util.Arrays;
+
 public enum Gender {
 	MAN(1), WOMAN(-1), UNKNOWN(0);
 
@@ -14,11 +16,9 @@ public enum Gender {
 	}
 
 	public static Gender parse(int value) {
-		for (Gender gender : values()) {
-			if (gender.value == value) {
-				return gender;
-			}
-		}
-		throw new IllegalArgumentException("Invalid value of gender");
+		return Arrays.stream(values())
+				.filter(gender -> gender.value == value)
+				.findAny()
+				.orElseThrow(() -> new IllegalArgumentException("Invalid value of gender"));
 	}
 }
