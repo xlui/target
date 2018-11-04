@@ -1,5 +1,6 @@
 # Target
 
+[![Build Status](https://travis-ci.org/xlui/target.svg?branch=master)](https://travis-ci.org/xlui/target)
 [![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/xlui/target)
 
 一个简单的打卡应用

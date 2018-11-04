@@ -1,0 +1,15 @@
+language: java
+jdk:
+  - openjdk11
+services:
+  - docker
+before_install:
+  - docker pull mysql:8
+  - docker run --name mysql -p 3307:3306 -e TZ=Asia/Shanghai -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -v `pwd`/src/main/resources/data.sql:/data/data.sql -d mysql:8
+  - sleep 8
+  - docker exec mysql mysql -e 'CREATE DATABASE target CHARACTER SET utf8mb4;'
+  - docker exec mysql mysql -e 'USE target;source /data/data.sql;'
+  - docker exec mysql mysql -e 'CREATE USER admin@"%" identified by "admin";'
+  - docker exec mysql mysql -e 'GRANT ALL PRIVILEGES ON target.* to admin@"%" WITH GRANT OPTION;'
+install: mvn install -DskipTests -Dmaven.javadoc.skip
+script: mvn test -Dspring.datasource.url='jdbc:mysql://localhost:3307/target?serverTimezone=Asia/Shanghai'
