@@ -1,5 +1,6 @@
 package app.xlui.target.web;
 
+import app.xlui.target.entity.ApiResponse;
 import app.xlui.target.entity.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
@@ -7,13 +8,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -30,7 +34,25 @@ public class TestUserController {
 
 	@Before
 	public void setup() {
-		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+		mockMvc = MockMvcBuilders
+				.webAppContextSetup(wac)
+				.apply(SecurityMockMvcConfigurers.springSecurity())
+				.build();
+	}
+
+	// token
+	@Test
+	public void testTokenLogin() throws Exception {
+		User user = new User("xlui", "pass");
+		String result = mockMvc.perform(post("/login").contentType(json).content(mapper.writeValueAsString(user)))
+				.andDo(r -> System.out.println(r.getResponse().getContentAsString()))
+				.andExpect(status().isOk())
+				.andReturn().getResponse().getContentAsString();
+		ApiResponse response = mapper.readValue(result, ApiResponse.class);
+		mockMvc.perform(get("/t").header(HttpHeaders.AUTHORIZATION, response.getContent()))
+				.andDo(r -> System.out.println(r.getResponse().getContentAsString()))
+				.andExpect(status().isOk())
+				.andExpect(content().string("pass token auth: xlui"));
 	}
 
 	// login

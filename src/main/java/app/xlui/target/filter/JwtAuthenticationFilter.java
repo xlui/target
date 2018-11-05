@@ -37,7 +37,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 		// 获取 Token
 		String uri = request.getRequestURI();
-		boolean shouldIgnore = ignoreAuthorization.stream().map(uri::equals).count() > 0;
+		boolean shouldIgnore = ignoreAuthorization.stream().anyMatch(uri::equals);
 		if (!shouldIgnore) {
 			String token = request.getHeader(HttpHeaders.AUTHORIZATION);
 			if (token != null) {
