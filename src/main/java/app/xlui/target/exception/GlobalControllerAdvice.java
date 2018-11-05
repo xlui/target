@@ -3,6 +3,8 @@ package app.xlui.target.exception;
 import app.xlui.target.entity.ApiResponse;
 import app.xlui.target.exception.common.AssertException;
 import app.xlui.target.exception.common.ServerError;
+import app.xlui.target.exception.specify.TokenAuthException;
+import app.xlui.target.exception.specify.TokenParseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,6 +17,12 @@ public class GlobalControllerAdvice {
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ApiResponse parseRequestBodyError(Exception ex) {
 		return new ApiResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+	}
+
+	@ExceptionHandler({TokenAuthException.class, TokenParseException.class})
+	@ResponseStatus(HttpStatus.UNAUTHORIZED)
+	public ApiResponse tokenAuthenticationFailed(Exception e) {
+		return new ApiResponse(HttpStatus.UNAUTHORIZED, e.getMessage());
 	}
 
 	@ExceptionHandler(AssertException.class)

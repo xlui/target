@@ -16,6 +16,10 @@ public class UserService {
 		this.userMapper = userMapper;
 	}
 
+	public User findByUsername(String username) {
+		return userMapper.findByUsername(username);
+	}
+
 	public boolean register(User user) {
 		return userMapper.insert(user) > 0;
 	}
