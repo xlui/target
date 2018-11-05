@@ -48,7 +48,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/token", method = RequestMethod.GET)
-	public ApiResponse token(@RequestHeader("Authorization") String token) {
+	public ApiResponse token(@RequestHeader("Authorization") @NotNull String token) {
 		String username = JwtUtils.username(token);
 		User user = userService.findByUsername(username);
 		if (user == null) {

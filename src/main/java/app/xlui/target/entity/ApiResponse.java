@@ -17,6 +17,11 @@ public class ApiResponse {
 		this.content = content;
 	}
 
+	@Override
+	public String toString() {
+		return "ApiResponse[status = " + status + ", content = " + content + "]";
+	}
+
 	public HttpStatus getStatus() {
 		return status;
 	}

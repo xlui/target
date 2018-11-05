@@ -7,6 +7,7 @@ import app.xlui.target.exception.specify.TokenAuthException;
 import app.xlui.target.exception.specify.TokenParseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -19,7 +20,7 @@ public class GlobalControllerAdvice {
 		return new ApiResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
 	}
 
-	@ExceptionHandler({TokenAuthException.class, TokenParseException.class})
+	@ExceptionHandler({MissingRequestHeaderException.class, TokenAuthException.class, TokenParseException.class})
 	@ResponseStatus(HttpStatus.UNAUTHORIZED)
 	public ApiResponse tokenAuthenticationFailed(Exception e) {
 		return new ApiResponse(HttpStatus.UNAUTHORIZED, e.getMessage());
