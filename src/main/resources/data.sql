@@ -7,7 +7,7 @@ CREATE TABLE `t_user` (
   nickname VARCHAR(128),
   gender   INT,
   birthday DATE,
-  username VARCHAR(128),
+  username VARCHAR(128) UNIQUE,
   password VARCHAR(128)
 )
   ENGINE InnoDB
@@ -38,3 +38,6 @@ CREATE TABLE `t_record` (
 )
   ENGINE InnoDB
   CHARACTER SET UTF8MB4;
+
+# init
+INSERT INTO t_user(username, password) VALUES ('xlui', 'pass');

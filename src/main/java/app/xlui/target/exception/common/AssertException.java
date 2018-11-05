@@ -1,4 +1,4 @@
-package app.xlui.target.exception;
+package app.xlui.target.exception.common;
 
 public class AssertException extends RuntimeException {
 	public AssertException() {

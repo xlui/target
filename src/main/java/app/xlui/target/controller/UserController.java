@@ -2,7 +2,8 @@ package app.xlui.target.controller;
 
 import app.xlui.target.entity.ApiResponse;
 import app.xlui.target.entity.User;
-import app.xlui.target.exception.AssertException;
+import app.xlui.target.exception.common.ServerError;
+import app.xlui.target.exception.specify.InvalidInputException;
 import app.xlui.target.service.UserService;
 import app.xlui.target.util.AssertUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +26,24 @@ public class UserController {
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public ApiResponse register(@RequestBody @NotNull User param) {
-		AssertUtils.requireNotNull(param.getUsername(), () -> new AssertException("Username must be not empty!"));
-		AssertUtils.requireNotNull(param.getPassword(), () -> new AssertException("Password must be not empty!"));
+		AssertUtils.requireValid(param.getUsername(), () -> new InvalidInputException("Username must be not empty!"));
+		AssertUtils.requireValid(param.getPassword(), () -> new InvalidInputException("Password must be not empty!"));
 		User user = new User(param.getUsername(), param.getPassword());
 		if (userService.register(user)) {
 			return new ApiResponse(HttpStatus.OK, "Successfully register! Welcome!");
 		} else {
-			return new ApiResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Oops! An error occurs while registering...");
+			throw new ServerError("Oops! An error occurs while registering...");
+		}
+	}
+
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public ApiResponse login(@RequestBody @NotNull User param) {
+		AssertUtils.requireValid(param.getUsername(), () -> new InvalidInputException("Username must be not empty!"));
+		AssertUtils.requireValid(param.getPassword(), () -> new InvalidInputException("Password must be not empty!"));
+		if (userService.login(param.getUsername(), param.getPassword())) {
+			return new ApiResponse(HttpStatus.OK, "Successfully login!");
+		} else {
+			throw new InvalidInputException("Username or password is wrong!");
 		}
 	}
 }
