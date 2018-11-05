@@ -1,7 +1,9 @@
 package app.xlui.target.service;
 
 import app.xlui.target.entity.User;
+import app.xlui.target.exception.specify.NullInputException;
 import app.xlui.target.mapper.UserMapper;
+import app.xlui.target.util.AssertUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,11 @@ public class UserService {
 
 	public User findByUsername(String username) {
 		return userMapper.findByUsername(username);
+	}
+
+	public User findByUsernameChecked(String username) {
+		User user = findByUsername(username);
+		return AssertUtils.requireNotNull(user, () -> new NullInputException("The username have not been registered!"));
 	}
 
 	public boolean register(User user) {

@@ -1,6 +1,5 @@
-package app.xlui.target.controller;
+package app.xlui.target.web;
 
-import app.xlui.target.entity.ApiResponse;
 import app.xlui.target.entity.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
@@ -8,7 +7,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -16,7 +14,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -34,41 +31,6 @@ public class TestUserController {
 	@Before
 	public void setup() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
-	}
-
-	// token
-	@Test
-	public void testTokenLogin() throws Exception {
-		User user = new User("xlui", "pass");
-		String result = mockMvc.perform(post("/login").contentType(json).content(mapper.writeValueAsString(user)))
-				.andReturn().getResponse().getContentAsString();
-		ApiResponse response = mapper.readValue(result, ApiResponse.class);
-		mockMvc.perform(get("/token").header(HttpHeaders.AUTHORIZATION, response.getContent()))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath(content).value("Successfully logged in through token."));
-	}
-
-	@Test
-	public void testTokenExpire() throws Exception {
-		String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NDE0MDI1OTMsImNyZWF0ZUF0IjoiMjAxOC0xMS0wNSAxNToxODoxMyIsInVzZXJuYW1lIjoieGx1aSJ9.tF5vY8ZpQD1kw_iv9YyGSkD9gNpaEy28OJlv3dKL_bw";
-		mockMvc.perform(get("/token").header(HttpHeaders.AUTHORIZATION, token))
-				.andExpect(status().isUnauthorized())
-				.andExpect(jsonPath(content).value("Token authentication failed!"));
-	}
-
-	@Test
-	public void testTokenWithInvalidUsername() throws Exception {
-		String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NDE0MDM3MjQsImNyZWF0ZUF0IjoiMjAxOC0xMS0wNSAxNTozNzowNCIsInVzZXJuYW1lIjoidXNlcm5hbWUtZm9yLXRlc3QifQ.tF5vY8ZpQD1kw_iv9YyGSkD9gNpaEy28OJlv3dKL_bw";
-		mockMvc.perform(get("/token").header(HttpHeaders.AUTHORIZATION, token))
-				.andExpect(status().isUnauthorized())
-				.andExpect(jsonPath(content).value("Invalid token!"));
-	}
-
-	@Test
-	public void testTokenMissing() throws Exception {
-		mockMvc.perform(get("/token"))
-				.andExpect(status().isUnauthorized())
-				.andExpect(jsonPath(content).value("Missing request header 'Authorization' for method parameter of type String"));
 	}
 
 	// login

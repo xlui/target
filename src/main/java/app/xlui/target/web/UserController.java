@@ -1,16 +1,20 @@
-package app.xlui.target.controller;
+package app.xlui.target.web;
 
 import app.xlui.target.entity.ApiResponse;
 import app.xlui.target.entity.User;
 import app.xlui.target.exception.common.ServerError;
 import app.xlui.target.exception.specify.InvalidInputException;
-import app.xlui.target.exception.specify.TokenParseException;
 import app.xlui.target.service.UserService;
 import app.xlui.target.util.AssertUtils;
 import app.xlui.target.util.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
 
@@ -25,9 +29,9 @@ public class UserController {
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public ApiResponse register(@RequestBody @NotNull User param) {
-		AssertUtils.requireValid(param.getUsername(), () -> new InvalidInputException("Username must be not empty!"));
-		AssertUtils.requireValid(param.getPassword(), () -> new InvalidInputException("Password must be not empty!"));
-		User user = new User(param.getUsername(), param.getPassword());
+		String username = AssertUtils.requireValid(param.getUsername(), () -> new InvalidInputException("Username must be not empty!"));
+		String password = AssertUtils.requireValid(param.getPassword(), () -> new InvalidInputException("Password must be not empty!"));
+		User user = new User(username, password);
 		if (userService.register(user)) {
 			return new ApiResponse(HttpStatus.OK, "Successfully register! Welcome!");
 		} else {
@@ -37,9 +41,8 @@ public class UserController {
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ApiResponse login(@RequestBody @NotNull User param) {
-		String username = param.getUsername(), password = param.getPassword();
-		AssertUtils.requireValid(username, () -> new InvalidInputException("Username must be not empty!"));
-		AssertUtils.requireValid(password, () -> new InvalidInputException("Password must be not empty!"));
+		String username = AssertUtils.requireValid(param.getUsername(), () -> new InvalidInputException("Username must be not empty!"));
+		String password = AssertUtils.requireValid(param.getPassword(), () -> new InvalidInputException("Password must be not empty!"));
 		if (userService.login(username, password)) {
 			return new ApiResponse(HttpStatus.OK, JwtUtils.generate(username, password));
 		} else {
@@ -47,14 +50,10 @@ public class UserController {
 		}
 	}
 
-	@RequestMapping(value = "/token", method = RequestMethod.GET)
-	public ApiResponse token(@RequestHeader("Authorization") @NotNull String token) {
-		String username = JwtUtils.username(token);
-		User user = userService.findByUsername(username);
-		if (user == null) {
-			throw new TokenParseException("Invalid token!");
-		}
-		JwtUtils.verify(token, username, user.getPassword());
-		return new ApiResponse(HttpStatus.OK, "Successfully logged in through token.");
+	@RequestMapping("/t")
+	public String test() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User) authentication.getPrincipal();
+		return "pass token auth: " + user.getUsername();
 	}
 }
