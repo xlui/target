@@ -18,4 +18,10 @@ public class AssertUtils {
 		}
 		return str;
 	}
+
+	public static <T> void assertEquals(T o1, T o2, Supplier<AssertException> supplier) {
+		if (!o1.equals(o2)) {
+			throw supplier.get();
+		}
+	}
 }

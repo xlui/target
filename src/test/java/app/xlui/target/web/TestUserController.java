@@ -2,6 +2,7 @@ package app.xlui.target.web;
 
 import app.xlui.target.entity.ApiResponse;
 import app.xlui.target.entity.User;
+import app.xlui.target.util.UserUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +17,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.io.IOException;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -43,12 +46,7 @@ public class TestUserController {
 	// token
 	@Test
 	public void testTokenLogin() throws Exception {
-		User user = new User("xlui", "pass");
-		String result = mockMvc.perform(post("/login").contentType(json).content(mapper.writeValueAsString(user)))
-				.andDo(r -> System.out.println(r.getResponse().getContentAsString()))
-				.andExpect(status().isOk())
-				.andReturn().getResponse().getContentAsString();
-		ApiResponse response = mapper.readValue(result, ApiResponse.class);
+		ApiResponse response = UserUtils.login(mockMvc);
 		mockMvc.perform(get("/token").header(HttpHeaders.AUTHORIZATION, response.getContent()))
 				.andDo(r -> System.out.println(r.getResponse().getContentAsString()))
 				.andExpect(status().isOk())
