@@ -1,8 +1,11 @@
 package app.xlui.target.web;
 
 import app.xlui.target.entity.ApiResponse;
+import app.xlui.target.entity.Target;
+import app.xlui.target.util.FakeUtils;
 import app.xlui.target.util.UserUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.javafaker.Faker;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +22,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -41,10 +45,65 @@ public class TestTargetController {
 	}
 
 	@Test
+	public void testPostTarget() throws Exception {
+		Faker faker = FakeUtils.faker();
+		Target target = new Target()
+				.setUid(1L)
+				.setTitle(faker.book().title())
+				.setDescription(faker.lorem().sentence());
+		ApiResponse response = UserUtils.login(mockMvc);
+		mockMvc.perform(post("/target")
+				.contentType(json)
+				.content(mapper.writeValueAsString(target))
+				.header(HttpHeaders.AUTHORIZATION, response.getContent()))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath(content).value("Successfully add a new target!"));
+	}
+
+	@Test
+	public void testPostTargetInvalidUID() throws Exception {
+		Target target = new Target()
+				.setUid(-2134123112341L)
+				.setTitle(null);
+		ApiResponse response = UserUtils.login(mockMvc);
+		mockMvc.perform(post("/target")
+				.contentType(json)
+				.content(mapper.writeValueAsString(target))
+				.header(HttpHeaders.AUTHORIZATION, response.getContent()))
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath(content).value("Trying to submit a target using invalid parameter: uid"));
+	}
+
+	@Test
+	public void testPostTargetInvalidTitle() throws Exception {
+		Target target = new Target()
+				.setUid(1)
+				.setTitle(null);
+		ApiResponse response = UserUtils.login(mockMvc);
+		mockMvc.perform(post("/target")
+				.contentType(json)
+				.content(mapper.writeValueAsString(target))
+				.header(HttpHeaders.AUTHORIZATION, response.getContent()))
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath(content).value("Target title is invalid!"));
+	}
+
+	@Test
 	public void testGetTargets() throws Exception {
 		ApiResponse response = UserUtils.login(mockMvc);
 		mockMvc.perform(get("/target").header(HttpHeaders.AUTHORIZATION, response.getContent()))
 				.andExpect(status().isOk());
 	}
 
+	@Test
+	public void testGetTargetsWithWrongToken() throws Exception {
+		mockMvc.perform(get("/target").header(HttpHeaders.AUTHORIZATION, "sadasdas"))
+				.andExpect(status().isUnauthorized());
+	}
+
+	@Test
+	public void testGetTargetsWithoutToken() throws Exception {
+		mockMvc.perform(get("/target"))
+				.andExpect(status().isForbidden());
+	}
 }

@@ -11,7 +11,7 @@ public class Target implements Serializable {
 	private long uid;				// user id
 //	private String avatar;			// target avatar
 	private String title;			// target title
-	private String description;		// target description
+	private String description = "";// target description
 	private LocalDate startDate;	// target start date
 	private LocalDate endDate;		// target end date
 	private LocalTime punchStart;	// target punch start time

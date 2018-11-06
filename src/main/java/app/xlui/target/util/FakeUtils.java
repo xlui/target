@@ -27,6 +27,10 @@ public class FakeUtils {
 		FakeUtils.targetService = targetService;
 	}
 
+	public static Faker faker() {
+		return faker;
+	}
+
 	public static void fakeUser(int count) {
 		for (int i = 0; i < count; i++) {
 			User user = new User()

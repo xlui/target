@@ -24,4 +24,9 @@ public class AssertUtils {
 			throw supplier.get();
 		}
 	}
+
+	public static int assertNotZero(int i, Supplier<RuntimeException> supplier) {
+		if (i == 0) throw supplier.get();
+		return i;
+	}
 }
