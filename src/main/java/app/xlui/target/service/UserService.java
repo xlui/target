@@ -7,6 +7,7 @@ import app.xlui.target.util.AssertUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,8 +28,16 @@ public class UserService {
 		return AssertUtils.requireNotNull(user, () -> new NullInputException("The username have not been registered!"));
 	}
 
+	public int save(User user) {
+		return userMapper.save(user);
+	}
+
+	public List<Long> findUIDs() {
+		return userMapper.findUIDs();
+	}
+
 	public boolean register(User user) {
-		return userMapper.insert(user) > 0;
+		return userMapper.save(user) > 0;
 	}
 
 	public boolean login(String username, String password) {

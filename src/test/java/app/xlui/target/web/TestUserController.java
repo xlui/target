@@ -49,7 +49,7 @@ public class TestUserController {
 				.andExpect(status().isOk())
 				.andReturn().getResponse().getContentAsString();
 		ApiResponse response = mapper.readValue(result, ApiResponse.class);
-		mockMvc.perform(get("/t").header(HttpHeaders.AUTHORIZATION, response.getContent()))
+		mockMvc.perform(get("/token").header(HttpHeaders.AUTHORIZATION, response.getContent()))
 				.andDo(r -> System.out.println(r.getResponse().getContentAsString()))
 				.andExpect(status().isOk())
 				.andExpect(content().string("pass token auth: xlui"));

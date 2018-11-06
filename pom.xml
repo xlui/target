@@ -26,6 +26,7 @@
         <java.version>11</java.version>
         <mybatis.version>1.3.2</mybatis.version>
         <jwt.version>3.4.1</jwt.version>
+        <faker.version>0.16</faker.version>
     </properties>
 
     <dependencies>
@@ -56,6 +57,12 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
+        <!-- java faker -->
+        <dependency>
+            <groupId>com.github.javafaker</groupId>
+            <artifactId>javafaker</artifactId>
+            <version>${faker.version}</version>
+        </dependency>
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>

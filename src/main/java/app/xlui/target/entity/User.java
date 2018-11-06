@@ -27,6 +27,11 @@ public class User implements Serializable {
 		this.gender = Gender.UNKNOWN;
 	}
 
+	@Override
+	public String toString() {
+		return "User[uid = " + uid + ", username = " + username + "]";
+	}
+
 	public long getUid() {
 		return uid;
 	}

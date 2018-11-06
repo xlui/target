@@ -49,11 +49,4 @@ public class UserController {
 			throw new InvalidInputException("Username or password is wrong!");
 		}
 	}
-
-	@RequestMapping("/t")
-	public String test() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		User user = (User) authentication.getPrincipal();
-		return "pass token auth: " + user.getUsername();
-	}
 }
