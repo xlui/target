@@ -18,31 +18,35 @@ public class Record implements Serializable {
 		return rid;
 	}
 
-	public void setRid(long rid) {
+	public Record setRid(long rid) {
 		this.rid = rid;
+		return this;
 	}
 
 	public long getUid() {
 		return uid;
 	}
 
-	public void setUid(long uid) {
+	public Record setUid(long uid) {
 		this.uid = uid;
+		return this;
 	}
 
 	public long getTid() {
 		return tid;
 	}
 
-	public void setTid(long tid) {
+	public Record setTid(long tid) {
 		this.tid = tid;
+		return this;
 	}
 
 	public LocalDateTime getPunchDateTime() {
 		return punchDateTime;
 	}
 
-	public void setPunchDateTime(LocalDateTime punchDateTime) {
+	public Record setPunchDateTime(LocalDateTime punchDateTime) {
 		this.punchDateTime = punchDateTime;
+		return this;
 	}
 }

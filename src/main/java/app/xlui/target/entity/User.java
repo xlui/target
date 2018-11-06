@@ -36,47 +36,53 @@ public class User implements Serializable {
 		return uid;
 	}
 
-	public void setUid(long uid) {
+	public User setUid(long uid) {
 		this.uid = uid;
+		return this;
 	}
 
 	public String getNickname() {
 		return nickname;
 	}
 
-	public void setNickname(String nickname) {
+	public User setNickname(String nickname) {
 		this.nickname = nickname;
+		return this;
 	}
 
 	public Gender getGender() {
 		return gender;
 	}
 
-	public void setGender(Gender gender) {
+	public User setGender(Gender gender) {
 		this.gender = gender;
+		return this;
 	}
 
 	public LocalDate getBirthday() {
 		return birthday;
 	}
 
-	public void setBirthday(LocalDate birthday) {
+	public User setBirthday(LocalDate birthday) {
 		this.birthday = birthday;
+		return this;
 	}
 
 	public String getUsername() {
 		return username;
 	}
 
-	public void setUsername(String username) {
+	public User setUsername(String username) {
 		this.username = username;
+		return this;
 	}
 
 	public String getPassword() {
 		return password;
 	}
 
-	public void setPassword(String password) {
+	public User setPassword(String password) {
 		this.password = password;
+		return this;
 	}
 }

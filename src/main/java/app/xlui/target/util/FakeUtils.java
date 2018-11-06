@@ -29,12 +29,12 @@ public class FakeUtils {
 
 	public static void fakeUser(int count) {
 		for (int i = 0; i < count; i++) {
-			User user = new User();
-			user.setNickname(faker.funnyName().name());
-			user.setGender(faker.bool().bool() ? Gender.MAN : Gender.WOMAN);
-			user.setBirthday(LocalDate.parse(faker.date().birthday().toString()));
-			user.setUsername(faker.internet().emailAddress());
-			user.setPassword(faker.internet().password());
+			User user = new User()
+					.setNickname(faker.funnyName().name())
+					.setGender(faker.bool().bool() ? Gender.MAN : Gender.WOMAN)
+					.setBirthday(LocalDate.parse(faker.date().birthday().toString()))
+					.setUsername(faker.internet().emailAddress())
+					.setPassword(faker.internet().password());
 			userService.save(user);
 		}
 	}
@@ -43,15 +43,15 @@ public class FakeUtils {
 		targetService.clear();
 		List<Long> uids = userService.findUIDs();
 		for (int i = 0; i < count; i++) {
-			Target target = new Target();
-			target.setUid(uids.get(faker.random().nextInt(uids.size())));
-			target.setTitle(faker.book().title());
-			target.setDescription(faker.lorem().sentence());
-			target.setStartDate(faker.date().past(20, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-			target.setEndDate(faker.date().future(20, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-			target.setPunchStart(LocalTime.of(faker.random().nextInt(0, 12), faker.random().nextInt(60)));
-			target.setPunchEnd(LocalTime.of(faker.random().nextInt(12, 23), faker.random().nextInt(60)));
-			target.setRepeat(faker.random().nextInt(0, 127).byteValue());
+			Target target = new Target()
+					.setUid(uids.get(faker.random().nextInt(uids.size())))
+					.setTitle(faker.book().title())
+					.setDescription(faker.lorem().sentence())
+					.setStartDate(faker.date().past(20, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
+					.setEndDate(faker.date().future(20, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
+					.setPunchStart(LocalTime.of(faker.random().nextInt(0, 12), faker.random().nextInt(60)))
+					.setPunchEnd(LocalTime.of(faker.random().nextInt(12, 23), faker.random().nextInt(60)))
+					.setRepeat(faker.random().nextInt(0, 127).byteValue());
 			targetService.save(target);
 		}
 	}

@@ -40,71 +40,80 @@ public class Target implements Serializable {
 		return tid;
 	}
 
-	public void setTid(long tid) {
+	public Target setTid(long tid) {
 		this.tid = tid;
+		return this;
 	}
 
 	public long getUid() {
 		return uid;
 	}
 
-	public void setUid(long uid) {
+	public Target setUid(long uid) {
 		this.uid = uid;
+		return this;
 	}
 
 	public String getTitle() {
 		return title;
 	}
 
-	public void setTitle(String title) {
+	public Target setTitle(String title) {
 		this.title = title;
+		return this;
 	}
 
 	public String getDescription() {
 		return description;
 	}
 
-	public void setDescription(String description) {
+	public Target setDescription(String description) {
 		this.description = description;
+		return this;
 	}
 
 	public LocalDate getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(LocalDate startDate) {
+	public Target setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
+		return this;
 	}
 
 	public LocalDate getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(LocalDate endDate) {
+	public Target setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
+		return this;
 	}
 
 	public LocalTime getPunchStart() {
 		return punchStart;
 	}
 
-	public void setPunchStart(LocalTime punchStart) {
+	public Target setPunchStart(LocalTime punchStart) {
 		this.punchStart = punchStart;
+		return this;
 	}
 
 	public LocalTime getPunchEnd() {
 		return punchEnd;
 	}
 
-	public void setPunchEnd(LocalTime punchEnd) {
+	public Target setPunchEnd(LocalTime punchEnd) {
 		this.punchEnd = punchEnd;
+		return this;
 	}
 
 	public byte getRepeat() {
 		return repeat;
 	}
 
-	public void setRepeat(byte repeat) {
+	public Target setRepeat(byte repeat) {
 		this.repeat = repeat;
+		return this;
 	}
 }
