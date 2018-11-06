@@ -3,7 +3,6 @@ package app.xlui.target.util;
 import app.xlui.target.entity.Target;
 import app.xlui.target.entity.User;
 import app.xlui.target.entity.enums.Gender;
-import app.xlui.target.entity.enums.Week;
 import app.xlui.target.service.TargetService;
 import app.xlui.target.service.UserService;
 import com.github.javafaker.Faker;
@@ -52,7 +51,7 @@ public class FakeUtils {
 			target.setEndDate(faker.date().future(20, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 			target.setPunchStart(LocalTime.of(faker.random().nextInt(0, 12), faker.random().nextInt(60)));
 			target.setPunchEnd(LocalTime.of(faker.random().nextInt(12, 23), faker.random().nextInt(60)));
-			target.setRepeat(Week.values()[faker.random().nextInt(7)]);
+			target.setRepeat(faker.random().nextInt(0, 127).byteValue());
 			targetService.save(target);
 		}
 	}

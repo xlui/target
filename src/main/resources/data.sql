@@ -22,7 +22,7 @@ CREATE TABLE `t_target` (
   endDate     DATE,
   punchStart  TIME,
   punchEnd    TIME,
-  `repeat`    INT,
+  `repeat`    TINYINT,
   INDEX i_target_user (uid)
 )
   ENGINE InnoDB
