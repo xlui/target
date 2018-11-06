@@ -14,8 +14,16 @@ public class TargetService {
 	@Autowired
 	private TargetMapper targetMapper;
 
+	public Target findByTid(long tid) {
+		return targetMapper.findByTID(tid);
+	}
+
 	public List<Target> findForUser(@NotNull User user) {
 		return targetMapper.findByUID(user.getUid());
+	}
+
+	public List<Long> findTids() {
+		return targetMapper.findTIDs();
 	}
 
 	public int save(Target target) {

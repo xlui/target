@@ -1,8 +1,10 @@
 package app.xlui.target.util;
 
+import app.xlui.target.entity.Record;
 import app.xlui.target.entity.Target;
 import app.xlui.target.entity.User;
 import app.xlui.target.entity.enums.Gender;
+import app.xlui.target.service.PunchService;
 import app.xlui.target.service.TargetService;
 import app.xlui.target.service.UserService;
 import com.github.javafaker.Faker;
@@ -20,11 +22,13 @@ public class FakeUtils {
 	private static Faker faker = new Faker();
 	private static UserService userService;
 	private static TargetService targetService;
+	private static PunchService punchService;
 
 	@Autowired
-	public FakeUtils(UserService userService, TargetService targetService) {
+	public FakeUtils(UserService userService, TargetService targetService, PunchService punchService) {
 		FakeUtils.userService = userService;
 		FakeUtils.targetService = targetService;
+		FakeUtils.punchService = punchService;
 	}
 
 	public static Faker faker() {
@@ -57,6 +61,20 @@ public class FakeUtils {
 					.setPunchEnd(LocalTime.of(faker.random().nextInt(12, 23), faker.random().nextInt(60)))
 					.setRepeat(faker.random().nextInt(0, 127).byteValue());
 			targetService.save(target);
+		}
+	}
+
+	public static void fakeRecord(int count) {
+		punchService.clearAll();
+		List<Long> tids = targetService.findTids();
+		for (int i = 0; i < count; i++) {
+			long tid = tids.get(faker.random().nextInt(tids.size()));
+			Target target = targetService.findByTid(tid);
+			Record record = new Record()
+					.setUid(target.getUid())
+					.setTid(tid)
+					.setPunchDateTime(faker.date().future(10, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+			punchService.punch(record);
 		}
 	}
 }

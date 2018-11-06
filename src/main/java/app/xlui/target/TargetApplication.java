@@ -13,6 +13,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+
 @RestController
 @SpringBootApplication
 public class TargetApplication implements CommandLineRunner {
@@ -27,6 +29,7 @@ public class TargetApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		System.out.println(LocalDateTime.now());
 		System.out.println("Server start!");
 	}
 
@@ -40,6 +43,7 @@ public class TargetApplication implements CommandLineRunner {
 	@RequestMapping("/t/init")
 	public String init() {
 		FakeUtils.fakeTarget(10);
+		FakeUtils.fakeRecord(20);
 		return "init succeed!";
 	}
 }

@@ -18,6 +18,9 @@ public interface TargetMapper {
 	@Select("SELECT * FROM t_target WHERE uid = #{uid} AND tid = #{tid}")
 	Target findByUIDAndTID(@Param("uid") long uid, @Param("tid") long tid);
 
+	@Select("SELECT tid FROM t_target")
+	List<Long> findTIDs();
+
 	@Insert("INSERT INTO t_target(uid, title, description, startDate, endDate, punchStart, punchEnd, `repeat`)" +
 			"VALUES(#{uid}, #{title}, #{description}, #{startDate}, #{endDate}, #{punchStart}, #{punchEnd}, #{repeat})")
 	int save(Target target);

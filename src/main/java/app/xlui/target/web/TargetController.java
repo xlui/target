@@ -45,6 +45,6 @@ public class TargetController {
 				.setPunchEnd(param.getPunchEnd())
 				.setRepeat(param.getRepeat());
 		AssertUtils.assertNotZero(targetService.save(target), () -> new ServerError("Failed to save target! Unknown exception occurs, please view server log."));
-		return new ApiResponse(HttpStatus.OK, "Successfully add a new target!");
+		return new ApiResponse(HttpStatus.CREATED, "Successfully add a new target!");
 	}
 }

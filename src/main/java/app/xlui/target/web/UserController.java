@@ -31,7 +31,7 @@ public class UserController {
 		String password = AssertUtils.requireValid(param.getPassword(), () -> new InvalidInputException("Password must be not empty!"));
 		User user = new User(username, password);
 		if (userService.register(user)) {
-			return new ApiResponse(HttpStatus.OK, "Successfully register! Welcome!");
+			return new ApiResponse(HttpStatus.CREATED, "Successfully register! Welcome!");
 		} else {
 			throw new ServerError("Oops! An error occurs while registering...");
 		}
