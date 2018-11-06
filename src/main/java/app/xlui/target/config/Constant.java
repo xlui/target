@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Constant {
-	private static final int expire = 5;
+	private static final int expire = 30;
 
 	public static long expire() {
 		return System.currentTimeMillis() + Duration.ofMinutes(expire).toMillis();

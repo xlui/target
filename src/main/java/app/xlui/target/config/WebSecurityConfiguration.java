@@ -22,9 +22,12 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
 				.authorizeRequests()
+					.antMatchers("/t/**").permitAll()
 					.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-					.antMatchers("/login").permitAll()
-					.antMatchers("/register").permitAll()
+					.antMatchers(HttpMethod.POST,
+							"/login",
+							"/register"
+					).permitAll()
 					.antMatchers(HttpMethod.GET,
 							"/",
 							"/*.html",
