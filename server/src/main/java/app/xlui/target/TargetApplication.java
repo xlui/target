@@ -31,6 +31,7 @@ public class TargetApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		System.out.println(LocalDateTime.now());
 		System.out.println("Server start!");
+		init();
 	}
 
 	@RequestMapping("/token")
