@@ -10,6 +10,8 @@ public class Record implements Serializable {
 	private long uid;
 	private long tid;
 	private LocalDateTime punchDateTime;
+	private boolean repunch = false;
+	private String reason;
 
 	public Record() {
 	}
@@ -47,6 +49,24 @@ public class Record implements Serializable {
 
 	public Record setPunchDateTime(LocalDateTime punchDateTime) {
 		this.punchDateTime = punchDateTime;
+		return this;
+	}
+
+	public boolean isRepunch() {
+		return repunch;
+	}
+
+	public Record setRepunch(boolean repunch) {
+		this.repunch = repunch;
+		return this;
+	}
+
+	public String getReason() {
+		return reason;
+	}
+
+	public Record setReason(String reason) {
+		this.reason = reason;
 		return this;
 	}
 }

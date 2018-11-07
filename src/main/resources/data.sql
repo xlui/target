@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS `t_record`;
 CREATE TABLE `t_user` (
   uid      INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   nickname VARCHAR(128),
-  gender   INT,
+  gender   INT          DEFAULT 0,
   birthday DATE,
   username VARCHAR(128) UNIQUE,
   password VARCHAR(128)
@@ -33,6 +33,8 @@ CREATE TABLE `t_record` (
   uid           INT NOT NULL,
   tid           INT NOT NULL,
   punchDateTime DATETIME,
+  repunch       BOOLEAN      DEFAULT FALSE,
+  reason        VARCHAR(128) DEFAULT '',
   INDEX i_record_user (uid),
   INDEX i_record_target (tid)
 )
@@ -40,4 +42,4 @@ CREATE TABLE `t_record` (
   CHARACTER SET UTF8MB4;
 
 # init
-INSERT INTO t_user(username, password) VALUES ('xlui', 'pass');
+INSERT INTO t_user (username, password) VALUES ('xlui', 'pass');

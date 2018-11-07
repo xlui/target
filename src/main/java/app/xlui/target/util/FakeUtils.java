@@ -73,7 +73,8 @@ public class FakeUtils {
 			Record record = new Record()
 					.setUid(target.getUid())
 					.setTid(tid)
-					.setPunchDateTime(faker.date().future(10, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+					.setPunchDateTime(faker.date().future(10, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime())
+					.setRepunch(false);
 			punchService.punch(record);
 		}
 	}
