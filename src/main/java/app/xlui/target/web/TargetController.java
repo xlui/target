@@ -6,16 +6,14 @@ import app.xlui.target.entity.Target;
 import app.xlui.target.entity.User;
 import app.xlui.target.exception.common.ServerError;
 import app.xlui.target.exception.specify.InvalidInputException;
+import app.xlui.target.exception.specify.NotFoundException;
 import app.xlui.target.service.TargetService;
 import app.xlui.target.service.UserService;
 import app.xlui.target.util.AssertUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 
@@ -27,12 +25,14 @@ public class TargetController {
 	private TargetService targetService;
 
 	@RequestMapping(value = "/target", method = RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK)
 	public ApiResponse getTargets(@CurrentUser User user) {
 		System.out.println("Current user: " + user);
 		return new ApiResponse(HttpStatus.OK, targetService.findForUser(user));
 	}
 
 	@RequestMapping(value = "/target", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseStatus(HttpStatus.CREATED)
 	public ApiResponse addTarget(@CurrentUser User user, @RequestBody @NotNull Target param) {
 		AssertUtils.assertEquals(user.getUid(), param.getUid(), () -> new InvalidInputException("Trying to submit a target using invalid parameter: uid"));
 		AssertUtils.requireValid(param.getTitle(), () -> new InvalidInputException("Target title is invalid!"));
@@ -46,5 +46,33 @@ public class TargetController {
 				.setRepeat(param.getRepeat());
 		AssertUtils.assertNotZero(targetService.save(target), () -> new ServerError("Failed to save target! Unknown exception occurs, please view server log."));
 		return new ApiResponse(HttpStatus.CREATED, "Successfully add a new target!");
+	}
+
+	@RequestMapping(value = "/target/{tid}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public ApiResponse updateTarget(@CurrentUser User user, @PathVariable long tid, @RequestBody @NotNull Target param) {
+		AssertUtils.requireNotNull(tid, () -> new InvalidInputException("Require tid not null!"));
+		AssertUtils.assertEquals(user.getUid(), param.getUid(), () -> new InvalidInputException("Trying to submit a target using invalid parameter: uid"));
+		AssertUtils.requireValid(param.getTitle(), () -> new InvalidInputException("Target title is invalid!"));
+		Target target = new Target()
+				.setTid(tid)
+				.setUid(user.getUid())
+				.setTitle(param.getTitle())
+				.setDescription(param.getDescription())
+				.setStartDate(param.getStartDate())
+				.setEndDate(param.getEndDate())
+				.setPunchStart(param.getPunchStart())
+				.setPunchEnd(param.getPunchEnd())
+				.setRepeat(param.getRepeat());
+		AssertUtils.assertNotZero(targetService.update(target), () -> new NotFoundException("The target id which you want to update is invalid!"));
+		return new ApiResponse(HttpStatus.NO_CONTENT, "Successfully update target");
+	}
+
+	@RequestMapping(value = "/target/{tid}", method = RequestMethod.DELETE)
+	@ResponseStatus(HttpStatus.OK)
+	public ApiResponse deleteTarget(@CurrentUser User user, @PathVariable long tid) {
+		AssertUtils.requireNotNull(tid, () -> new InvalidInputException("Require tid not null!"));
+		AssertUtils.assertNotZero(targetService.delete(tid), () -> new NotFoundException("The target id is invalid! There isn't a target with the request tid at server!"));
+		return new ApiResponse(HttpStatus.OK, "Successfully delete target: " + tid);
 	}
 }

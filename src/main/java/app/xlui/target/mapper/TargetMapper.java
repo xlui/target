@@ -21,9 +21,17 @@ public interface TargetMapper {
 	@Select("SELECT tid FROM t_target")
 	List<Long> findTIDs();
 
+	@Update("UPDATE t_target SET " +
+			"title=#{title},description=#{description},startDate=#{startDate},endDate=#{endDate},punchStart=#{punchStart},punchEnd=#{punchEnd},`repeat`=#{repeat} " +
+			"WHERE tid = #{tid}")
+	int update(Target target);
+
 	@Insert("INSERT INTO t_target(uid, title, description, startDate, endDate, punchStart, punchEnd, `repeat`)" +
 			"VALUES(#{uid}, #{title}, #{description}, #{startDate}, #{endDate}, #{punchStart}, #{punchEnd}, #{repeat})")
 	int save(Target target);
+
+	@Delete("DELETE FROM t_target WHERE tid = #{tid}")
+	int delete(@Param("tid") long tid);
 
 	@Delete("TRUNCATE TABLE t_target")
 	void clear();

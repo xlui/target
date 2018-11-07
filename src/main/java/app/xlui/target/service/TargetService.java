@@ -26,8 +26,20 @@ public class TargetService {
 		return targetMapper.findTIDs();
 	}
 
+	public int update(Target target) {
+		return targetMapper.update(target);
+	}
+
 	public int save(Target target) {
 		return targetMapper.save(target);
+	}
+
+	public int delete(Target target) {
+		return delete(target.getTid());
+	}
+
+	public int delete(long tid) {
+		return targetMapper.delete(tid);
 	}
 
 	public void clear() {

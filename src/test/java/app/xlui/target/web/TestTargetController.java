@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.codec.json.Jackson2JsonEncoder;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,8 +21,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -45,6 +45,73 @@ public class TestTargetController {
 	}
 
 	@Test
+	public void testTargetDelete() throws Exception {
+		ApiResponse response = UserUtils.login(mockMvc);
+		mockMvc.perform(delete("/target/1").header(HttpHeaders.AUTHORIZATION, response.getContent()))
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	public void testTargetDeleteWithErrorTid() throws Exception {
+		ApiResponse response = UserUtils.login(mockMvc);
+		mockMvc.perform(delete("/target/21135164").header(HttpHeaders.AUTHORIZATION, response.getContent()))
+				.andExpect(status().isNotFound());
+	}
+
+	@Test
+	public void testTargetDeleteWithInvalidTid() throws Exception {
+		ApiResponse response = UserUtils.login(mockMvc);
+		mockMvc.perform(delete("/target/231esad").header(HttpHeaders.AUTHORIZATION, response.getContent()))
+				.andExpect(status().isBadRequest());
+	}
+
+	@Test
+	public void testTargetDeleteWithoutTid() throws Exception {
+		ApiResponse response = UserUtils.login(mockMvc);
+		mockMvc.perform(delete("/target").header(HttpHeaders.AUTHORIZATION, response.getContent()))
+				.andExpect(status().isMethodNotAllowed());
+	}
+
+	@Test
+	public void testUpdateTarget() throws Exception {
+		Target target = new Target()
+				.setUid(1L)
+				.setTitle("test title");
+		ApiResponse response = UserUtils.login(mockMvc);
+		mockMvc.perform(put("/target/1").contentType(json).content(mapper.writeValueAsString(target)).header(HttpHeaders.AUTHORIZATION, response.getContent()))
+				.andExpect(status().isNoContent());
+	}
+
+	@Test
+	public void testUpdateTargetWithNotTID() throws Exception {
+		Target target = new Target()
+				.setUid(1L)
+				.setTitle("test title");
+		ApiResponse response = UserUtils.login(mockMvc);
+		mockMvc.perform(put("/target").contentType(json).content(mapper.writeValueAsString(target)).header(HttpHeaders.AUTHORIZATION, response.getContent()))
+				.andExpect(status().isMethodNotAllowed());
+	}
+
+	@Test
+	public void testUpdateTargetWithInvalidUID() throws Exception {
+		Target target = new Target()
+				.setUid(2L)
+				.setTitle("test title");
+		ApiResponse response = UserUtils.login(mockMvc);
+		mockMvc.perform(put("/target/1").contentType(json).content(mapper.writeValueAsString(target)).header(HttpHeaders.AUTHORIZATION, response.getContent()))
+				.andExpect(status().isBadRequest());
+	}
+
+	@Test
+	public void testUpdateTargetWithoutTitle() throws Exception {
+		Target target = new Target()
+				.setUid(1L);
+		ApiResponse response = UserUtils.login(mockMvc);
+		mockMvc.perform(put("/target/1").contentType(json).content(mapper.writeValueAsString(target)).header(HttpHeaders.AUTHORIZATION, response.getContent()))
+				.andExpect(status().isBadRequest());
+	}
+
+	@Test
 	public void testPostTarget() throws Exception {
 		Faker faker = FakeUtils.faker();
 		Target target = new Target()
@@ -56,7 +123,7 @@ public class TestTargetController {
 				.contentType(json)
 				.content(mapper.writeValueAsString(target))
 				.header(HttpHeaders.AUTHORIZATION, response.getContent()))
-				.andExpect(status().isOk())
+				.andExpect(status().isCreated())
 				.andExpect(jsonPath(content).value("Successfully add a new target!"));
 	}
 
