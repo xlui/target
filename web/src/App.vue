@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div style="float: right;">
-      <a href="#" style="font-size: 1.3em; margin-right: 50px">登录</a>
+      <a @click="defaultLogin" href="#" style="font-size: 1.3em; margin-right: 50px">登录</a>
     </div>
     <h1 style="text-align: center">Your targets</h1>
     <router-view/>
@@ -9,8 +9,17 @@
 </template>
 
 <script>
+  import {login} from './api/api';
   export default {
-    name: 'App'
+    name: 'App',
+    methods: {
+      defaultLogin() {
+        login({
+          username: 'xlui',
+          password: 'pass'
+        })
+      }
+    }
   }
 </script>
 
