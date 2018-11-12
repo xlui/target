@@ -6,7 +6,7 @@ services:
 before_install:
     - docker pull mysql:8
     - docker run --name mysql -p 3307:3306 -e TZ=Asia/Shanghai -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -v `pwd`/server/src/main/resources/data.sql:/data/data.sql -d mysql:8
-    - sleep 10
+    - sleep 8
     - docker exec mysql mysql -e 'CREATE DATABASE target CHARACTER SET utf8mb4;'
     - docker exec mysql mysql -e 'USE target;source /data/data.sql;'
     - docker exec mysql mysql -e 'CREATE USER admin@"%" identified by "admin";'
