@@ -4,7 +4,6 @@ const host = 'http://127.0.0.1:8080';
 const loginUrl = host + '/login';
 
 export const login = params => {
-  console.log('login use: ' + JSON.stringify(params));
   return axios({
     method: 'post',
     url: loginUrl,
@@ -12,7 +11,7 @@ export const login = params => {
       'Content-Type': 'application/json'
     },
     data: JSON.stringify(params)
-  }).then(res => res.data)
+  });
 };
 
 axios.interceptors.request.use(config => {

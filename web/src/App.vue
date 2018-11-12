@@ -17,6 +17,8 @@
         login({
           username: 'xlui',
           password: 'pass'
+        }).then(res => {
+          alert(JSON.stringify(res.data))
         })
       }
     }
