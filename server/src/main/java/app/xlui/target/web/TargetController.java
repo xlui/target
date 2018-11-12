@@ -48,6 +48,14 @@ public class TargetController {
 		return new ApiResponse(HttpStatus.CREATED, "Successfully add a new target!");
 	}
 
+	@RequestMapping(value = "/target/{tid}", method = RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK)
+	public ApiResponse getTarget(@CurrentUser User user, @PathVariable long tid) {
+		Target target = targetService.findByTid(tid);
+		AssertUtils.requireNotNull(target, () -> new InvalidInputException("Tid is invalid!"));
+		return new ApiResponse(HttpStatus.OK, target);
+	}
+
 	@RequestMapping(value = "/target/{tid}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ApiResponse updateTarget(@CurrentUser User user, @PathVariable long tid, @RequestBody @NotNull Target param) {

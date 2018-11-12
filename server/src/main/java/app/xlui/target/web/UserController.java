@@ -34,7 +34,6 @@ public class UserController {
 		}
 	}
 
-	@CrossOrigin
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ApiResponse login(@RequestBody @NotNull User param) {
 		String username = AssertUtils.requireValid(param.getUsername(), () -> new InvalidInputException("Username must be not empty!"));

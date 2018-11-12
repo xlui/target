@@ -2,8 +2,26 @@ import axios from 'axios';
 
 const host = 'http://127.0.0.1:8080';
 const loginUrl = host + '/login';
+const targetUrl = host + '/target';
 
-export const login = params => {
+export const fetchTarget = params => {
+  return axios.get(targetUrl + '/' + params, {
+    headers: {
+      Authorization: localStorage.token
+    }
+  });
+};
+
+export const fetchTargets = params => {
+  return axios.get(targetUrl, {
+    params: params,
+    headers: {
+      Authorization: localStorage.token
+    }
+  });
+};
+
+export const apiLogin = params => {
   return axios({
     method: 'post',
     url: loginUrl,

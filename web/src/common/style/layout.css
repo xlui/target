@@ -19,6 +19,15 @@ body {
   background-color: #eee;
 }
 
+.login {
+  font-size: 1.3em;
+  margin-right: 50px
+}
+
+.title {
+  text-align: center
+}
+
 .main {
   height: 100%;
   width: 100%;
@@ -32,7 +41,7 @@ body {
   padding-bottom: 50px
 }
 
-.main .box .title>div {
+.main .box .title > div {
   padding: 12px 0 0 2.1%;
   font-size: 18px
 }
@@ -41,9 +50,9 @@ body {
   width: 20%;
   border: 1px solid #e4ecf3;
   box-shadow: 1px 2px 3px #f2f6f8;
-  border-radius: 6px;
+  border-radius: 10px;
   background: #fff;
-  padding: 5px;
+  padding: 25px;
   min-width: 200px;
   margin: 22px 0 0 2.1%;
   float: left;
@@ -58,8 +67,8 @@ body {
 .main .box .target .desc {
   color: gray;
   font-size: 20px;
-  /* padding-top: 10px; */
-  height: 40px;
+  /*padding-top: 10px;*/
+  /*height: 4px;*/
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
