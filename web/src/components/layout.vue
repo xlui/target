@@ -8,11 +8,9 @@
     <div class="main">
       <div class="box">
         <div>
-          <a href="#" @click="getTarget(target.tid)" v-for="target in targets">
-            <div class="target">
-              <div class="desc"><b>{{ target.description }}</b></div>
-            </div>
-          </a>
+          <template v-for="target in targets">
+            <item :target="target"></item>
+          </template>
           <a href="#">
             <div class="target">
               <div class="desc">新增一个目标</div>
@@ -26,6 +24,7 @@
 
 <script>
   import {apiLogin, fetchTargets, fetchTarget} from '../api/api';
+  import item from './item'
 
   export default {
     data() {
@@ -60,6 +59,9 @@
           alert(JSON.stringify(res.data))
         })
       }
+    },
+    components: {
+      item
     }
   }
 </script>

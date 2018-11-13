@@ -27,7 +27,6 @@ public class TargetController {
 	@RequestMapping(value = "/target", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
 	public ApiResponse getTargets(@CurrentUser User user) {
-		System.out.println("Current user: " + user);
 		return new ApiResponse(HttpStatus.OK, targetService.findForUser(user));
 	}
 
