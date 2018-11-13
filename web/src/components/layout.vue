@@ -1,13 +1,14 @@
 <template>
   <div>
-    <div style="float: right;">
-      <a class="login" @click="defaultLogin" href="#">登录</a>
+    <div class="login">
+      <a href="#" v-if="!login" @click="postLogin">登录</a>
+      <a href="#" v-else @click="logout">注销</a>
     </div>
     <h1 class="title">Your targets</h1>
 
     <div class="main">
       <div class="box">
-        <div>
+        <div v-if="login">
           <template v-for="target in targets">
             <item :target="target"></item>
           </template>
@@ -16,6 +17,9 @@
               <div class="desc">新增一个目标</div>
             </div>
           </a>
+        </div>
+        <div class="logout" v-else>
+          Welcome, new user!!
         </div>
       </div>
     </div>
@@ -29,12 +33,13 @@
   export default {
     data() {
       return {
-        targets: []
+        targets: [],
+        login: false
       }
     },
     name: 'App',
     methods: {
-      defaultLogin() {
+      postLogin() {
         apiLogin({
           username: 'xlui',
           password: 'pass'
@@ -42,9 +47,15 @@
           if (res.data.status === 'OK') {
             console.log('Successfully login using default user information.');
             localStorage.token = res.data.content;
+            this.login = true;
             this.getTargets()
           }
         })
+      },
+      logout() {
+        localStorage.token = "";
+        this.login = false;
+        location.href = "/"
       },
       getTargets() {
         fetchTargets({}).then(res => {

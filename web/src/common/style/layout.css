@@ -20,8 +20,18 @@ body {
 }
 
 .login {
+  float: right;
+}
+
+.login > a {
   font-size: 1.3em;
   margin-right: 50px
+}
+
+.logout {
+  margin-top: 10px;
+  padding-top: 20px;
+  font-size: 1.3em;
 }
 
 .title {
