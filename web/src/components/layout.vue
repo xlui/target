@@ -34,11 +34,40 @@
                   <h1>新增一个目标</h1>
                 </div>
                 <div class="modal-body">
-                  新目标的基本属性
+                  <form role="form" class="form-inline">
+                    <div class="form-group">
+                      <label for="title">Title:</label>
+                      <input type="text" id="title" class="form-control" :value="newTarget.title"/>
+                    </div>
+                    <div class="form-group">
+                      <label for="description">Description:</label>
+                      <input type="text" id="description" class="form-control" :value="newTarget.description"/>
+                    </div>
+                    <div class="form-group">
+                      <label for="startDate">Start date:</label>
+                      <input type="text" id="startDate" class="form-control" :value="newTarget.startDate"/>
+                    </div>
+                    <div class="form-group">
+                      <label for="endDate">End date:</label>
+                      <input type="text" id="endDate" class="form-control" :value="newTarget.endDate"/>
+                    </div>
+                    <div class="form-group">
+                      <label for="punchStart">Punch start:</label>
+                      <input type="text" id="punchStart" class="form-control" :value="newTarget.punchStart"/>
+                    </div>
+                    <div class="form-group">
+                      <label for="punchEnd">Punch end:</label>
+                      <input type="text" id="punchEnd" class="form-control" :value="newTarget.punchEnd"/>
+                    </div>
+                    <div class="form-group">
+                      <label for="repeat">Repeat:</label>
+                      <input type="text" id="repeat" class="form-control" :value="newTarget.repeat"/>
+                    </div>
+                  </form>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                  <button type="button" class="btn btn-primary">提交</button>
+                  <button type="button" class="btn btn-primary" @click="addTarget(newTarget)">提交</button>
                 </div>
               </div>
             </div>
@@ -61,8 +90,9 @@
       return {
         username: 'xlui',
         password: 'pass',
+        login: false,
         targets: [],
-        login: false
+        newTarget: Object
       }
     },
     name: 'App',
@@ -97,6 +127,9 @@
         fetchTarget(tid).then(res => {
           alert(JSON.stringify(res.data))
         })
+      },
+      addTarget(target) {
+        // pass
       }
     },
     components: {
