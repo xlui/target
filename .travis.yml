@@ -15,4 +15,4 @@ install:
     - cd server
     - mvn install -DskipTests -Dmaven.javadoc.skip
 script: 
-    - mvn test
+    - mvn test -Dspring.profiles.active=test

@@ -16,7 +16,7 @@ public class UserUtils {
 	public static ApiResponse login(MockMvc mockMvc) throws Exception {
 		User user = new User("xlui", "pass");
 		String result = mockMvc.perform(post("/login").contentType(json).content(mapper.writeValueAsString(user)))
-				.andDo(r -> System.out.println(r.getResponse().getContentAsString()))
+//				.andDo(r -> System.out.println(r.getResponse().getContentAsString()))
 				.andExpect(status().isOk())
 				.andReturn().getResponse().getContentAsString();
 		return mapper.readValue(result, ApiResponse.class);

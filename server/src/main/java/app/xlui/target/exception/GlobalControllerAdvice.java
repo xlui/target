@@ -4,6 +4,7 @@ import app.xlui.target.entity.ApiResponse;
 import app.xlui.target.exception.common.AssertException;
 import app.xlui.target.exception.common.ServerError;
 import app.xlui.target.exception.specify.NotFoundException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,6 +17,9 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 @RestControllerAdvice
 public class GlobalControllerAdvice {
+	@Value("${target.printStackTrace}")
+	private boolean printStackTrace;
+
 	@ExceptionHandler({
 			MethodArgumentTypeMismatchException.class,
 			HttpMessageNotReadableException.class,
@@ -23,35 +27,35 @@ public class GlobalControllerAdvice {
 	})
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ApiResponse assertFailed(Exception e) {
-		e.printStackTrace();
+		if (printStackTrace) e.printStackTrace();
 		return new ApiResponse(HttpStatus.BAD_REQUEST, e.getMessage());
 	}
 
 	@ExceptionHandler({MissingRequestHeaderException.class, UsernameNotFoundException.class})
 	@ResponseStatus(HttpStatus.UNAUTHORIZED)
 	public ApiResponse tokenAuthenticationFailed(Exception e) {
-		e.printStackTrace();
+		if (printStackTrace) e.printStackTrace();
 		return new ApiResponse(HttpStatus.UNAUTHORIZED, e.getMessage());
 	}
 
 	@ExceptionHandler(NotFoundException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public ApiResponse notFound(Exception e) {
-		e.printStackTrace();
+		if (printStackTrace) e.printStackTrace();
 		return new ApiResponse(HttpStatus.NOT_FOUND, e.getMessage());
 	}
 
 	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
 	@ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
 	public ApiResponse notAllowed(Exception e) {
-		e.printStackTrace();
+		if (printStackTrace) e.printStackTrace();
 		return new ApiResponse(HttpStatus.METHOD_NOT_ALLOWED, e.getMessage());
 	}
 
 	@ExceptionHandler(ServerError.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public ApiResponse serverError(Exception e) {
-		e.printStackTrace();
+		if (printStackTrace) e.printStackTrace();
 		return new ApiResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
 	}
 }
