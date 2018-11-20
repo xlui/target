@@ -5,13 +5,14 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public interface Constant {
-	int expire = 30;
+	Duration loginTokenExpire = Duration.ofMinutes(30);
+	Duration forgetTokenTimeout = Duration.ofMinutes(10);
 	String rabbitQueue = "mail.queue";
-	String rabbitTopicExchange = "mail.exchange";
-	String rabbitRoutingKey = "mail.to.#";
+	String rabbitExchange = "mail.exchange";
+	String rabbitRoutingKey = "mail.to";
 
 	static long expire() {
-		return System.currentTimeMillis() + Duration.ofMinutes(expire).toMillis();
+		return System.currentTimeMillis() + loginTokenExpire.toMillis();
 	}
 
 	static String currentTime() {

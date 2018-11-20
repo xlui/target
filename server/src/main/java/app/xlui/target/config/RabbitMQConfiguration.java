@@ -1,6 +1,7 @@
-package app.xlui.target.rabbit;
+package app.xlui.target.config;
 
 import app.xlui.target.config.Constant;
+import app.xlui.target.web.RabbitReceiver;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
@@ -17,7 +18,7 @@ public class RabbitMQConfiguration {
 
 	@Bean
 	DirectExchange exchange() {
-		return new DirectExchange(Constant.rabbitTopicExchange, true, false);
+		return new DirectExchange(Constant.rabbitExchange, true, false);
 	}
 
 	@Bean
@@ -26,8 +27,8 @@ public class RabbitMQConfiguration {
 	}
 
 	@Bean
-	MessageListenerAdapter listenerAdapter(Receiver receiver) {
-		return new MessageListenerAdapter(receiver, "receiveMessage");
+	MessageListenerAdapter listenerAdapter(RabbitReceiver rabbitReceiver) {
+		return new MessageListenerAdapter(rabbitReceiver, "receiveMessage");
 	}
 
 	@Bean
