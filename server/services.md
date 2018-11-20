@@ -20,3 +20,9 @@ $ docker run --name rabbitmq \
 -e RABBITMQ_DEFAULT_PASS=user \
 -d rabbitmq:3-management
 ```
+
+## 构建 Docker 镜像
+
+```bash
+mvn clean package -DskipTests docker:removeImage docker:build
+```
