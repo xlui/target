@@ -9,8 +9,10 @@ services:
     ports:
     - 127.0.0.1:3306:3306
     environment:
-    - MYSQL_ROOT_PASSWORD=mysqlroot
+    - MYSQL_ALLOW_EMPTY_PASSWORD=yes
     - TZ=Asia/Shanghai
+    volumes:
+    - $PWD/src/main/resources/data.sql:/docker-entrypoint-initdb.d/data.sql:ro
   rabbitmq:
     image: rabbitmq:3-management
     ports:
