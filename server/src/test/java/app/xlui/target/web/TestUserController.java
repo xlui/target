@@ -50,13 +50,13 @@ public class TestUserController {
 		mockMvc.perform(get("/token").header(HttpHeaders.AUTHORIZATION, response.getContent()))
 				.andDo(r -> System.out.println(r.getResponse().getContentAsString()))
 				.andExpect(status().isOk())
-				.andExpect(content().string("pass token auth: xlui"));
+				.andExpect(content().string("pass token auth: " + UserUtils.username));
 	}
 
 	// login
 	@Test
 	public void testLoginSuccess() throws Exception {
-		User user = new User("xlui", "pass");
+		User user = new User(UserUtils.username, "pass");
 		mockMvc.perform(post("/login").contentType(json).content(mapper.writeValueAsString(user)))
 				.andExpect(status().isOk());
 	}

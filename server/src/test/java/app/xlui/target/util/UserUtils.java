@@ -13,8 +13,10 @@ public class UserUtils {
 	private static final MediaType json = MediaType.APPLICATION_JSON_UTF8;
 	private static final ObjectMapper mapper = new ObjectMapper();
 
+	public static final String username = "i@xlui.me";
+
 	public static ApiResponse login(MockMvc mockMvc) throws Exception {
-		User user = new User("xlui", "pass");
+		User user = new User(username, "pass");
 		String result = mockMvc.perform(post("/login").contentType(json).content(mapper.writeValueAsString(user)))
 //				.andDo(r -> System.out.println(r.getResponse().getContentAsString()))
 				.andExpect(status().isOk())
