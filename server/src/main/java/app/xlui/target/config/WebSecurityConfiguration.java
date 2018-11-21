@@ -27,7 +27,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 					.antMatchers(HttpMethod.POST,
 							"/login",
 							"/register",
-							"/forget"
+							"/reset"
 					).permitAll()
 					.antMatchers(HttpMethod.GET,
 							"/",

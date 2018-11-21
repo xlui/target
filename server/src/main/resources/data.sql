@@ -1,7 +1,7 @@
 DROP DATABASE IF EXISTS target;
 CREATE DATABASE target CHARACTER SET utf8mb4;
 USE target;
-DROP USER IF EXISTS admin@"%";
+DROP USER admin@"%";
 FLUSH PRIVILEGES;
 CREATE USER admin@"%" IDENTIFIED BY "admin";
 GRANT ALL PRIVILEGES ON target.* to admin@"%" WITH GRANT OPTION;
@@ -51,4 +51,4 @@ CREATE TABLE `t_record` (
   CHARACTER SET UTF8MB4;
 
 # init
-INSERT INTO t_user (username, password) VALUES ('xlui', 'pass');
+INSERT INTO t_user (username, password) VALUES ('i@xlui.me', 'pass');

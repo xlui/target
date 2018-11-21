@@ -2,6 +2,7 @@ package app.xlui.target.web;
 
 import app.xlui.target.config.Constant;
 import app.xlui.target.entity.ApiResponse;
+import app.xlui.target.entity.Mail;
 import app.xlui.target.entity.User;
 import app.xlui.target.exception.common.ServerError;
 import app.xlui.target.exception.specify.InvalidInputException;
@@ -10,7 +11,6 @@ import app.xlui.target.service.RedisService;
 import app.xlui.target.service.UserService;
 import app.xlui.target.util.AssertUtils;
 import app.xlui.target.util.JwtUtils;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -51,13 +51,21 @@ public class UserController {
 		}
 	}
 
-	@RequestMapping(value = "/forget", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ApiResponse forget(@RequestBody @NotNull User param) {
-		String username = AssertUtils.requireValid(param.getUsername(), () -> new InvalidInputException("Username is invalid!"));
-		String token  = UUID.randomUUID().toString();
-		String current = Constant.currentTime();
-		redisService.set(token, username, Constant.forgetTokenTimeout);
-		rabbitService.sendEmail(username, token, current);
-		return new ApiResponse(HttpStatus.OK, "Successfully send password reset Email.");
+	@RequestMapping(value = "/reset", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ApiResponse reset(@RequestBody @NotNull User paramUser, @RequestParam(value = "token", required = false) String paramToken) {
+		String username = AssertUtils.requireValid(paramUser.getUsername(), () -> new InvalidInputException("Username is invalid!"));
+		AssertUtils.requireNotNull(userService.findByUsername(username), () -> new InvalidInputException("Username is invalid! This user have not register!"));
+		if (paramToken == null) {
+			String token = UUID.randomUUID().toString();
+			String current = Constant.currentTime();
+			redisService.set(token, username, Constant.forgetTokenTimeout);
+			rabbitService.sendEmail(new Mail(username, token, current));
+			return new ApiResponse(HttpStatus.OK, "Successfully send password reset Email.");
+		} else {
+			AssertUtils.requireNotNull(paramUser.getPassword(), () -> new InvalidInputException("New password must not be null!"));
+			// todo: verify token
+			// todo: update username
+			return new ApiResponse(HttpStatus.CREATED, "Successfully update password!");
+		}
 	}
 }

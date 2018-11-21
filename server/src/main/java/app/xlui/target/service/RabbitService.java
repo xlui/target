@@ -11,7 +11,7 @@ public class RabbitService {
 	@Autowired
 	private RabbitTemplate rabbitTemplate;
 
-	public void sendEmail(String to, String token, String date) {
-		rabbitTemplate.convertAndSend(Constant.rabbitExchange, Constant.rabbitRoutingKey, new Mail(to, token, date));
+	public void sendEmail(Mail mail) {
+		rabbitTemplate.convertAndSend(Constant.rabbitExchange, Constant.rabbitRoutingKey, mail);
 	}
 }
