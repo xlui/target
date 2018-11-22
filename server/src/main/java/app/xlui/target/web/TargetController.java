@@ -16,7 +16,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 
 @RestController
 public class TargetController {
@@ -82,7 +81,7 @@ public class TargetController {
 			targetService.delete(tid);
 			return new ApiResponse(HttpStatus.OK, "Successfully delete target: " + tid);
 		} else {
-			return new ApiResponse(HttpStatus.BAD_REQUEST, "No target bind with the request tid!");
+			throw new NotFoundException("No target bind with the request tid!");
 		}
 	}
 }

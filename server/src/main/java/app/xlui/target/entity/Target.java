@@ -1,7 +1,7 @@
 package app.xlui.target.entity;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -10,7 +10,7 @@ public class Target implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private long tid;				// target id
-	@NotNull
+	@Positive(message = "uid must be valid positive numbers!")
 	private long uid;				// user id
 //	private String avatar;			// target avatar
 	@NotBlank(message = "Target title is invalid!")

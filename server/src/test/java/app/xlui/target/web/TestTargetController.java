@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.codec.json.Jackson2JsonEncoder;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -44,6 +43,7 @@ public class TestTargetController {
 				.build();
 	}
 
+	// delete target
 	@Test
 	public void testTargetDelete() throws Exception {
 		ApiResponse response = UserUtils.login(mockMvc);
@@ -72,6 +72,7 @@ public class TestTargetController {
 				.andExpect(status().isMethodNotAllowed());
 	}
 
+	// update
 	@Test
 	public void testUpdateTarget() throws Exception {
 		Target target = new Target()
@@ -95,11 +96,12 @@ public class TestTargetController {
 	@Test
 	public void testUpdateTargetWithInvalidUID() throws Exception {
 		Target target = new Target()
-				.setUid(2L)
+				.setUid(23123213112312L)
 				.setTitle("test title");
 		ApiResponse response = UserUtils.login(mockMvc);
 		mockMvc.perform(put("/target/1").contentType(json).content(mapper.writeValueAsString(target)).header(HttpHeaders.AUTHORIZATION, response.getContent()))
-				.andExpect(status().isBadRequest());
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath(content).value("Trying to submit a target using invalid parameter: uid"));
 	}
 
 	@Test
@@ -108,9 +110,27 @@ public class TestTargetController {
 				.setUid(1L);
 		ApiResponse response = UserUtils.login(mockMvc);
 		mockMvc.perform(put("/target/1").contentType(json).content(mapper.writeValueAsString(target)).header(HttpHeaders.AUTHORIZATION, response.getContent()))
-				.andExpect(status().isBadRequest());
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath(content).value("Target title is invalid!"));
 	}
 
+	// get specify target
+	@Test
+	public void testGetTarget() throws Exception {
+		ApiResponse response = UserUtils.login(mockMvc);
+		mockMvc.perform(get("/target/1").header(HttpHeaders.AUTHORIZATION, response.getContent()))
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	public void testGetInexistentTarget() throws Exception {
+		ApiResponse response = UserUtils.login(mockMvc);
+		mockMvc.perform(get("/target/213312341").header(HttpHeaders.AUTHORIZATION, response.getContent()))
+				.andExpect(status().isNotFound())
+				.andExpect(jsonPath(content).value("Tid is invalid!"));
+	}
+
+	// create target
 	@Test
 	public void testPostTarget() throws Exception {
 		Faker faker = FakeUtils.faker();
@@ -128,17 +148,27 @@ public class TestTargetController {
 	}
 
 	@Test
+	public void testPostTargetWithoutUID() throws Exception {
+		Target target = new Target()
+				.setTitle("test-target-title");
+		ApiResponse response = UserUtils.login(mockMvc);
+		mockMvc.perform(post("/target").contentType(json).content(mapper.writeValueAsString(target)).header(HttpHeaders.AUTHORIZATION, response.getContent()))
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath(content).value("uid must be valid positive numbers!"));
+	}
+
+	@Test
 	public void testPostTargetInvalidUID() throws Exception {
 		Target target = new Target()
 				.setUid(-2134123112341L)
-				.setTitle(null);
+				.setTitle("test-target-title");
 		ApiResponse response = UserUtils.login(mockMvc);
 		mockMvc.perform(post("/target")
 				.contentType(json)
 				.content(mapper.writeValueAsString(target))
 				.header(HttpHeaders.AUTHORIZATION, response.getContent()))
 				.andExpect(status().isBadRequest())
-				.andExpect(jsonPath(content).value("Trying to submit a target using invalid parameter: uid"));
+				.andExpect(jsonPath(content).value("uid must be valid positive numbers!"));
 	}
 
 	@Test
@@ -155,6 +185,7 @@ public class TestTargetController {
 				.andExpect(jsonPath(content).value("Target title is invalid!"));
 	}
 
+	// get all targets
 	@Test
 	public void testGetTargets() throws Exception {
 		ApiResponse response = UserUtils.login(mockMvc);
