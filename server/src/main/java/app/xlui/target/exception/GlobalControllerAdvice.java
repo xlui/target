@@ -3,6 +3,7 @@ package app.xlui.target.exception;
 import app.xlui.target.entity.ApiResponse;
 import app.xlui.target.exception.common.AssertException;
 import app.xlui.target.exception.common.ServerError;
+import app.xlui.target.exception.specify.ForbiddenException;
 import app.xlui.target.exception.specify.NotFoundException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -57,6 +58,13 @@ public class GlobalControllerAdvice {
 	public ApiResponse tokenAuthenticationFailed(Exception e) {
 		if (printStackTrace) e.printStackTrace();
 		return new ApiResponse(HttpStatus.UNAUTHORIZED, e.getMessage());
+	}
+
+	@ExceptionHandler(ForbiddenException.class)
+	@ResponseStatus(HttpStatus.FORBIDDEN)
+	public ApiResponse forbidden(Exception e) {
+		if (printStackTrace) e.printStackTrace();
+		return new ApiResponse(HttpStatus.FORBIDDEN, e.getMessage());
 	}
 
 	@ExceptionHandler(NotFoundException.class)

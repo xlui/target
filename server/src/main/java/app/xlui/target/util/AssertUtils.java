@@ -2,8 +2,10 @@ package app.xlui.target.util;
 
 import app.xlui.target.exception.common.AssertException;
 
+import java.util.List;
 import java.util.function.Supplier;
 
+@SuppressWarnings("UnusedReturnValue")
 public class AssertUtils {
 	public static <T> T requireNotNull(T obj, Supplier<AssertException> supplier) {
 		if (obj == null) throw supplier.get();
@@ -30,5 +32,10 @@ public class AssertUtils {
 	public static int requireNotZero(int i, Supplier<RuntimeException> supplier) {
 		if (i == 0) throw supplier.get();
 		return i;
+	}
+
+	public static int requireNotEmpty(List<?> list, Supplier<AssertException> supplier) {
+		if (list.size() == 0) throw supplier.get();
+		return list.size();
 	}
 }

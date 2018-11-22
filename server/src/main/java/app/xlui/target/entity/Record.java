@@ -1,5 +1,7 @@
 package app.xlui.target.entity;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -8,7 +10,9 @@ public class Record implements Serializable {
 
 	private long rid;
 	private long uid;
+	@Positive(message = "record related tid is invalid!")
 	private long tid;
+	@NotNull(message = "Missing required argument: checkin date time")
 	private LocalDateTime checkinDateTime;
 	private boolean reCheckIn = false;
 	private String reason;

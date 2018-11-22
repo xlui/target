@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public interface Constant {
-	Duration loginTokenExpire = Duration.ofMinutes(30);
+	Duration loginTokenExpire = Duration.ofMinutes(60);
 	Duration forgetTokenTimeout = Duration.ofMinutes(10);
 	String rabbitQueue = "mail.queue";
 	String rabbitExchange = "mail.exchange";

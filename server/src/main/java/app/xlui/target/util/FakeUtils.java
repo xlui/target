@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.List;
@@ -70,10 +71,14 @@ public class FakeUtils {
 		for (int i = 0; i < count; i++) {
 			long tid = tids.get(faker.random().nextInt(tids.size()));
 			Target target = targetService.findByTid(tid);
+			LocalDateTime fakeDateTime = null;
+			do {
+				fakeDateTime = faker.date().future(10, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+			} while (checkinService.checkedSomeday(tid, fakeDateTime.toLocalDate()));
 			Record record = new Record()
 					.setUid(target.getUid())
 					.setTid(tid)
-					.setCheckinDateTime(faker.date().future(10, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime())
+					.setCheckinDateTime(fakeDateTime)
 					.setReCheckIn(false);
 			checkinService.checkin(record);
 		}
