@@ -18,8 +18,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.io.IOException;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -41,6 +39,25 @@ public class TestUserController {
 				.webAppContextSetup(wac)
 				.apply(SecurityMockMvcConfigurers.springSecurity())
 				.build();
+	}
+
+	// change password
+	@Test
+	public void testChangeSuccess() throws Exception {
+		User user = new User(UserUtils.username, "test-change-password");
+		ApiResponse response = UserUtils.login(mockMvc);
+		mockMvc.perform(post("/change").header(HttpHeaders.AUTHORIZATION, response.getContent()).contentType(json).content(mapper.writeValueAsString(user)))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath(content).value("Successfully update user's password"));
+	}
+
+	@Test
+	public void testChangeAnotherPassword() throws Exception {
+		User user = new User(UserUtils.username + "another", "test-change-password");
+		ApiResponse response = UserUtils.login(mockMvc);
+		mockMvc.perform(post("/change").header(HttpHeaders.AUTHORIZATION, response.getContent()).contentType(json).content(mapper.writeValueAsString(user)))
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath(content).value("Username mismatch with token! Please don't try to modify another user's password"));
 	}
 
 	// token

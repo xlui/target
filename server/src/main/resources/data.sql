@@ -49,4 +49,4 @@ CREATE TABLE `t_record` (
   CHARACTER SET UTF8MB4;
 
 # init
-INSERT INTO t_user (username, password) VALUES ('i@xlui.me', 'pass');
+INSERT INTO t_user (nickname, gender, username, password) VALUES ('xlui', 1, 'i@xlui.me', 'pass');

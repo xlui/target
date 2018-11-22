@@ -1,5 +1,6 @@
 package app.xlui.target.web;
 
+import app.xlui.target.annotation.CurrentUser;
 import app.xlui.target.config.Constant;
 import app.xlui.target.entity.ApiResponse;
 import app.xlui.target.entity.Mail;
@@ -49,6 +50,15 @@ public class UserController {
 		} else {
 			throw new InvalidInputException("Username or password is wrong!");
 		}
+	}
+
+	@RequestMapping(value = "/change", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ApiResponse change(@RequestBody @NotNull User paramUser, @CurrentUser User user) {
+		String paramUsername = AssertUtils.requireValid(paramUser.getUsername(), () -> new InvalidInputException("Username is invalid!"));
+		String paramPassword = AssertUtils.requireValid(paramUser.getPassword(), () -> new InvalidInputException("Password is invalid!"));
+		AssertUtils.assertEquals(paramUsername, user.getUsername(), () -> new InvalidInputException("Username mismatch with token! Please don't try to modify another user's password"));
+		userService.updatePassword(paramUsername, paramPassword);
+		return new ApiResponse(HttpStatus.OK, "Successfully update user's password");
 	}
 
 	@RequestMapping(value = "/reset", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
