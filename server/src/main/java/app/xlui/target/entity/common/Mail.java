@@ -1,4 +1,4 @@
-package app.xlui.target.entity;
+package app.xlui.target.entity.common;
 
 import java.io.Serializable;
 

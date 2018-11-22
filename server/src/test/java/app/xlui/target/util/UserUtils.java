@@ -1,6 +1,6 @@
 package app.xlui.target.util;
 
-import app.xlui.target.entity.ApiResponse;
+import app.xlui.target.entity.common.ApiResponse;
 import app.xlui.target.entity.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.MediaType;

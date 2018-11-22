@@ -1,7 +1,7 @@
 package app.xlui.target.web;
 
 import app.xlui.target.annotation.CurrentUser;
-import app.xlui.target.entity.ApiResponse;
+import app.xlui.target.entity.common.ApiResponse;
 import app.xlui.target.entity.Target;
 import app.xlui.target.entity.User;
 import app.xlui.target.exception.common.ServerError;

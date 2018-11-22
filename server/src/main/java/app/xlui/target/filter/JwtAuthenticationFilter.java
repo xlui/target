@@ -1,6 +1,6 @@
 package app.xlui.target.filter;
 
-import app.xlui.target.entity.ApiResponse;
+import app.xlui.target.entity.common.ApiResponse;
 import app.xlui.target.entity.User;
 import app.xlui.target.service.UserService;
 import app.xlui.target.util.JwtUtils;

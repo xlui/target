@@ -1,6 +1,6 @@
 package app.xlui.target.web;
 
-import app.xlui.target.entity.ApiResponse;
+import app.xlui.target.entity.common.ApiResponse;
 import app.xlui.target.entity.User;
 import app.xlui.target.util.UserUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;

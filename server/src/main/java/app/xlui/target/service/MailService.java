@@ -1,6 +1,6 @@
 package app.xlui.target.service;
 
-import app.xlui.target.entity.Mail;
+import app.xlui.target.entity.common.Mail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;

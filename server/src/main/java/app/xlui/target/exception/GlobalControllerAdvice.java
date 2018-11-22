@@ -1,6 +1,6 @@
 package app.xlui.target.exception;
 
-import app.xlui.target.entity.ApiResponse;
+import app.xlui.target.entity.common.ApiResponse;
 import app.xlui.target.exception.common.AssertException;
 import app.xlui.target.exception.common.ServerError;
 import app.xlui.target.exception.specify.ForbiddenException;

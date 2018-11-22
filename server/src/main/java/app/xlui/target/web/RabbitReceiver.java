@@ -1,6 +1,6 @@
 package app.xlui.target.web;
 
-import app.xlui.target.entity.Mail;
+import app.xlui.target.entity.common.Mail;
 import app.xlui.target.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

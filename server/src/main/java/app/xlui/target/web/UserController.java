@@ -2,8 +2,8 @@ package app.xlui.target.web;
 
 import app.xlui.target.annotation.CurrentUser;
 import app.xlui.target.config.Constant;
-import app.xlui.target.entity.ApiResponse;
-import app.xlui.target.entity.Mail;
+import app.xlui.target.entity.common.ApiResponse;
+import app.xlui.target.entity.common.Mail;
 import app.xlui.target.entity.User;
 import app.xlui.target.exception.common.ServerError;
 import app.xlui.target.exception.specify.InvalidInputException;

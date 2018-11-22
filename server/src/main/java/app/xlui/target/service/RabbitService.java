@@ -1,7 +1,7 @@
 package app.xlui.target.service;
 
 import app.xlui.target.config.Constant;
-import app.xlui.target.entity.Mail;
+import app.xlui.target.entity.common.Mail;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
