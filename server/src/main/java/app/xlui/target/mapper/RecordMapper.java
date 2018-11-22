@@ -12,10 +12,10 @@ public interface RecordMapper {
 	@Select("SELECT * FROM t_record WHERE uid = #{uid} and tid = #{tid}")
 	List<Record> findByUidAndTid(@Param("uid") long uid, @Param("tid") long tid);
 
-	@Select("SELECT COUNT(*) FROM t_record WHERE tid = #{tid} and TO_DAYS(punchDateTime) = TO_DAYS(NOW())")
+	@Select("SELECT COUNT(*) FROM t_record WHERE tid = #{tid} and TO_DAYS(checkinDateTime) = TO_DAYS(NOW())")
 	int findRecordToday(@Param("tid") long tid);
 
-	@Insert("INSERT INTO t_record(uid, tid, punchDateTime) VALUES(#{uid}, #{tid}, #{punchDateTime})")
+	@Insert("INSERT INTO t_record(uid, tid, checkinDateTime) VALUES(#{uid}, #{tid}, #{checkinDateTime})")
 	int save(Record record);
 
 	@Delete("DELETE FROM t_record WHERE tid = #{tid}")

@@ -27,8 +27,8 @@ CREATE TABLE `t_target` (
   description VARCHAR(128),
   startDate   DATE,
   endDate     DATE,
-  punchStart  TIME,
-  punchEnd    TIME,
+  checkinStart  TIME,
+  checkinEnd    TIME,
   `repeat`    TINYINT,
   INDEX i_target_user (uid)
 )
@@ -39,8 +39,8 @@ CREATE TABLE `t_record` (
   rid           INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   uid           INT NOT NULL,
   tid           INT NOT NULL,
-  punchDateTime DATETIME,
-  repunch       BOOLEAN      DEFAULT FALSE,
+  checkinDateTime DATETIME,
+  reCheckIn       BOOLEAN      DEFAULT FALSE,
   reason        VARCHAR(128) DEFAULT '',
   INDEX i_record_user (uid),
   INDEX i_record_target (tid)

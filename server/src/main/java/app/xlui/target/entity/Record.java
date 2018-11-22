@@ -9,8 +9,8 @@ public class Record implements Serializable {
 	private long rid;
 	private long uid;
 	private long tid;
-	private LocalDateTime punchDateTime;
-	private boolean repunch = false;
+	private LocalDateTime checkinDateTime;
+	private boolean reCheckIn = false;
 	private String reason;
 
 	public Record() {
@@ -43,21 +43,21 @@ public class Record implements Serializable {
 		return this;
 	}
 
-	public LocalDateTime getPunchDateTime() {
-		return punchDateTime;
+	public LocalDateTime getCheckinDateTime() {
+		return checkinDateTime;
 	}
 
-	public Record setPunchDateTime(LocalDateTime punchDateTime) {
-		this.punchDateTime = punchDateTime;
+	public Record setCheckinDateTime(LocalDateTime checkinDateTime) {
+		this.checkinDateTime = checkinDateTime;
 		return this;
 	}
 
-	public boolean isRepunch() {
-		return repunch;
+	public boolean isReCheckIn() {
+		return reCheckIn;
 	}
 
-	public Record setRepunch(boolean repunch) {
-		this.repunch = repunch;
+	public Record setReCheckIn(boolean reCheckIn) {
+		this.reCheckIn = reCheckIn;
 		return this;
 	}
 

@@ -6,15 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PunchService {
+public class CheckinService {
 	@Autowired
 	private RecordMapper recordMapper;
 
-	public int punch(Record record) {
+	public int checkin(Record record) {
 		return recordMapper.save(record);
 	}
 
-	public boolean punched(long tid) {
+	public boolean checkined(long tid) {
 		return recordMapper.findRecordToday(tid) > 0;
 	}
 

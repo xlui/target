@@ -40,8 +40,8 @@ public class TargetController {
 				.setDescription(param.getDescription())
 				.setStartDate(param.getStartDate())
 				.setEndDate(param.getEndDate())
-				.setPunchStart(param.getPunchStart())
-				.setPunchEnd(param.getPunchEnd())
+				.setCheckinStart(param.getCheckinStart())
+				.setCheckinEnd(param.getCheckinEnd())
 				.setRepeat(param.getRepeat());
 		AssertUtils.requireNotZero(targetService.save(target), () -> new ServerError("Failed to save target! Unknown exception occurs, please view server log."));
 		return new ApiResponse(HttpStatus.CREATED, "Successfully add a new target!");
@@ -68,8 +68,8 @@ public class TargetController {
 				.setDescription(param.getDescription())
 				.setStartDate(param.getStartDate())
 				.setEndDate(param.getEndDate())
-				.setPunchStart(param.getPunchStart())
-				.setPunchEnd(param.getPunchEnd())
+				.setCheckinStart(param.getCheckinStart())
+				.setCheckinEnd(param.getCheckinEnd())
 				.setRepeat(param.getRepeat());
 		AssertUtils.requireNotZero(targetService.update(target), () -> new NotFoundException("The target id which you want to update is invalid!"));
 		return new ApiResponse(HttpStatus.NO_CONTENT, "Successfully update target");

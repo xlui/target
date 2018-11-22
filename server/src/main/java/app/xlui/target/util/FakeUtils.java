@@ -4,7 +4,7 @@ import app.xlui.target.entity.Record;
 import app.xlui.target.entity.Target;
 import app.xlui.target.entity.User;
 import app.xlui.target.entity.enums.Gender;
-import app.xlui.target.service.PunchService;
+import app.xlui.target.service.CheckinService;
 import app.xlui.target.service.TargetService;
 import app.xlui.target.service.UserService;
 import com.github.javafaker.Faker;
@@ -22,13 +22,13 @@ public class FakeUtils {
 	private static Faker faker = new Faker();
 	private static UserService userService;
 	private static TargetService targetService;
-	private static PunchService punchService;
+	private static CheckinService checkinService;
 
 	@Autowired
-	public FakeUtils(UserService userService, TargetService targetService, PunchService punchService) {
+	public FakeUtils(UserService userService, TargetService targetService, CheckinService checkinService) {
 		FakeUtils.userService = userService;
 		FakeUtils.targetService = targetService;
-		FakeUtils.punchService = punchService;
+		FakeUtils.checkinService = checkinService;
 	}
 
 	public static Faker faker() {
@@ -57,15 +57,15 @@ public class FakeUtils {
 					.setDescription(faker.lorem().sentence())
 					.setStartDate(faker.date().past(20, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
 					.setEndDate(faker.date().future(20, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
-					.setPunchStart(LocalTime.of(faker.random().nextInt(0, 12), faker.random().nextInt(60)))
-					.setPunchEnd(LocalTime.of(faker.random().nextInt(12, 23), faker.random().nextInt(60)))
+					.setCheckinStart(LocalTime.of(faker.random().nextInt(0, 12), faker.random().nextInt(60)))
+					.setCheckinEnd(LocalTime.of(faker.random().nextInt(12, 23), faker.random().nextInt(60)))
 					.setRepeat(faker.random().nextInt(0, 127).byteValue());
 			targetService.save(target);
 		}
 	}
 
 	public static void fakeRecord(int count) {
-		punchService.clearAll();
+		checkinService.clearAll();
 		List<Long> tids = targetService.findTids();
 		for (int i = 0; i < count; i++) {
 			long tid = tids.get(faker.random().nextInt(tids.size()));
@@ -73,9 +73,9 @@ public class FakeUtils {
 			Record record = new Record()
 					.setUid(target.getUid())
 					.setTid(tid)
-					.setPunchDateTime(faker.date().future(10, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime())
-					.setRepunch(false);
-			punchService.punch(record);
+					.setCheckinDateTime(faker.date().future(10, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime())
+					.setReCheckIn(false);
+			checkinService.checkin(record);
 		}
 	}
 }

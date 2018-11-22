@@ -14,8 +14,8 @@ public class Target implements Serializable {
 	private String description = "";// target description
 	private LocalDate startDate;	// target start date
 	private LocalDate endDate;		// target end date
-	private LocalTime punchStart;	// target punch start time
-	private LocalTime punchEnd;		// target punch end time
+	private LocalTime checkinStart;	// target checkin start time
+	private LocalTime checkinEnd;	// target checkin end time
 	/**
 	 * use 7 bit to represent Sunday to Saturday.
 	 * For example:
@@ -90,21 +90,21 @@ public class Target implements Serializable {
 		return this;
 	}
 
-	public LocalTime getPunchStart() {
-		return punchStart;
+	public LocalTime getCheckinStart() {
+		return checkinStart;
 	}
 
-	public Target setPunchStart(LocalTime punchStart) {
-		this.punchStart = punchStart;
+	public Target setCheckinStart(LocalTime checkinStart) {
+		this.checkinStart = checkinStart;
 		return this;
 	}
 
-	public LocalTime getPunchEnd() {
-		return punchEnd;
+	public LocalTime getCheckinEnd() {
+		return checkinEnd;
 	}
 
-	public Target setPunchEnd(LocalTime punchEnd) {
-		this.punchEnd = punchEnd;
+	public Target setCheckinEnd(LocalTime checkinEnd) {
+		this.checkinEnd = checkinEnd;
 		return this;
 	}
 
