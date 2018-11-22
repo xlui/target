@@ -45,4 +45,8 @@ public class TargetService {
 	public void clear() {
 		targetMapper.clear();
 	}
+
+	public boolean exist(long tid) {
+		return findByTid(tid) != null;
+	}
 }

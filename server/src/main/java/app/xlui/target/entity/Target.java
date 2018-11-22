@@ -1,5 +1,7 @@
 package app.xlui.target.entity;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -8,8 +10,10 @@ public class Target implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private long tid;				// target id
+	@NotNull
 	private long uid;				// user id
 //	private String avatar;			// target avatar
+	@NotBlank(message = "Target title is invalid!")
 	private String title;			// target title
 	private String description = "";// target description
 	private LocalDate startDate;	// target start date

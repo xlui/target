@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 @RestController
@@ -32,9 +33,8 @@ public class TargetController {
 
 	@RequestMapping(value = "/target", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
-	public ApiResponse addTarget(@CurrentUser User user, @RequestBody @NotNull Target param) {
+	public ApiResponse addTarget(@CurrentUser User user, @RequestBody @Valid Target param) {
 		AssertUtils.requireEquals(user.getUid(), param.getUid(), () -> new InvalidInputException("Trying to submit a target using invalid parameter: uid"));
-		AssertUtils.requireValid(param.getTitle(), () -> new InvalidInputException("Target title is invalid!"));
 		Target target = new Target()
 				.setTitle(param.getTitle())
 				.setDescription(param.getDescription())
@@ -51,16 +51,15 @@ public class TargetController {
 	@ResponseStatus(HttpStatus.OK)
 	public ApiResponse getTarget(@CurrentUser User user, @PathVariable long tid) {
 		Target target = targetService.findByTid(tid);
-		AssertUtils.requireNotNull(target, () -> new InvalidInputException("Tid is invalid!"));
+		AssertUtils.requireNotNull(target, () -> new NotFoundException("Tid is invalid!"));
 		return new ApiResponse(HttpStatus.OK, target);
 	}
 
 	@RequestMapping(value = "/target/{tid}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public ApiResponse updateTarget(@CurrentUser User user, @PathVariable long tid, @RequestBody @NotNull Target param) {
+	public ApiResponse updateTarget(@CurrentUser User user, @PathVariable long tid, @RequestBody @Valid Target param) {
 		AssertUtils.requireNotNull(tid, () -> new InvalidInputException("Require tid not null!"));
 		AssertUtils.requireEquals(user.getUid(), param.getUid(), () -> new InvalidInputException("Trying to submit a target using invalid parameter: uid"));
-		AssertUtils.requireValid(param.getTitle(), () -> new InvalidInputException("Target title is invalid!"));
 		Target target = new Target()
 				.setTid(tid)
 				.setUid(user.getUid())
@@ -79,7 +78,11 @@ public class TargetController {
 	@ResponseStatus(HttpStatus.OK)
 	public ApiResponse deleteTarget(@CurrentUser User user, @PathVariable long tid) {
 		AssertUtils.requireNotNull(tid, () -> new InvalidInputException("Require tid not null!"));
-		AssertUtils.requireNotZero(targetService.delete(tid), () -> new NotFoundException("The target id is invalid! There isn't a target with the request tid at server!"));
-		return new ApiResponse(HttpStatus.OK, "Successfully delete target: " + tid);
+		if (targetService.exist(tid)) {
+			targetService.delete(tid);
+			return new ApiResponse(HttpStatus.OK, "Successfully delete target: " + tid);
+		} else {
+			return new ApiResponse(HttpStatus.BAD_REQUEST, "No target bind with the request tid!");
+		}
 	}
 }
