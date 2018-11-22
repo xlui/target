@@ -40,6 +40,10 @@ public class UserService {
 		return userMapper.save(user);
 	}
 
+	public boolean exist(String username) {
+		return findByUsername(username) != null;
+	}
+
 	public boolean register(User user) {
 		return userMapper.save(user) > 0;
 	}

@@ -33,7 +33,7 @@ public class TargetController {
 	@RequestMapping(value = "/target", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public ApiResponse addTarget(@CurrentUser User user, @RequestBody @NotNull Target param) {
-		AssertUtils.assertEquals(user.getUid(), param.getUid(), () -> new InvalidInputException("Trying to submit a target using invalid parameter: uid"));
+		AssertUtils.requireEquals(user.getUid(), param.getUid(), () -> new InvalidInputException("Trying to submit a target using invalid parameter: uid"));
 		AssertUtils.requireValid(param.getTitle(), () -> new InvalidInputException("Target title is invalid!"));
 		Target target = new Target()
 				.setTitle(param.getTitle())
@@ -43,7 +43,7 @@ public class TargetController {
 				.setPunchStart(param.getPunchStart())
 				.setPunchEnd(param.getPunchEnd())
 				.setRepeat(param.getRepeat());
-		AssertUtils.assertNotZero(targetService.save(target), () -> new ServerError("Failed to save target! Unknown exception occurs, please view server log."));
+		AssertUtils.requireNotZero(targetService.save(target), () -> new ServerError("Failed to save target! Unknown exception occurs, please view server log."));
 		return new ApiResponse(HttpStatus.CREATED, "Successfully add a new target!");
 	}
 
@@ -59,7 +59,7 @@ public class TargetController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ApiResponse updateTarget(@CurrentUser User user, @PathVariable long tid, @RequestBody @NotNull Target param) {
 		AssertUtils.requireNotNull(tid, () -> new InvalidInputException("Require tid not null!"));
-		AssertUtils.assertEquals(user.getUid(), param.getUid(), () -> new InvalidInputException("Trying to submit a target using invalid parameter: uid"));
+		AssertUtils.requireEquals(user.getUid(), param.getUid(), () -> new InvalidInputException("Trying to submit a target using invalid parameter: uid"));
 		AssertUtils.requireValid(param.getTitle(), () -> new InvalidInputException("Target title is invalid!"));
 		Target target = new Target()
 				.setTid(tid)
@@ -71,7 +71,7 @@ public class TargetController {
 				.setPunchStart(param.getPunchStart())
 				.setPunchEnd(param.getPunchEnd())
 				.setRepeat(param.getRepeat());
-		AssertUtils.assertNotZero(targetService.update(target), () -> new NotFoundException("The target id which you want to update is invalid!"));
+		AssertUtils.requireNotZero(targetService.update(target), () -> new NotFoundException("The target id which you want to update is invalid!"));
 		return new ApiResponse(HttpStatus.NO_CONTENT, "Successfully update target");
 	}
 
@@ -79,7 +79,7 @@ public class TargetController {
 	@ResponseStatus(HttpStatus.OK)
 	public ApiResponse deleteTarget(@CurrentUser User user, @PathVariable long tid) {
 		AssertUtils.requireNotNull(tid, () -> new InvalidInputException("Require tid not null!"));
-		AssertUtils.assertNotZero(targetService.delete(tid), () -> new NotFoundException("The target id is invalid! There isn't a target with the request tid at server!"));
+		AssertUtils.requireNotZero(targetService.delete(tid), () -> new NotFoundException("The target id is invalid! There isn't a target with the request tid at server!"));
 		return new ApiResponse(HttpStatus.OK, "Successfully delete target: " + tid);
 	}
 }

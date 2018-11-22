@@ -14,6 +14,8 @@ public class UserUtils {
 	private static final ObjectMapper mapper = new ObjectMapper();
 
 	public static final String username = "i@xlui.me";
+	public static final String testUsername = "example@example.com";
+	public static final String testPassword = "password-for-test";
 
 	public static ApiResponse login(MockMvc mockMvc) throws Exception {
 		User user = new User(username, "pass");

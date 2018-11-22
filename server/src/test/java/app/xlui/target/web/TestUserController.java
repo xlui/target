@@ -4,6 +4,7 @@ import app.xlui.target.entity.ApiResponse;
 import app.xlui.target.entity.User;
 import app.xlui.target.util.UserUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -80,49 +81,57 @@ public class TestUserController {
 
 	@Test
 	public void testLoginEmptyUsername() throws Exception {
-		User user = new User(null, "");
+		User user = new User(null, UserUtils.testPassword);
 		mockMvc.perform(post("/login").contentType(json).content(mapper.writeValueAsString(user)))
 				.andExpect(status().isBadRequest())
-				.andExpect(jsonPath(content).value("Username must be not empty!"));
+				.andExpect(jsonPath(content).value("Username should be valid!(not null, not empty, not blank)"));
 	}
 
 	@Test
 	public void testLoginInvalidUsername() throws Exception {
-		User user = new User("", "");
+		User user = new User("", "password-for-test");
 		mockMvc.perform(post("/login").contentType(json).content(mapper.writeValueAsString(user)))
 				.andExpect(status().isBadRequest())
-				.andExpect(jsonPath(content).value("Username must be not empty!"));
+				.andExpect(jsonPath(content).value("Username should be valid!(not null, not empty, not blank)"));
 	}
 
 	@Test
 	public void testLoginWrongUsername() throws Exception {
-		User user = new User("username-for-test", "password-for-test");
+		User user = new User(UserUtils.testUsername, "password-for-test");
 		mockMvc.perform(post("/login").contentType(json).content(mapper.writeValueAsString(user)))
 				.andExpect(status().isBadRequest())
 				.andExpect(jsonPath(content).value("Username or password is wrong!"));
 	}
 
 	@Test
-	public void testLoginEmptyPassword() throws Exception {
-		User user = new User("username-for-test", null);
+	public void testLoginValidWrongUsername() throws Exception {
+		User user = new User(UserUtils.testUsername, "password-for-test");
 		mockMvc.perform(post("/login").contentType(json).content(mapper.writeValueAsString(user)))
-				.andDo(result -> System.out.println(result.getResponse().getContentAsString()))
 				.andExpect(status().isBadRequest())
-				.andExpect(jsonPath(content).value("Password must be not empty!"));
+				.andExpect(jsonPath(content).value("Username or password is wrong!"));
+	}
+	
+	
+	@Test
+	public void testLoginEmptyPassword() throws Exception {
+		User user = new User(UserUtils.testUsername, null);
+		mockMvc.perform(post("/login").contentType(json).content(mapper.writeValueAsString(user)))
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath(content).value("Password should be valid!(not null, not empty, not blank)"));
 	}
 
 	@Test
 	public void testLoginInvalidPassword() throws Exception {
-		User user = new User("username-for-test", "");
+		User user = new User(UserUtils.testUsername, "");
 		mockMvc.perform(post("/login").contentType(json).content(mapper.writeValueAsString(user)))
 				.andDo(result -> System.out.println(result.getResponse().getContentAsString()))
 				.andExpect(status().isBadRequest())
-				.andExpect(jsonPath(content).value("Password must be not empty!"));
+				.andExpect(jsonPath(content).value("Password should be valid!(not null, not empty, not blank)"));
 	}
 
 	@Test
 	public void testLoginWrongPassword() throws Exception {
-		User user = new User("username-for-test", "password-for-test");
+		User user = new User(UserUtils.testUsername, "password-for-test");
 		mockMvc.perform(post("/login").contentType(json).content(mapper.writeValueAsString(user)))
 				.andDo(result -> System.out.println(result.getResponse().getContentAsString()))
 				.andExpect(status().isBadRequest())
@@ -132,10 +141,8 @@ public class TestUserController {
 	// register
 	@Test
 	public void testRegisterSuccess() throws Exception {
-		User user = new User("t", "t");
-		mockMvc.perform(post("/register")
-				.contentType(json)
-				.content(mapper.writeValueAsString(user)))
+		User user = new User(UserUtils.testUsername, UserUtils.testPassword);
+		mockMvc.perform(post("/register").contentType(json).content(mapper.writeValueAsString(user)))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath(content).value("Successfully register! Welcome!"));
 	}
@@ -143,44 +150,44 @@ public class TestUserController {
 
 	@Test
 	public void testRegisterEmptyUsername() throws Exception {
-		User user = new User(null, "");
+		User user = new User(null, UserUtils.testPassword);
 		mockMvc.perform(post("/register")
 				.contentType(json)
 				.content(mapper.writeValueAsString(user)))
 				.andExpect(status().isBadRequest())
 				.andExpect(content().contentType(json))
-				.andExpect(jsonPath(content).value("Username must be not empty!"));
+				.andExpect(jsonPath(content).value("Username should be valid!(not null, not empty, not blank)"));
 	}
 
 	@Test
 	public void testRegisterInvalidUsername() throws Exception {
-		User user = new User("", "");
+		User user = new User("", UserUtils.testPassword);
 		mockMvc.perform(post("/register")
 				.contentType(json)
 				.content(mapper.writeValueAsString(user)))
 				.andExpect(status().isBadRequest())
 				.andExpect(content().contentType(json))
-				.andExpect(jsonPath(content).value("Username must be not empty!"));
+				.andExpect(jsonPath(content).value("Username should be valid!(not null, not empty, not blank)"));
 	}
 
 	@Test
 	public void testRegisterEmptyPassword() throws Exception {
-		User user = new User("username", null);
+		User user = new User(UserUtils.testUsername, null);
 		mockMvc.perform(post("/register")
 				.contentType(json)
 				.content(mapper.writeValueAsString(user)))
 				.andExpect(status().isBadRequest())
-				.andExpect(jsonPath(content).value("Password must be not empty!"));
+				.andExpect(content().string(Matchers.containsString("Password should be valid!(not null, not empty, not blank)")));
 	}
 
 	@Test
 	public void testRegisterInvalidPassword() throws Exception {
-		User user = new User("username", "");
+		User user = new User(UserUtils.testUsername, "");
 		mockMvc.perform(post("/register")
 				.contentType(json)
 				.content(mapper.writeValueAsString(user)))
 				.andExpect(status().isBadRequest())
-				.andExpect(jsonPath(content).value("Password must be not empty!"));
+				.andExpect(jsonPath(content).value("Password should be valid!(not null, not empty, not blank)"));
 	}
 
 }

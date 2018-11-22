@@ -24,7 +24,7 @@ public class PunchController {
 
 	@RequestMapping(value = "/punch", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ApiResponse punch(@CurrentUser User user, @RequestBody @NotNull Record param) {
-		AssertUtils.assertEquals(user.getUid(), param.getUid(), () -> new InvalidInputException("Try to punch for another user! Forbidden"));
+		AssertUtils.requireEquals(user.getUid(), param.getUid(), () -> new InvalidInputException("Try to punch for another user! Forbidden"));
 		long tid = AssertUtils.requireNotNull(param.getTid(), () -> new InvalidInputException("Missing required argument: tid"));
 		AssertUtils.requireNotNull(param.getPunchDateTime(), () -> new InvalidInputException("Missing required argument: punch date time"));
 		if (punchService.punched(tid)) {

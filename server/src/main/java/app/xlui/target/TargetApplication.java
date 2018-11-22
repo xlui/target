@@ -32,7 +32,9 @@ public class TargetApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		System.out.println("Current time: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm:ss")));
 		System.out.println("Server start!");
+		System.out.println("Initializing target and checkin...");
 		init();
+		System.out.println("Initialize succeed.");
 	}
 
 	@RequestMapping("/token")

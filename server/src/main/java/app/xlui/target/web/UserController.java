@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
@@ -30,9 +31,9 @@ public class UserController {
 	private RabbitService rabbitService;
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public ApiResponse register(@RequestBody @NotNull User param) {
-		String username = AssertUtils.requireValid(param.getUsername(), () -> new InvalidInputException("Username must be not empty!"));
-		String password = AssertUtils.requireValid(param.getPassword(), () -> new InvalidInputException("Password must be not empty!"));
+	public ApiResponse register(@RequestBody @Valid User paramUser) {
+		String username = paramUser.getUsername(), password = paramUser.getPassword();
+		AssertUtils.requireFalse(userService.exist(username), () -> new InvalidInputException("Username has been registered! Please choose another."));
 		User user = new User(username, password);
 		if (userService.register(user)) {
 			return new ApiResponse(HttpStatus.CREATED, "Successfully register! Welcome!");
@@ -42,9 +43,8 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public ApiResponse login(@RequestBody @NotNull User param) {
-		String username = AssertUtils.requireValid(param.getUsername(), () -> new InvalidInputException("Username must be not empty!"));
-		String password = AssertUtils.requireValid(param.getPassword(), () -> new InvalidInputException("Password must be not empty!"));
+	public ApiResponse login(@RequestBody @Valid User paramUser) {
+		String username = paramUser.getUsername(), password = paramUser.getPassword();
 		if (userService.login(username, password)) {
 			return new ApiResponse(HttpStatus.OK, JwtUtils.generate(username, password));
 		} else {
@@ -53,18 +53,17 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/change", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ApiResponse change(@RequestBody @NotNull User paramUser, @CurrentUser User user) {
-		String paramUsername = AssertUtils.requireValid(paramUser.getUsername(), () -> new InvalidInputException("Username is invalid!"));
-		String paramPassword = AssertUtils.requireValid(paramUser.getPassword(), () -> new InvalidInputException("Password is invalid!"));
-		AssertUtils.assertEquals(paramUsername, user.getUsername(), () -> new InvalidInputException("Username mismatch with token! Please don't try to modify another user's password"));
-		userService.updatePassword(paramUsername, paramPassword);
+	public ApiResponse change(@RequestBody @Valid User paramUser, @CurrentUser User user) {
+		String username = paramUser.getUsername(), password = paramUser.getPassword();
+		AssertUtils.requireEquals(username, user.getUsername(), () -> new InvalidInputException("Username mismatch with token! Please don't try to modify another user's password"));
+		userService.updatePassword(username, password);
 		return new ApiResponse(HttpStatus.OK, "Successfully update user's password");
 	}
 
 	@RequestMapping(value = "/reset", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ApiResponse reset(@RequestBody @NotNull User paramUser, @RequestParam(value = "token", required = false) String paramToken) {
 		String username = AssertUtils.requireValid(paramUser.getUsername(), () -> new InvalidInputException("Username is invalid!"));
-		AssertUtils.requireNotNull(userService.findByUsername(username), () -> new InvalidInputException("Username is invalid! This user have not register!"));
+		AssertUtils.requireTrue(userService.exist(username), () -> new InvalidInputException("The account you try to reset doesn't exist!"));
 		if (paramToken == null) {
 			String token = UUID.randomUUID().toString();
 			String current = Constant.currentTime();
@@ -74,7 +73,7 @@ public class UserController {
 		} else {
 			// verify token
 			String originUsername = AssertUtils.requireNotNull(redisService.get(paramToken), () -> new InvalidInputException("Token is invalid or expired!"));
-			AssertUtils.assertEquals(originUsername, username, () -> new InvalidInputException("Username mismatch! Please don't modify the password reset url!"));
+			AssertUtils.requireEquals(originUsername, username, () -> new InvalidInputException("Username mismatch! Please don't modify the password reset url!"));
 			String newPassword = AssertUtils.requireNotNull(paramUser.getPassword(), () -> new InvalidInputException("New password must not be null!"));
 			// update password
 			userService.updatePassword(username, newPassword);

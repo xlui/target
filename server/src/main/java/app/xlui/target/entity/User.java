@@ -2,6 +2,8 @@ package app.xlui.target.entity;
 
 import app.xlui.target.entity.enums.Gender;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -13,7 +15,10 @@ public class User implements Serializable {
 	private String nickname;		// 昵称
 	private Gender gender;			// 性别
 	private LocalDate birthday;		// 生日
+	@NotBlank(message = "Username should be valid!(not null, not empty, not blank)")
+	@Email(message = "Username should to be some email like example@example.com.")
 	private String username;		// 用户名
+	@NotBlank(message = "Password should be valid!(not null, not empty, not blank)")
 	private String password;		// 密码
 //	private String salt;			// 密码的盐
 
