@@ -19,6 +19,10 @@ public class RedisService {
 		stringRedisTemplate.opsForValue().set(key, value, timeout);
 	}
 
+	public String get(String key) {
+		return stringRedisTemplate.opsForValue().get(key);
+	}
+
 	public Boolean delete(String key) {
 		return stringRedisTemplate.delete(key);
 	}

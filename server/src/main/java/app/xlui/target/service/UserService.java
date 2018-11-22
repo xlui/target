@@ -28,12 +28,16 @@ public class UserService {
 		return AssertUtils.requireNotNull(user, () -> new NullInputException("The username have not been registered!"));
 	}
 
-	public int save(User user) {
-		return userMapper.save(user);
-	}
-
 	public List<Long> findUIDs() {
 		return userMapper.findUIDs();
+	}
+
+	public int updatePassword(String username, String newPassword) {
+		return userMapper.updatePassword(username, newPassword);
+	}
+
+	public int save(User user) {
+		return userMapper.save(user);
 	}
 
 	public boolean register(User user) {

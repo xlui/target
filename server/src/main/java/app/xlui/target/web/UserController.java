@@ -62,9 +62,12 @@ public class UserController {
 			rabbitService.sendEmail(new Mail(username, token, current));
 			return new ApiResponse(HttpStatus.OK, "Successfully send password reset Email.");
 		} else {
-			AssertUtils.requireNotNull(paramUser.getPassword(), () -> new InvalidInputException("New password must not be null!"));
-			// todo: verify token
-			// todo: update username
+			// verify token
+			String originUsername = AssertUtils.requireNotNull(redisService.get(paramToken), () -> new InvalidInputException("Token is invalid or expired!"));
+			AssertUtils.assertEquals(originUsername, username, () -> new InvalidInputException("Username mismatch! Please don't modify the password reset url!"));
+			String newPassword = AssertUtils.requireNotNull(paramUser.getPassword(), () -> new InvalidInputException("New password must not be null!"));
+			// update password
+			userService.updatePassword(username, newPassword);
 			return new ApiResponse(HttpStatus.CREATED, "Successfully update password!");
 		}
 	}
