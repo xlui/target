@@ -7,7 +7,7 @@ before_install:
     - docker pull rabbitmq:3-management
     - docker pull mysql:8
     - docker run --name rabbitmq -p 5672:5672 -p 15672:15672 -e RABBITMQ_DEFAULT_USER=user -e RABBITMQ_DEFAULT_PASS=user -d rabbitmq:3-management
-    - docker run --name mysql -p 3306:3306 -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -e TZ=Asia/Shanghai -v $PWD/server/src/main/resources/data.sql:/data/data.sql:ro -d mysql:8
+    - docker run --name mysql -p 3307:3306 -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -e TZ=Asia/Shanghai -v $PWD/server/src/main/resources/data.sql:/data/data.sql:ro -d mysql:8
     - sleep 10
     - docker ps
     - docker exec mysql mysql -e 'source /data/data.sql'
@@ -15,4 +15,4 @@ install:
     - cd server
     - mvn install -DskipTests -Dmaven.javadoc.skip
 script: 
-    - mvn test -Dspring.profiles.active=test
+    - mvn test -Dspring.profiles.active=test -Dspring.datasource.url='jdbc:mysql://localhost:3307/target?serverTimezone=Asia/Shanghai'
