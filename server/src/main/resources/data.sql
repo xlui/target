@@ -50,3 +50,4 @@ CREATE TABLE `t_record` (
 
 # init
 INSERT INTO t_user (nickname, gender, username, password) VALUES ('xlui', 1, 'i@xlui.me', 'pass');
+INSERT INTO t_target(uid, title, description) VALUES (1, 'Moab Is My Washpot', 'Accusamus excepturi quo rem cupiditate qui qui.');
