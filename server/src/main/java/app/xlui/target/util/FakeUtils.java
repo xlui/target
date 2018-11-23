@@ -10,6 +10,8 @@ import com.github.javafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -72,13 +74,11 @@ public class FakeUtils {
 			Target target = targetService.findByTid(tid);
 			LocalDateTime fakeDateTime = null;
 			do {
-				fakeDateTime = faker.date().future(10, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-				System.out.println("tid: " + tid);
-				System.out.println("Target check in start time: " + target.getCheckinStart());
-				System.out.println("Target check in end time: " + target.getCheckinEnd());
-				System.out.println("Fake datetime: " + fakeDateTime);
-				System.out.println("Target checked in? " + checkinService.checkedSomeday(tid, fakeDateTime.toLocalDate()));
-				System.out.println("Fake time is valid time? " + targetService.isValidTime(tid, fakeDateTime.toLocalTime()));
+				java.util.Date fakeDate = faker.date().between(Date.valueOf(target.getStartDate()), Date.valueOf(target.getEndDate()));
+				java.util.Date fakeTime = faker.date().between(Time.valueOf(target.getCheckinStart()), Time.valueOf(target.getCheckinEnd()));
+				LocalDate date = LocalDate.ofInstant(fakeDate.toInstant(), ZoneId.systemDefault());
+				LocalTime time = LocalTime.ofInstant(fakeTime.toInstant(), ZoneId.systemDefault());
+				fakeDateTime = LocalDateTime.of(date, time);
 			} while (checkinService.checkedSomeday(tid, fakeDateTime.toLocalDate()) || !targetService.isValidTime(tid, fakeDateTime.toLocalTime()));
 			checkinService.checkin(target.getUid(), tid, fakeDateTime);
 		}
