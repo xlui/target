@@ -1,6 +1,5 @@
 package app.xlui.target.util;
 
-import app.xlui.target.entity.Record;
 import app.xlui.target.entity.Target;
 import app.xlui.target.entity.User;
 import app.xlui.target.entity.enums.Gender;
@@ -74,13 +73,8 @@ public class FakeUtils {
 			LocalDateTime fakeDateTime = null;
 			do {
 				fakeDateTime = faker.date().future(10, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-			} while (checkinService.checkedSomeday(tid, fakeDateTime.toLocalDate()));
-			Record record = new Record()
-					.setUid(target.getUid())
-					.setTid(tid)
-					.setCheckinDateTime(fakeDateTime)
-					.setReCheckIn(false);
-			checkinService.checkin(record);
+			} while (checkinService.checkedSomeday(tid, fakeDateTime.toLocalDate()) || !targetService.isValidTime(tid, fakeDateTime.toLocalTime()));
+			checkinService.checkin(target.getUid(), tid, fakeDateTime);
 		}
 	}
 }

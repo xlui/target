@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -48,5 +49,9 @@ public class TargetService {
 
 	public boolean exist(long tid) {
 		return findByTid(tid) != null;
+	}
+
+	public boolean isValidTime(long tid, LocalTime time) {
+		return targetMapper.isValidTime(tid, time) == 1;
 	}
 }

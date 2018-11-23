@@ -1,11 +1,14 @@
 package app.xlui.target.service;
 
 import app.xlui.target.entity.Record;
+import app.xlui.target.exception.specify.InvalidInputException;
 import app.xlui.target.mapper.RecordMapper;
+import app.xlui.target.util.AssertUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -13,6 +16,8 @@ import java.util.List;
 public class CheckinService {
 	@Autowired
 	private RecordMapper recordMapper;
+	@Autowired
+	private TargetService targetService;
 
 	public List<Record> recordOfThisMonth(long tid) {
 		return recordMapper.findRecordThisMonth(tid);
@@ -34,10 +39,16 @@ public class CheckinService {
 		return recordOfSomeday(tid, localDate) != null;
 	}
 
-	public int checkin(Record record) {
-		// todo: validate checkin day
-		// todo: validate checkin time
-		return recordMapper.save(record);
+	public int checkin(long uid, long tid, LocalDateTime datetime) {
+		AssertUtils.requireFalse(
+				checkedSomeday(tid, datetime.toLocalDate()),
+				() -> new InvalidInputException("You have checked in today!")
+		);
+		AssertUtils.requireTrue(
+				targetService.isValidTime(tid, datetime.toLocalTime()),
+				() -> new InvalidInputException("Oops! You have missed the last time to checkin today!")
+		);
+		return recordMapper.save(uid, tid, datetime);
 	}
 
 	public boolean checkinedToday(long tid) {

@@ -1,9 +1,9 @@
 package app.xlui.target.web;
 
 import app.xlui.target.annotation.CurrentUser;
-import app.xlui.target.entity.common.ApiResponse;
 import app.xlui.target.entity.Record;
 import app.xlui.target.entity.User;
+import app.xlui.target.entity.common.ApiResponse;
 import app.xlui.target.exception.specify.ForbiddenException;
 import app.xlui.target.exception.specify.NotFoundException;
 import app.xlui.target.service.CheckinService;
@@ -36,11 +36,7 @@ public class CheckInController {
 		if (checkinService.checkinedToday(tid)) {
 			return new ApiResponse(HttpStatus.NO_CONTENT, "You have checkined today!");
 		} else {
-			Record record = new Record()
-					.setUid(param.getUid())
-					.setTid(tid)
-					.setCheckinDateTime(param.getCheckinDateTime());
-			checkinService.checkin(record);
+			checkinService.checkin(param.getUid(), tid, param.getCheckinDateTime());
 			return new ApiResponse(HttpStatus.OK, "Successfully checkined!");
 		}
 	}

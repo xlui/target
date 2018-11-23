@@ -4,6 +4,7 @@ import app.xlui.target.entity.Target;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalTime;
 import java.util.List;
 
 @Mapper
@@ -35,4 +36,7 @@ public interface TargetMapper {
 
 	@Delete("TRUNCATE TABLE t_target")
 	void clear();
+
+	@Select("SELECT IF(COUNT(*), 1, 0) FROM t_target WHERE tid = #{tid} AND #{time} BETWEEN checkinStart AND checkinEnd")
+	int isValidTime(@Param("tid") long tid, @Param("time")LocalTime time);
 }

@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Mapper
@@ -23,7 +24,7 @@ public interface RecordMapper {
 	int coundRecordToday(@Param("tid") long tid);
 
 	@Insert("INSERT INTO t_record(uid, tid, checkinDateTime) VALUES(#{uid}, #{tid}, #{checkinDateTime})")
-	int save(Record record);
+	int save(@Param("uid") long uid, @Param("tid") long tid, @Param("checkinDateTime") LocalDateTime datetime);
 
 	@Delete("DELETE FROM t_record WHERE tid = #{tid}")
 	void clear(@Param("tid") long tid);
