@@ -54,6 +54,10 @@ input[type=date] {
   text-align: center
 }
 
+.statement {
+  font-size: 20px;
+}
+
 .main {
   height: 100%;
   width: 100%;

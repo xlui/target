@@ -1,15 +1,15 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Layout from '@/components/layout'
+import CheckIn from '@/components/checkin'
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Layout',
-      component: Layout
+      name: 'CheckIn',
+      component: CheckIn
     }
   ]
 })

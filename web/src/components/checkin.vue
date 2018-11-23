@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="login">
-      <a href="#" class="btn btn-primary" v-if="!login" @click="postLogin">登录</a>
+      <button class="btn btn-primary" v-if="!login" @click="postLogin">登录</button>
       <template v-else>
-        Hello, {{ username }}
-        <a href="#" class="btn btn-primary" @click="logout">注销</a>
+        <span class="statement">Hello, {{ username }}</span>
+        <button class="btn btn-primary">目标管理</button>
+        <button class="btn btn-primary" @click="logout">注销</button>
       </template>
-      <!--<a href="#" data-toggle="modal" data-target="#myModal">测试</a>-->
     </div>
     <h1 class="title">Your targets</h1>
 
@@ -83,7 +83,7 @@
 
 <script>
   import {apiLogin, fetchTargets, fetchTarget} from '../api/api';
-  import item from './item'
+  import item from './checkInItem'
 
   export default {
     data() {
