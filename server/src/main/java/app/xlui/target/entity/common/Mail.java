@@ -3,7 +3,7 @@ package app.xlui.target.entity.common;
 import java.io.Serializable;
 
 public class Mail implements Serializable {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -6953925136327766280L;
 
 	private String receiver;
 	private String token;

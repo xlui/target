@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 public class Record implements Serializable {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 4360591147896856267L;
 
 	private long rid;
 	private long uid;

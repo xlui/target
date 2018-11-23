@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Target implements Serializable {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 3986690845367985790L;
 
 	private long tid;				// target id
 	@Positive(message = "uid must be valid positive numbers!")

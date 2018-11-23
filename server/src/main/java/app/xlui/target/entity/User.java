@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 public class User implements Serializable {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -7393308506048597682L;
 
 	private long uid;				// user id
 //	private String avatar;			// 头像
