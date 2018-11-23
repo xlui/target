@@ -46,7 +46,9 @@ public class TargetApplication implements CommandLineRunner {
 
 	@RequestMapping("/t/init")
 	public String init() {
+		System.out.println("Initializing target....");
 		FakeUtils.fakeTarget(10);
+		System.out.println("Initializing record....");
 		FakeUtils.fakeRecord(20);
 		return "init succeed!";
 	}
