@@ -79,7 +79,13 @@ public class FakeUtils {
 				LocalDate date = LocalDate.ofInstant(fakeDate.toInstant(), ZoneId.systemDefault());
 				LocalTime time = LocalTime.ofInstant(fakeTime.toInstant(), ZoneId.systemDefault());
 				fakeDateTime = LocalDateTime.of(date, time);
-			} while (checkinService.checkedSomeday(tid, fakeDateTime.toLocalDate()));
+				System.out.println("tid: " + tid);
+				System.out.println("Target check in start time: " + target.getCheckinStart());
+				System.out.println("Target check in end time: " + target.getCheckinEnd());
+				System.out.println("Fake datetime: " + fakeDateTime);
+				System.out.println("Target checked in? " + checkinService.checkedSomeday(tid, fakeDateTime.toLocalDate()));
+				System.out.println("Fake time is valid time? " + targetService.isValidTime(tid, fakeDateTime.toLocalTime()));
+			} while (checkinService.checkedSomeday(tid, fakeDateTime.toLocalDate()) || !targetService.isValidTime(tid, fakeDateTime.toLocalTime()));
 			checkinService.checkin(target.getUid(), tid, fakeDateTime);
 		}
 	}
