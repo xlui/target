@@ -10,6 +10,8 @@ import com.github.javafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -57,7 +59,7 @@ public class FakeUtils {
 					.setDescription(faker.lorem().sentence())
 					.setStartDate(faker.date().past(20, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
 					.setEndDate(faker.date().future(20, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
-					.setCheckinStart(LocalTime.of(faker.random().nextInt(0, 12), faker.random().nextInt(60)))
+					.setCheckinStart(LocalTime.of(faker.random().nextInt(0, 11), faker.random().nextInt(60)))
 					.setCheckinEnd(LocalTime.of(faker.random().nextInt(12, 23), faker.random().nextInt(60)))
 					.setRepeat(faker.random().nextInt(0, 127).byteValue());
 			targetService.save(target);
@@ -72,7 +74,11 @@ public class FakeUtils {
 			Target target = targetService.findByTid(tid);
 			LocalDateTime fakeDateTime = null;
 			do {
-				fakeDateTime = faker.date().future(10, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+				java.util.Date fakeDate = faker.date().between(Date.valueOf(target.getStartDate()), Date.valueOf(target.getEndDate()));
+				java.util.Date fakeTime = faker.date().between(Time.valueOf(target.getCheckinStart()), Time.valueOf(target.getCheckinEnd()));
+				LocalDate date = LocalDate.ofInstant(fakeDate.toInstant(), ZoneId.systemDefault());
+				LocalTime time = LocalTime.ofInstant(fakeTime.toInstant(), ZoneId.systemDefault());
+				fakeDateTime = LocalDateTime.of(date, time);
 			} while (checkinService.checkedSomeday(tid, fakeDateTime.toLocalDate()) || !targetService.isValidTime(tid, fakeDateTime.toLocalTime()));
 			checkinService.checkin(target.getUid(), tid, fakeDateTime);
 		}
