@@ -74,6 +74,8 @@ public class FakeUtils {
 			do {
 				fakeDateTime = faker.date().future(10, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 				System.out.println("tid: " + tid);
+				System.out.println("Target check in start time: " + target.getCheckinStart());
+				System.out.println("Target check in end time: " + target.getCheckinEnd());
 				System.out.println("Fake datetime: " + fakeDateTime);
 				System.out.println("Target checked in? " + checkinService.checkedSomeday(tid, fakeDateTime.toLocalDate()));
 				System.out.println("Fake time is valid time? " + targetService.isValidTime(tid, fakeDateTime.toLocalTime()));
