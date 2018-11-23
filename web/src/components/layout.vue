@@ -52,12 +52,12 @@
                       <input type="text" id="endDate" class="form-control" :value="newTarget.endDate"/>
                     </div>
                     <div class="form-group">
-                      <label for="punchStart">Punch start:</label>
-                      <input type="text" id="punchStart" class="form-control" :value="newTarget.punchStart"/>
+                      <label for="checkinStart">Check in start:</label>
+                      <input type="text" id="checkinStart" class="form-control" :value="newTarget.checkinStart"/>
                     </div>
                     <div class="form-group">
-                      <label for="punchEnd">Punch end:</label>
-                      <input type="text" id="punchEnd" class="form-control" :value="newTarget.punchEnd"/>
+                      <label for="checkinEnd">Check in end:</label>
+                      <input type="text" id="checkinEnd" class="form-control" :value="newTarget.checkinEnd"/>
                     </div>
                     <div class="form-group">
                       <label for="repeat">Repeat:</label>
@@ -88,7 +88,7 @@
   export default {
     data() {
       return {
-        username: 'xlui',
+        username: 'i@xlui.me',
         password: 'pass',
         login: false,
         targets: [],

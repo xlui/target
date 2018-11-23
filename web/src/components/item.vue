@@ -44,12 +44,12 @@
                 <input id="endDate" class="form-control" type="text" :value="target.endDate"/>
               </div>
               <div class="form-group">
-                <label for="punchStart" class="control-label">Punch start:</label>
-                <input id="punchStart" class="form-control" type="text" :value="target.punchStart"/>
+                <label for="checkinStart">Check in start:</label>
+                <input id="checkinStart" class="form-control" type="text" :value="target.checkinStart"/>
               </div>
               <div class="form-group">
-                <label for="punchEnd">Punch end:</label>
-                <input id="punchEnd" class="form-control" type="text" :value="target.punchEnd"/>
+                <label for="checkinEnd">Check in end:</label>
+                <input id="checkinEnd" class="form-control" type="text" :value="target.checkinEnd"/>
               </div>
             </form>
           </div>
