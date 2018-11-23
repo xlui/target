@@ -3,12 +3,16 @@ import axios from 'axios';
 const host = 'http://127.0.0.1:8080';
 const loginUrl = host + '/login';
 const targetUrl = host + '/target';
+const checkinUrl = host + '/target/tid/checkin';
 
-export const fetchTarget = params => {
-  return axios.get(targetUrl + '/' + params, {
+export const apiLogin = params => {
+  return axios({
+    method: 'post',
+    url: loginUrl,
     headers: {
-      Authorization: localStorage.token
-    }
+      'Content-Type': 'application/json'
+    },
+    data: JSON.stringify(params)
   });
 };
 
@@ -21,14 +25,20 @@ export const fetchTargets = params => {
   });
 };
 
-export const apiLogin = params => {
-  return axios({
-    method: 'post',
-    url: loginUrl,
+export const fetchTarget = params => {
+  return axios.get(targetUrl + '/' + params, {
     headers: {
+      Authorization: localStorage.token
+    }
+  });
+};
+
+export const tryCheckIn = (tid, params) => {
+  return axios.post(checkinUrl.replace('tid', tid), JSON.stringify(params), {
+    headers: {
+      Authorization: localStorage.token,
       'Content-Type': 'application/json'
-    },
-    data: JSON.stringify(params)
+    }
   });
 };
 

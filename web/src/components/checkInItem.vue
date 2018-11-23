@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a href="#" data-toggle="modal" :data-target="'#' + target.tid">
+    <a href="#" @click="checkin">
       <div class="target">
         <div class="desc">{{ target.description }}</div>
       </div>
@@ -30,12 +30,29 @@
 </template>
 
 <script>
+  import {tryCheckIn} from "../api/api";
+
   export default {
     props: {
       target: {
         type: Object
       }
     },
-    methods: {}
+    methods: {
+      checkin() {
+        tryCheckIn(this.target.tid, {
+          uid: this.target.uid,
+          tid: this.target.tid,
+          checkinDateTime: '2018-11-23T17:38:54.293996'
+        }).then(res => {
+          if (res.data.status === 'OK') {
+            console.log(res.data);
+            $('#' + this.target.tid).modal();
+          } else {
+            alert(JSON.stringify(res.data))
+          }
+        })
+      }
+    }
   }
 </script>
