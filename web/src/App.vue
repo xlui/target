@@ -1,9 +1,5 @@
 <template>
   <div id="app">
-    <button @click="showModal = true">Show Modal</button>
-    <modal v-if="showModal" @close="showModal = false">
-      <h3 slot="header">Custom Header</h3>
-    </modal>
     <router-view/>
   </div>
 </template>
@@ -11,18 +7,8 @@
 <script>
   import './common/js/jquery.min';
   import './common/js/bootstrap.min';
-  import modal from './components/modal';
 
-  export default {
-    data() {
-      return {
-        showModal: false
-      }
-    },
-    components: {
-      modal
-    }
-  };
+  export default {};
 </script>
 
 <style>
