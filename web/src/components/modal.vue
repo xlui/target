@@ -3,6 +3,9 @@
     <div class="c-modal-mask">
       <div class="c-modal-wrapper">
         <div class="c-modal-container">
+          <button type="button" class="c-close" @click="$emit('close')">
+            &times;
+          </button>
           <div class="c-modal-header">
             <slot name="header">
               default header

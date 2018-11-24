@@ -25,62 +25,8 @@
 </template>
 
 <script>
-  import {apiLogin, fetchTargets, fetchTarget} from '../api/api';
-  import item from './checkInItem'
-
-  export default {
-    data() {
-      return {
-        username: 'i@xlui.me',
-        password: 'pass',
-        login: false,
-        targets: [],
-        newTarget: Object
-      }
-    },
-    name: 'App',
-    methods: {
-      postLogin() {
-        apiLogin({
-          username: this.username,
-          password: this.password
-        }).then(res => {
-          if (res.data.status === 'OK') {
-            console.log('Successfully login using default user information.');
-            localStorage.token = res.data.content;
-            this.login = true;
-            this.getTargets()
-          }
-        })
-      },
-      logout() {
-        localStorage.token = "";
-        this.login = false;
-        location.href = "/"
-      },
-      getTargets() {
-        fetchTargets({}).then(res => {
-          if (res.data.status === 'OK') {
-            this.targets = res.data.content;
-            console.log('Total targets: ' + res.data.content.length)
-          }
-        })
-      },
-      getTarget(tid) {
-        fetchTarget(tid).then(res => {
-          alert(JSON.stringify(res.data))
-        })
-      },
-      addTarget(target) {
-        // pass
-      }
-    },
-    components: {
-      item
-    }
-  }
+  export default {}
 </script>
 
 <style>
-  @import "../common/style/layout.css";
 </style>

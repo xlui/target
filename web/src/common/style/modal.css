@@ -28,6 +28,34 @@
   font-size: 1em;
 }
 
+.c-close {
+  float: right;
+  margin-top: -2px;
+  line-height: 1;
+  color: #000;
+  font-size: 21px;
+  font-weight: 700;
+  text-shadow: 0 1px 0 #fff;
+  filter: alpha(opacity=20);
+  opacity: .2
+}
+
+.c-close:focus, .c-close:hover {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+  filter: alpha(opacity=50);
+  opacity: .5
+}
+
+button.c-close {
+  -webkit-appearance: none;
+  padding: 0;
+  cursor: pointer;
+  background: 0 0;
+  border: 0
+}
+
 .c-modal-header {
   margin: 0;
   line-height: 1.42857143;

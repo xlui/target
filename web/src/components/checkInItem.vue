@@ -6,32 +6,16 @@
         <div class="desc">{{ target.description }}</div>
       </div>
     </a>
-    <div class="modal fade" :id="target.tid" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-         aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-body">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-              &times;
-            </button>
-          </div>
-          <div class="modal-title">
-            <h1>{{ target.title }}</h1>
-          </div>
-          <div class="modal-body">
-            <span class="statement">{{ this.prompt }}</span>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <modal v-if="showModal" @close="showModal = false">
+      <h2 slot="header">{{ target.title }}</h2>
+      <span class="statement" slot="body">{{ this.prompt }}</span>
+    </modal>
   </div>
 </template>
 
 <script>
   import {submitCheckIn, fetchCheckIn} from "../api/api";
+  import modal from './modal';
 
   export default {
     props: {
@@ -49,14 +33,14 @@
         }).then(res => {
           if (res.status === 200) {
             this.prompt = res.data.content;
-            $('#' + this.target.tid).modal();
+            this.showModal = true;
             this.bgColor = '#ffd633';
           }
         }).catch(error => {
           if (error.response) {
             console.log('Error response: ' + error.response);
             this.prompt = error.response.data.content;
-            $('#' + this.target.tid).modal();
+            this.showModal = true;
           } else if (error.request) {
             console.log('Error request: ' + error.request);
           } else {
@@ -66,8 +50,12 @@
         })
       }
     },
+    components: {
+      modal
+    },
     data() {
       return {
+        showModal: false,
         tzOffset: new Date().getTimezoneOffset() * 60000,
         prompt: '',
         bgColor: '#fff'
