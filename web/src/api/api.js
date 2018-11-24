@@ -33,11 +33,23 @@ export const fetchTarget = params => {
   });
 };
 
-export const tryCheckIn = (tid, params) => {
-  return axios.post(checkinUrl.replace('tid', tid), JSON.stringify(params), {
+export const submitTarget = param => {
+  return axios({
+    method: 'post',
+    url: targetUrl,
     headers: {
       Authorization: localStorage.token,
       'Content-Type': 'application/json'
+    },
+    data: JSON.stringify(param)
+  });
+};
+
+export const submitCheckIn = (tid, params) => {
+  return axios.post(checkinUrl.replace('tid', tid), JSON.stringify(params), {
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8',
+      Authorization: localStorage.token
     }
   });
 };

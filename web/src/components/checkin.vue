@@ -37,37 +37,37 @@
                   <form role="form" class="form-inline">
                     <div class="form-group">
                       <label for="title">Title:</label>
-                      <input type="text" id="title" class="form-control" :value="newTarget.title"/>
+                      <input type="text" id="title" class="form-control" v-model="newTarget.title"/>
                     </div>
                     <div class="form-group">
                       <label for="description">Description:</label>
-                      <input type="text" id="description" class="form-control" :value="newTarget.description"/>
+                      <input type="text" id="description" class="form-control" v-model="newTarget.description"/>
                     </div>
                     <div class="form-group">
                       <label for="startDate">Start date:</label>
-                      <input type="text" id="startDate" class="form-control" :value="newTarget.startDate"/>
+                      <input type="text" id="startDate" class="form-control" v-model="newTarget.startDate"/>
                     </div>
                     <div class="form-group">
                       <label for="endDate">End date:</label>
-                      <input type="text" id="endDate" class="form-control" :value="newTarget.endDate"/>
+                      <input type="text" id="endDate" class="form-control" v-model="newTarget.endDate"/>
                     </div>
                     <div class="form-group">
                       <label for="checkinStart">Check in start:</label>
-                      <input type="text" id="checkinStart" class="form-control" :value="newTarget.checkinStart"/>
+                      <input type="text" id="checkinStart" class="form-control" v-model="newTarget.checkinStart"/>
                     </div>
                     <div class="form-group">
                       <label for="checkinEnd">Check in end:</label>
-                      <input type="text" id="checkinEnd" class="form-control" :value="newTarget.checkinEnd"/>
+                      <input type="text" id="checkinEnd" class="form-control" v-model="newTarget.checkinEnd"/>
                     </div>
                     <div class="form-group">
                       <label for="repeat">Repeat:</label>
-                      <input type="text" id="repeat" class="form-control" :value="newTarget.repeat"/>
+                      <input type="text" id="repeat" class="form-control" v-model="newTarget.repeat"/>
                     </div>
                   </form>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                  <button type="button" class="btn btn-primary" @click="addTarget(newTarget)">提交</button>
+                  <button type="button" class="btn btn-primary" @click="addTarget">提交</button>
                 </div>
               </div>
             </div>
@@ -82,7 +82,7 @@
 </template>
 
 <script>
-  import {apiLogin, fetchTargets, fetchTarget} from '../api/api';
+  import {apiLogin, fetchTargets, fetchTarget, submitTarget} from '../api/api';
   import item from './checkInItem'
 
   export default {
@@ -128,8 +128,19 @@
           alert(JSON.stringify(res.data))
         })
       },
-      addTarget(target) {
-        // pass
+      addTarget() {
+        console.log('call submit target');
+        console.log('param: ' + JSON.stringify(this.newTarget));
+        submitTarget({
+          uid: 1,
+          title: 'Test target',
+          description: 'This is a simple test target'
+        }).then(res => {
+          alert(res.data.content);
+          console.log(JSON.stringify(res))
+        }).catch(error => {
+          console.log(error)
+        })
       }
     },
     components: {

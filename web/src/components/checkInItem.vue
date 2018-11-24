@@ -31,7 +31,7 @@
 </template>
 
 <script>
-  import {tryCheckIn, fetchCheckIn} from "../api/api";
+  import {submitCheckIn, fetchCheckIn} from "../api/api";
 
   export default {
     props: {
@@ -41,7 +41,7 @@
     },
     methods: {
       checkin() {
-        tryCheckIn(this.target.tid, {
+        submitCheckIn(this.target.tid, {
           uid: this.target.uid,
           tid: this.target.tid,
           checkinDateTime: new Date(Date.now() - this.tzOffset).toISOString()
