@@ -42,6 +42,14 @@ export const tryCheckIn = (tid, params) => {
   });
 };
 
+export const fetchCheckIn = (tid, time) => {
+  return axios.get(checkinUrl.replace('tid', tid) + '/' + time, {
+    headers: {
+      Authorization: localStorage.token
+    }
+  });
+};
+
 axios.interceptors.request.use(config => {
   return config
 }, error => {

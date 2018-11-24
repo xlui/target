@@ -1,7 +1,7 @@
 <template>
   <div>
     <a href="#" @click="checkin" :id="'target' + target.tid">
-      <div class="target">
+      <div class="target" :style="{background: bgColor}">
         <div class="title">{{ target.title }}</div>
         <div class="desc">{{ target.description }}</div>
       </div>
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-  import {tryCheckIn} from "../api/api";
+  import {tryCheckIn, fetchCheckIn} from "../api/api";
 
   export default {
     props: {
@@ -50,8 +50,7 @@
           if (res.status === 200) {
             this.prompt = res.data.content;
             $('#' + this.target.tid).modal();
-            console.log('start setting color');
-            $('#target' + this.target.tid + ' > div').css('background', '#ffd633');
+            this.bgColor = '#ffd633';
           }
         }).catch(error => {
           if (error.response) {
@@ -70,8 +69,26 @@
     data() {
       return {
         tzOffset: new Date().getTimezoneOffset() * 60000,
-        prompt: ''
+        prompt: '',
+        bgColor: '#fff'
       }
+    },
+    created() {
+      var today = new Date(Date.now() - this.tzOffset).toISOString().split('T')[0];
+      fetchCheckIn(this.target.tid, today)
+        .then(res => {
+          if (res.status === 200) {
+            console.log('tid ' + this.target.tid + ' has checked in today');
+            console.log(res.data.content);
+            this.bgColor = '#ffd633';
+          }
+        })
+        .catch(error => {
+          console.log('Catch error while fetching checkin status for today');
+          // console.log(JSON.stringify(error));
+          console.log(error.response.data.content);
+          this.bgColor = '#fff';
+        })
     }
   }
 </script>
