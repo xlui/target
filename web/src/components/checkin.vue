@@ -1,68 +1,67 @@
 <template>
-  <div>
+  <div class="main">
+    <h1 class="main-title">Your targets</h1>
+
     <div class="login">
       <button class="btn btn-primary" v-if="!login" @click="postLogin">登录</button>
       <template v-else>
         <span class="statement">Hello, {{ username }}</span>
-        <button class="btn btn-primary">目标管理</button>
-        <button class="btn btn-primary" @click="logout">注销</button>
+        <button class="item btn btn-primary">目标管理</button>
+        <button class="item btn btn-primary" @click="logout">注销</button>
       </template>
     </div>
-    <h1 class="main-title">Your targets</h1>
 
-    <div class="main">
-      <div class="box">
-        <div v-if="login">
-          <template v-for="target in targets">
-            <item :target="target"></item>
-          </template>
-          <a href="#" @click="showModal = true">
-            <div class="target">
-              <div class="title">New</div>
-              <div class="desc">新增一个目标</div>
+    <div class="box">
+      <div v-if="login">
+        <template v-for="target in targets">
+          <item :target="target"></item>
+        </template>
+        <a href="#" @click="showModal = true">
+          <div class="target">
+            <div class="title">New</div>
+            <div class="desc">新增一个目标</div>
+          </div>
+        </a>
+        <modal v-if="showModal" @close="showModal = false">
+          <h2 slot="header">新增一个目标</h2>
+          <form role="form" class="form-inline" slot="body">
+            <div class="form-group">
+              <label for="title">Title:</label>
+              <input type="text" id="title" class="form-control" v-model="newTarget.title"/>
             </div>
-          </a>
-          <modal v-if="showModal" @close="showModal = false">
-            <h2 slot="header">新增一个目标</h2>
-            <form role="form" class="form-inline" slot="body">
-              <div class="form-group">
-                <label for="title">Title:</label>
-                <input type="text" id="title" class="form-control" v-model="newTarget.title"/>
-              </div>
-              <div class="form-group">
-                <label for="description">Description:</label>
-                <input type="text" id="description" class="form-control" v-model="newTarget.description"/>
-              </div>
-              <div class="form-group">
-                <label for="startDate">Start date:</label>
-                <input type="text" id="startDate" class="form-control" v-model="newTarget.startDate"/>
-              </div>
-              <div class="form-group">
-                <label for="endDate">End date:</label>
-                <input type="text" id="endDate" class="form-control" v-model="newTarget.endDate"/>
-              </div>
-              <div class="form-group">
-                <label for="checkinStart">Check in start:</label>
-                <input type="text" id="checkinStart" class="form-control" v-model="newTarget.checkinStart"/>
-              </div>
-              <div class="form-group">
-                <label for="checkinEnd">Check in end:</label>
-                <input type="text" id="checkinEnd" class="form-control" v-model="newTarget.checkinEnd"/>
-              </div>
-              <div class="form-group">
-                <label for="repeat">Repeat:</label>
-                <input type="text" id="repeat" class="form-control" v-model="newTarget.repeat"/>
-              </div>
-            </form>
-            <div slot="footer">
-              <button type="button" class="btn btn-default" @click="showModal = false">关闭</button>
-              <button type="button" class="btn btn-primary" @click="addTarget">提交</button>
+            <div class="form-group">
+              <label for="description">Description:</label>
+              <input type="text" id="description" class="form-control" v-model="newTarget.description"/>
             </div>
-          </modal>
-        </div>
-        <div class="logout" v-else>
-          Welcome, new user!!
-        </div>
+            <div class="form-group">
+              <label for="startDate">Start date:</label>
+              <input type="text" id="startDate" class="form-control" v-model="newTarget.startDate"/>
+            </div>
+            <div class="form-group">
+              <label for="endDate">End date:</label>
+              <input type="text" id="endDate" class="form-control" v-model="newTarget.endDate"/>
+            </div>
+            <div class="form-group">
+              <label for="checkinStart">Check in start:</label>
+              <input type="text" id="checkinStart" class="form-control" v-model="newTarget.checkinStart"/>
+            </div>
+            <div class="form-group">
+              <label for="checkinEnd">Check in end:</label>
+              <input type="text" id="checkinEnd" class="form-control" v-model="newTarget.checkinEnd"/>
+            </div>
+            <div class="form-group">
+              <label for="repeat">Repeat:</label>
+              <input type="text" id="repeat" class="form-control" v-model="newTarget.repeat"/>
+            </div>
+          </form>
+          <div slot="footer">
+            <button type="button" class="btn btn-default" @click="showModal = false">关闭</button>
+            <button type="button" class="btn btn-primary" @click="addTarget">提交</button>
+          </div>
+        </modal>
+      </div>
+      <div class="logout" v-else>
+        Welcome, new user!!
       </div>
     </div>
   </div>
@@ -118,13 +117,15 @@
         })
       },
       addTarget() {
+        // todo: this api
         console.log('call submit target');
         console.log('param: ' + JSON.stringify(this.newTarget));
-        submitTarget({
-          uid: 1,
-          title: 'Test target',
-          description: 'This is a simple test target'
-        }).then(res => {
+        // {
+        //   uid: 1,
+        //     title: 'Test target',
+        //   description: 'This is a simple test target'
+        // }
+        submitTarget(this.newTarget).then(res => {
           alert(res.data.content);
           console.log(JSON.stringify(res))
         }).catch(error => {
