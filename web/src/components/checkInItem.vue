@@ -1,7 +1,8 @@
 <template>
   <div>
-    <a href="#" @click="checkin">
+    <a href="#" @click="checkin" :id="'target' + target.tid">
       <div class="target">
+        <div class="title">{{ target.title }}</div>
         <div class="desc">{{ target.description }}</div>
       </div>
     </a>
@@ -18,7 +19,7 @@
             <h1>{{ target.title }}</h1>
           </div>
           <div class="modal-body">
-            <span class="statement">打卡成功！</span>
+            <span class="statement">{{ this.prompt }}</span>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -43,15 +44,33 @@
         tryCheckIn(this.target.tid, {
           uid: this.target.uid,
           tid: this.target.tid,
-          checkinDateTime: '2018-11-23T17:38:54.293996'
+          checkinDateTime: new Date(Date.now() - this.tzOffset).toISOString()
+          // checkinDateTime: 'asdasda'
         }).then(res => {
-          if (res.data.status === 'OK') {
-            console.log(res.data);
+          if (res.status === 200) {
+            this.prompt = res.data.content;
             $('#' + this.target.tid).modal();
-          } else {
-            alert(JSON.stringify(res.data))
+            console.log('start setting color');
+            $('#target' + this.target.tid + ' > div').css('background', '#ffd633');
           }
+        }).catch(error => {
+          if (error.response) {
+            console.log('Error response: ' + error.response);
+            this.prompt = error.response.data.content;
+            $('#' + this.target.tid).modal();
+          } else if (error.request) {
+            console.log('Error request: ' + error.request);
+          } else {
+            console.log('Error: ' + error.message);
+          }
+          console.log(error.config);
         })
+      }
+    },
+    data() {
+      return {
+        tzOffset: new Date().getTimezoneOffset() * 60000,
+        prompt: ''
       }
     }
   }

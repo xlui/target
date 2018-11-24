@@ -49,10 +49,11 @@ axios.interceptors.request.use(config => {
   return Promise.resolve(error)
 });
 
-axios.interceptors.response.use(data => {
-  return data
-}, error => {
-  // alert('status: ' + error.response.status + '\nmessage: ' + error.response.data);
-  alert('error: ' + error);
-  return Promise.resolve(error);
-});
+// axios.interceptors.response.use(data => {
+//   return data
+// }, error => {
+//   // alert('status: ' + error.response.status + '\nmessage: ' + error.response.data);
+//   // console.log('error json: ' + JSON.stringify(error));
+//   console.log('Global error interceptor catch error: ' + error);
+//   // return Promise.resolve(error);
+// });
