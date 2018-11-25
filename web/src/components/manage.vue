@@ -1,29 +1,51 @@
 <template>
-  <div>
+  <div class="main">
+    <h1 class="main-title">This is the manage page</h1>
     <div class="login">
       <template v-if="login">
-        <span style="font-size: 20px">Hello, {{ username }}</span>
-        <button class="btn btn-primary" @click="logout">注销</button>
+        <span class="statement">Hello, {{ username }}</span>
+        <button class="btn btn-primary" @click="$router.push('/')">注销</button>
       </template>
-      <!--<a href="#" data-toggle="modal" data-target="#myModal">测试</a>-->
     </div>
-    <h1 class="title">Your targets</h1>
 
-    <div class="main">
-      <div class="box">
-        <div v-if="login">
-          <template v-for="target in targets">
-            <item :target="target"></item>
-          </template>
-        </div>
-        <div class="logout" v-else>
-          Welcome, new user!!
-        </div>
+    <div class="box">
+      <div v-if="login">
+        <template v-for="target in targets">
+          <item :target="target"></item>
+        </template>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-  export default {}
+  import {fetchTargets} from "../api/api";
+  import item from './manageItem';
+
+  export default {
+    data() {
+      return {
+        login: false,
+        username: '',
+        targets: [],
+      }
+    },
+    methods: {},
+    created() {
+      if (localStorage.token) {
+        this.login = true;
+        this.username = localStorage.username;
+        fetchTargets({}).then(res => {
+          if (res.data.status === 'OK') {
+            this.targets = res.data.content;
+          }
+        }).catch(error => {
+          console.log(error);
+        })
+      }
+    },
+    components: {
+      item
+    }
+  }
 </script>

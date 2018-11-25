@@ -6,7 +6,7 @@
       <button class="btn btn-primary" v-if="!login" @click="postLogin">登录</button>
       <template v-else>
         <span class="statement">Hello, {{ username }}</span>
-        <button class="item btn btn-primary">目标管理</button>
+        <button class="item btn btn-primary" @click="$router.push('/manage')">目标管理</button>
         <button class="item btn btn-primary" @click="logout">注销</button>
       </template>
     </div>
@@ -92,6 +92,7 @@
         }).then(res => {
           if (res.data.status === 'OK') {
             console.log('Successfully login using default user information.');
+            localStorage.username = this.username;
             localStorage.token = res.data.content;
             this.login = true;
             this.getTargets()
@@ -99,9 +100,10 @@
         })
       },
       logout() {
-        localStorage.token = "";
+        localStorage.username = '';
+        localStorage.token = '';
         this.login = false;
-        location.href = "/"
+        location.href = '/';
       },
       getTargets() {
         fetchTargets({}).then(res => {
