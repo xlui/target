@@ -24,34 +24,48 @@
         </a>
         <modal v-if="showModal" @close="showModal = false">
           <h2 slot="header">新增一个目标</h2>
-          <form role="form" class="form-inline" slot="body">
-            <div class="form-group">
-              <label for="title">Title:</label>
-              <input type="text" id="title" class="form-control" v-model="newTarget.title"/>
+          <form role="form" class="form-horizontal" slot="body">
+            <div class="form-group form-item">
+              <label for="title" class="col-sm-offset-1 col-sm-3">Title:</label>
+              <div class="col-sm-8">
+                <input type="text" id="title" class="form-control" v-model="newTarget.title"/>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="description">Description:</label>
-              <input type="text" id="description" class="form-control" v-model="newTarget.description"/>
+            <div class="form-group form-item">
+              <label for="description" class="col-sm-offset-1 col-sm-3">Description:</label>
+              <div class="col-sm-8">
+                <input type="text" id="description" class="form-control" v-model="newTarget.description"/>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="startDate">Start date:</label>
-              <input type="text" id="startDate" class="form-control" v-model="newTarget.startDate"/>
+            <div class="form-group form-item">
+              <label for="startDate" class="col-sm-offset-1 col-sm-3">Start date:</label>
+              <div class="col-sm-8">
+                <input type="date" id="startDate" class="form-control" v-model="newTarget.startDate"/>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="endDate">End date:</label>
-              <input type="text" id="endDate" class="form-control" v-model="newTarget.endDate"/>
+            <div class="form-group form-item">
+              <label for="endDate" class="col-sm-offset-1 col-sm-3">End date:</label>
+              <div class="col-sm-8">
+                <input type="date" id="endDate" class="form-control" v-model="newTarget.endDate"/>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="checkinStart">Check in start:</label>
-              <input type="text" id="checkinStart" class="form-control" v-model="newTarget.checkinStart"/>
+            <div class="form-group form-item">
+              <label for="checkinStart" class="col-sm-offset-1 col-sm-3">Check in start:</label>
+              <div class="col-sm-8">
+                <input type="time" id="checkinStart" class="form-control" v-model="newTarget.checkinStart"/>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="checkinEnd">Check in end:</label>
-              <input type="text" id="checkinEnd" class="form-control" v-model="newTarget.checkinEnd"/>
+            <div class="form-group form-item">
+              <label for="checkinEnd" class="col-sm-offset-1 col-sm-3">Check in end:</label>
+              <div class="col-sm-8">
+                <input type="time" id="checkinEnd" class="form-control" v-model="newTarget.checkinEnd"/>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="repeat">Repeat:</label>
-              <input type="text" id="repeat" class="form-control" v-model="newTarget.repeat"/>
+            <div class="form-group form-item">
+              <label for="repeat" class="col-sm-offset-1 col-sm-3">Repeat:</label>
+              <div class="col-sm-8">
+                <input type="text" id="repeat" class="form-control" v-model="newTarget.repeat"/>
+              </div>
             </div>
           </form>
           <div slot="footer">
@@ -69,6 +83,7 @@
 
 <script>
   import {checkToken, fetchTargets, submitLogin, submitTarget} from '../api/api';
+  import {adjust, extractDate, extractTime, now} from "../api/util";
   import item from './checkInItem';
   import modal from './modal';
 
@@ -80,7 +95,12 @@
         login: false,
         showModal: false,
         targets: [],
-        newTarget: {}
+        newTarget: {
+          startDate: extractDate(now()),
+          endDate: extractDate(adjust(now(), 1)),
+          checkinStart: '09:00',
+          checkinEnd: '18:00'
+        }
       }
     },
     name: 'App',
@@ -128,6 +148,7 @@
       }
     },
     created() {
+      console.log(extractTime(now()))
       // check user login or not
       if (localStorage.token) {
         checkToken(localStorage.token)

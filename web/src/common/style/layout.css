@@ -16,12 +16,6 @@ body {
   background-color: #eee;
 }
 
-label {
-  display: inline-block;
-  width: 100px;
-  text-align: left;
-}
-
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -110,6 +104,13 @@ label {
 
 .statement {
   font-size: 18px;
+}
+
+form div > label {
+  padding-top: 7px;
+  margin-bottom: 0;
+  text-align: left;
+  font-weight: normal;
 }
 
 .footer {
