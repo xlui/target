@@ -5,7 +5,7 @@ export const showColor = function (vue) {
     vue.target.tid,
     new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().split('T')[0]
   ).then(res => {
-    if (res.status === 200) {
+    if (res.status === 200 && res.data.status === 'OK') {
       vue.bgColor = '#ffd633';
     }
   }).catch(error => {

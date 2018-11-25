@@ -44,7 +44,9 @@ public class CheckInController {
 	// view someday's check-in details
 	@RequestMapping(value = "/target/{tid}/checkin/{time}", method = RequestMethod.GET)
 	public ApiResponse getCheckin(@CurrentUser User user, @PathVariable long tid, @PathVariable String time) {
-		Record record = AssertUtils.requireNotNull(checkinService.recordOfSomeday(tid, time), () -> new NotFoundException("No checkin record at the specify day!"));
+		Record record = checkinService.recordOfSomeday(tid, time);
+		if (record == null)
+			return new ApiResponse(HttpStatus.NOT_FOUND, "You have not checked in at " + time);
 		return new ApiResponse(HttpStatus.OK, record);
 	}
 }
