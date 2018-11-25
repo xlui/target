@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a href="#" @click="showModal = true">
+    <a @click="showModal = true">
       <div class="target" :style="{background: bgColor}">
         <div class="title">{{ target.title }}</div>
         <div class="desc">{{ target.description }}</div>
@@ -61,8 +61,9 @@
 </template>
 
 <script>
-  import {showColor} from "../api/util";
-  import modal from './modal';
+  import {putTarget} from "../api/api";
+  import {manage, showColor} from "../api/util";
+  import modal from "./modal";
 
   export default {
     props: {
@@ -78,7 +79,16 @@
     },
     methods: {
       updateTarget() {
-        console.log('click update target...')
+        putTarget(this.target.tid, this.target)
+          .then(res => {
+            if (res.status === 204) {
+              alert('Successfully update target!');
+              this.showModal = false;
+            }
+          })
+          .catch(error => {
+            console.log('Catch error: ' + error)
+          });
       }
     },
     components: {

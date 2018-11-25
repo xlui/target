@@ -59,6 +59,10 @@ form div > label {
   transition: all .3s;
 }
 
+.main .box a {
+  cursor: pointer;
+}
+
 .main .box .target:hover {
   transform: translateY(-5px)
 }

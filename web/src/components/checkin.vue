@@ -83,9 +83,9 @@
 
 <script>
   import {checkToken, fetchTargets, submitLogin, submitTarget} from '../api/api';
-  import {adjust, extractDate, extractTime, now} from "../api/util";
-  import item from './checkInItem';
-  import modal from './modal';
+  import {adjust, extractDate, extractTime, home, now} from "../api/util";
+  import item from "./checkInItem";
+  import modal from "./modal";
 
   export default {
     data() {
@@ -123,7 +123,7 @@
         localStorage.username = '';
         localStorage.token = '';
         this.login = false;
-        location.href = '/';
+        location.href = home;
       },
       getTargets() {
         fetchTargets().then(res => {
@@ -139,7 +139,7 @@
             if (res.status === 201) {
               console.log('Successfully created new target');
               alert(res.data.content);
-              location.href = '/';
+              location.href = home;
             }
           })
           .catch(error => {
@@ -148,7 +148,6 @@
       }
     },
     created() {
-      console.log(extractTime(now()))
       // check user login or not
       if (localStorage.token) {
         checkToken(localStorage.token)

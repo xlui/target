@@ -16,7 +16,7 @@
 <script>
   import {submitCheckIn} from "../api/api";
   import {showColor, now} from "../api/util";
-  import modal from './modal';
+  import modal from "./modal";
 
   export default {
     props: {

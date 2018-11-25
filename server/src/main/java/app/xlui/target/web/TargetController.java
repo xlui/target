@@ -57,8 +57,6 @@ public class TargetController {
 	@RequestMapping(value = "/target/{tid}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ApiResponse updateTarget(@CurrentUser User user, @PathVariable long tid, @RequestBody @Valid Target param) {
-		AssertUtils.requireNotNull(tid, () -> new InvalidInputException("Require tid not null!"));
-		AssertUtils.requireEquals(user.getUid(), param.getUid(), () -> new InvalidInputException("Trying to submit a target using invalid parameter: uid"));
 		Target target = new Target()
 				.setTid(tid)
 				.setUid(user.getUid())

@@ -39,6 +39,16 @@ export const fetchTarget = tid => {
   });
 };
 
+export const putTarget = (tid, params) => {
+  let specifyTarget = `${targetBaseUrl}/${tid}`
+  return axios.put(specifyTarget, JSON.stringify(params), {
+    headers: {
+      Authorization: localStorage.token,
+      'Content-Type': contentType
+    }
+  })
+};
+
 export const submitCheckIn = (tid, params) => {
   let checkin = `${targetBaseUrl}/${tid}/checkin`;
   return axios.post(checkin, JSON.stringify(params), {

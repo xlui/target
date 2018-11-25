@@ -20,7 +20,7 @@
 
 <script>
   import {fetchTargets} from "../api/api";
-  import item from './manageItem';
+  import item from "./manageItem";
 
   export default {
     data() {

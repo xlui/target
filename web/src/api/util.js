@@ -2,6 +2,9 @@ import {fetchCheckIn} from './api';
 
 const offset = new Date().getTimezoneOffset() * 60000;
 
+export const home = '/';
+export const manage = '/manage';
+
 export const now = () => new Date(Date.now() - offset);
 
 export const adjust = (date, days) => {
