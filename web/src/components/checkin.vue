@@ -68,7 +68,7 @@
 </template>
 
 <script>
-  import {submitLogin, fetchTargets, fetchTarget, submitTarget} from '../api/api';
+  import {checkToken, fetchTargets, submitLogin, submitTarget} from '../api/api';
   import item from './checkInItem';
   import modal from './modal';
 
@@ -80,7 +80,7 @@
         login: false,
         showModal: false,
         targets: [],
-        newTarget: Object
+        newTarget: {}
       }
     },
     name: 'App',
@@ -113,30 +113,38 @@
           }
         })
       },
-      getTarget(tid) {
-        fetchTarget(tid).then(res => {
-          alert(JSON.stringify(res.data))
-        })
-      },
       addTarget() {
-        // todo: this api
-        console.log('call submit target');
-        console.log('param: ' + JSON.stringify(this.newTarget));
-        // {
-        //   uid: 1,
-        //     title: 'Test target',
-        //   description: 'This is a simple test target'
-        // }
-        submitTarget(this.newTarget).then(res => {
-          alert(res.data.content);
-          console.log(JSON.stringify(res))
-        }).catch(error => {
-          console.log(error)
-        })
+        submitTarget(this.newTarget)
+          .then(res => {
+            if (res.status === 201) {
+              console.log('Successfully created new target');
+              alert(res.data.content);
+              location.href = '/';
+            }
+          })
+          .catch(error => {
+            console.log('Error while adding target: ', error)
+          })
+      }
+    },
+    created() {
+      // check user login or not
+      if (localStorage.token) {
+        checkToken(localStorage.token)
+          .then(res => {
+            if (res.status === 200) {
+              console.log('Token check passed.');
+              this.login = true;
+              this.getTargets()
+            }
+          })
+          .catch(error => {
+            console.log('Error while checking token: ', error);
+          });
       }
     },
     components: {
       item, modal
-    }
+    },
   }
 </script>

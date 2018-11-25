@@ -1,6 +1,5 @@
 package app.xlui.target;
 
-import app.xlui.target.entity.User;
 import app.xlui.target.service.TargetService;
 import app.xlui.target.service.UserService;
 import app.xlui.target.util.FakeUtils;
@@ -9,8 +8,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,13 +37,6 @@ public class TargetApplication implements CommandLineRunner {
 			this.init();
 			System.out.println("Initialize succeed!");
 		}
-	}
-
-	@RequestMapping("/token")
-	public String test() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		User user = (User) authentication.getPrincipal();
-		return "pass token auth: " + user.getUsername();
 	}
 
 	@RequestMapping("/t/init")

@@ -10,7 +10,6 @@ public class Target implements Serializable {
 	private static final long serialVersionUID = 3986690845367985790L;
 
 	private long tid;				// target id
-	@Positive(message = "uid must be valid positive numbers!")
 	private long uid;				// user id
 //	private String avatar;			// target avatar
 	@NotBlank(message = "Target title is invalid!")

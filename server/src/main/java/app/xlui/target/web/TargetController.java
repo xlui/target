@@ -33,8 +33,8 @@ public class TargetController {
 	@RequestMapping(value = "/target", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public ApiResponse addTarget(@CurrentUser User user, @RequestBody @Valid Target param) {
-		AssertUtils.requireEquals(user.getUid(), param.getUid(), () -> new InvalidInputException("Trying to submit a target using invalid parameter: uid"));
 		Target target = new Target()
+				.setUid(user.getUid())
 				.setTitle(param.getTitle())
 				.setDescription(param.getDescription())
 				.setStartDate(param.getStartDate())

@@ -58,6 +58,14 @@ export const fetchCheckIn = (tid, time) => {
   });
 };
 
+export const checkToken = token => {
+  return axios.get(`${host}/token`, {
+    headers: {
+      Authorization: token
+    }
+  })
+};
+
 axios.interceptors.request.use(config => {
   return config
 }, error => {

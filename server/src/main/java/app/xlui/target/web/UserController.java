@@ -15,6 +15,8 @@ import app.xlui.target.util.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -79,5 +81,12 @@ public class UserController {
 			userService.updatePassword(username, newPassword);
 			return new ApiResponse(HttpStatus.CREATED, "Successfully update password!");
 		}
+	}
+
+	@RequestMapping(value = "/token")
+	public ApiResponse test() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User) authentication.getPrincipal();
+		return new ApiResponse(HttpStatus.OK, user.getUid());
 	}
 }
