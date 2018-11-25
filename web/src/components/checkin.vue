@@ -68,7 +68,7 @@
 </template>
 
 <script>
-  import {apiLogin, fetchTargets, fetchTarget, submitTarget} from '../api/api';
+  import {submitLogin, fetchTargets, fetchTarget, submitTarget} from '../api/api';
   import item from './checkInItem';
   import modal from './modal';
 
@@ -86,7 +86,7 @@
     name: 'App',
     methods: {
       postLogin() {
-        apiLogin({
+        submitLogin({
           username: this.username,
           password: this.password
         }).then(res => {
@@ -106,10 +106,10 @@
         location.href = '/';
       },
       getTargets() {
-        fetchTargets({}).then(res => {
+        fetchTargets().then(res => {
           if (res.data.status === 'OK') {
             this.targets = res.data.content;
-            console.log('Total targets: ' + res.data.content.length)
+            console.log(`Successfully fetch ${res.data.content.length} targets from server.`)
           }
         })
       },

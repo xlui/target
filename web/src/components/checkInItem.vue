@@ -15,7 +15,7 @@
 
 <script>
   import {submitCheckIn} from "../api/api";
-  import {showColor} from "../api/vue-common";
+  import {showColor, now} from "../api/util";
   import modal from './modal';
 
   export default {
@@ -27,7 +27,6 @@
     data() {
       return {
         showModal: false,
-        tzOffset: new Date().getTimezoneOffset() * 60000,
         prompt: '',
         bgColor: '#fff'
       }
@@ -37,8 +36,7 @@
         submitCheckIn(this.target.tid, {
           uid: this.target.uid,
           tid: this.target.tid,
-          checkinDateTime: new Date(Date.now() - this.tzOffset).toISOString()
-          // checkinDateTime: 'asdasda'
+          checkinDateTime: now().toISOString()
         }).then(res => {
           if (res.status === 200) {
             this.prompt = res.data.content;
@@ -47,13 +45,13 @@
           }
         }).catch(error => {
           if (error.response) {
-            console.log('Error response: ' + error.response);
+            console.log(`Error response: ${error.response}`);
             this.prompt = error.response.data.content;
             this.showModal = true;
           } else if (error.request) {
-            console.log('Error request: ' + error.request);
+            console.log(`Error request: ${error.request}`);
           } else {
-            console.log('Error: ' + error.message);
+            console.log(`Error: ${error.message}`);
           }
           console.log(error.config);
         })

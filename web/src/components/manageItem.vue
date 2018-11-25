@@ -7,13 +7,14 @@
       </div>
     </a>
     <modal v-if="showModal" @close="showModal = false">
+      <!-- todo: show target details here -->
       <p slot="body">This is the details page of the checkin</p>
     </modal>
   </div>
 </template>
 
 <script>
-  import {showColor} from "../api/vue-common";
+  import {showColor} from "../api/util";
   import modal from './modal';
 
   export default {
