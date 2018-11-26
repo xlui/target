@@ -48,4 +48,7 @@ public interface TargetMapper {
 
 	@Select("SELECT IF(COUNT(*), 1, 0) FROM t_target WHERE tid = #{tid} AND #{repeat} & `repeat` = #{repeat}")
 	int isValidRepeat(@Param("tid") long tid, @Param("repeat") byte repeat);
+
+	@Select("SELECT IF(COUNT(*), 1, 0) FROM t_target WHERE tid = #{tid} AND TO_DAYS(NOW()) > TO_DAYS(endDate)")
+	int isEnd(@Param("tid") long tid);
 }

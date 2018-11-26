@@ -66,4 +66,8 @@ public class TargetService {
 	public boolean isValidRepeat(long tid, byte repeat) {
 		return targetMapper.isValidRepeat(tid, repeat) == 1;
 	}
+
+	public boolean isEnd(long tid) {
+		return targetMapper.isEnd(tid) == 1;
+	}
 }
