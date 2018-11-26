@@ -4,6 +4,7 @@ import app.xlui.target.annotation.CurrentUser;
 import app.xlui.target.entity.common.ApiResponse;
 import app.xlui.target.entity.Target;
 import app.xlui.target.entity.User;
+import app.xlui.target.entity.enums.Week;
 import app.xlui.target.exception.common.ServerError;
 import app.xlui.target.exception.specify.InvalidInputException;
 import app.xlui.target.exception.specify.NotFoundException;
@@ -16,6 +17,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 @RestController
 public class TargetController {
@@ -26,8 +29,15 @@ public class TargetController {
 
 	@RequestMapping(value = "/target", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
-	public ApiResponse getTargets(@CurrentUser User user) {
-		return new ApiResponse(HttpStatus.OK, targetService.findForUser(user));
+	public ApiResponse getTargets(@CurrentUser User user, @RequestParam(required = false, defaultValue = "true") boolean filter) {
+		var targets = targetService.findForUser(user);
+		if (filter) {
+			var week = Week.toByte(LocalDateTime.now().getDayOfWeek());
+			targets = targets.stream()
+					.filter(target -> targetService.isValidRepeat(target.getTid(), week))
+					.collect(Collectors.toList());
+		}
+		return new ApiResponse(HttpStatus.OK, targets);
 	}
 
 	@RequestMapping(value = "/target", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)

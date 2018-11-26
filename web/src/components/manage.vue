@@ -35,7 +35,9 @@
       if (localStorage.token) {
         this.login = true;
         this.username = localStorage.username;
-        fetchTargets().then(res => {
+        fetchTargets({
+          filter: false
+        }).then(res => {
           if (res.data.status === 'OK') {
             this.targets = res.data.content;
           }

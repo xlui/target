@@ -1,5 +1,7 @@
 package app.xlui.target.entity.enums;
 
+import java.time.DayOfWeek;
+
 public enum Week {
 	SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY;
 
@@ -22,5 +24,9 @@ public enum Week {
 			default:
 				throw new RuntimeException("Unknown week value");
 		}
+	}
+
+	public static byte toByte(DayOfWeek dayOfWeek) {
+		return toByte(valueOf(dayOfWeek.toString()));
 	}
 }

@@ -140,7 +140,9 @@
         location.href = home;
       },
       getTargets() {
-        fetchTargets().then(res => {
+        fetchTargets({
+          filter: true
+        }).then(res => {
           if (res.data.status === 'OK') {
             this.targets = res.data.content;
             console.log(`Successfully fetch ${res.data.content.length} targets from server.`)

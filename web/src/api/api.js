@@ -13,8 +13,9 @@ export const submitLogin = params => {
   })
 };
 
-export const fetchTargets = () => {
+export const fetchTargets = (filter = true) => {
   return axios.get(targetBaseUrl, {
+    params: filter,
     headers: {
       Authorization: localStorage.token
     }

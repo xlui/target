@@ -62,7 +62,7 @@ public class FakeUtils {
 					.setEndDate(faker.date().future(20, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
 					.setCheckinStart(LocalTime.of(faker.random().nextInt(0, 11), faker.random().nextInt(60)))
 					.setCheckinEnd(LocalTime.of(faker.random().nextInt(12, 23), faker.random().nextInt(60)))
-					.setRepeat(faker.random().nextInt(1, 127).byteValue());
+					.setRepeat(faker.random().nextInt(63, 127).byteValue());
 			targetService.save(target);
 		}
 	}
