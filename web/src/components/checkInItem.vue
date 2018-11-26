@@ -6,17 +6,18 @@
         <div class="desc">{{ target.description }}</div>
       </div>
     </a>
-    <modal v-if="showModal" @close="showModal = false">
-      <h2 slot="header">{{ target.title }}</h2>
-      <span class="statement" slot="body">{{ this.prompt }}</span>
-    </modal>
+    <el-dialog :title="target.title" :visible.sync="showDialog" width="30%">
+      <span class="statement">{{ prompt }}</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" size="medium" @click="showDialog = false">确定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
   import {submitCheckIn} from "../api/api";
-  import {showColor, now} from "../api/util";
-  import modal from "./modal";
+  import {now, showColor} from "../api/util";
 
   export default {
     props: {
@@ -26,7 +27,7 @@
     },
     data() {
       return {
-        showModal: false,
+        showDialog: false,
         prompt: '',
         bgColor: '#fff'
       }
@@ -40,14 +41,14 @@
         }).then(res => {
           if (res.status === 200) {
             this.prompt = res.data.content;
-            this.showModal = true;
+            this.showDialog = true;
             this.bgColor = '#ffd633';
           }
         }).catch(error => {
           if (error.response) {
             console.log(`Error response: ${error.response}`);
             this.prompt = error.response.data.content;
-            this.showModal = true;
+            this.showDialog = true;
           } else if (error.request) {
             console.log(`Error request: ${error.request}`);
           } else {
@@ -56,9 +57,6 @@
           console.log(error.config);
         })
       },
-    },
-    components: {
-      modal
     },
     created() {
       showColor(this);

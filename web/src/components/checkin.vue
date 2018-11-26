@@ -3,11 +3,11 @@
     <h1 class="main-title">Your targets</h1>
 
     <div class="login">
-      <button class="btn btn-primary" v-if="!login" @click="postLogin">登录</button>
+      <el-button type="primary" size="medium" v-if="!login" @click="postLogin">登录</el-button>
       <template v-else>
         <span class="statement">Hello, {{ username }}</span>
-        <button class="item btn btn-primary" @click="$router.push('/manage')">目标管理</button>
-        <button class="item btn btn-primary" @click="logout">注销</button>
+        <el-button type="primary" size="medium" class="item" @click="$router.push('/manage')">目标管理</el-button>
+        <el-button type="danger" size="medium" class="item" @click="logout">注销</el-button>
       </template>
     </div>
 
@@ -16,76 +16,67 @@
         <template v-for="target in targets">
           <item :target="target"></item>
         </template>
-        <a href="#" @click="showModal = true">
+        <a href="#" @click="showDialog = true">
           <div class="target">
             <div class="title">New</div>
             <div class="desc">新增一个目标</div>
           </div>
         </a>
-        <modal class="new-target" v-if="showModal" @close="showModal = false">
-          <h2 slot="header">新增一个目标</h2>
-          <form role="form" class="form-horizontal" slot="body">
-            <div class="form-group">
-              <label for="title" class="col-sm-offset-1 col-sm-3">Title:</label>
-              <div class="col-sm-8">
-                <input type="text" id="title" class="form-control" v-model="newTarget.title"/>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="description" class="col-sm-offset-1 col-sm-3">Description:</label>
-              <div class="col-sm-8">
-                <input type="text" id="description" class="form-control" v-model="newTarget.description"/>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="startDate" class="col-sm-offset-1 col-sm-3">Start date:</label>
-              <div class="col-sm-8">
-                <input type="date" id="startDate" class="form-control" v-model="newTarget.startDate"/>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="endDate" class="col-sm-offset-1 col-sm-3">End date:</label>
-              <div class="col-sm-8">
-                <input type="date" id="endDate" class="form-control" v-model="newTarget.endDate"/>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="checkinStart" class="col-sm-offset-1 col-sm-3">Check in start:</label>
-              <div class="col-sm-8">
-                <input type="time" id="checkinStart" class="form-control" v-model="newTarget.checkinStart"/>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="checkinEnd" class="col-sm-offset-1 col-sm-3">Check in end:</label>
-              <div class="col-sm-8">
-                <input type="time" id="checkinEnd" class="form-control" v-model="newTarget.checkinEnd"/>
-              </div>
-            </div>
-            <div class="form-group add">
-              <label class="col-sm-offset-1 col-sm-3">Repeat:</label>
-              <div class="col-sm-8">
-                <input type="checkbox" id="sunday" value="0b01000000" v-model="newTarget.repeat"/>
-                <label for="sunday">Sun</label>
-                <input type="checkbox" id="monday" value="0b00100000" v-model="newTarget.repeat"/>
-                <label for="monday">Mon</label>
-                <input type="checkbox" id="tuesday" value="0b00010000" v-model="newTarget.repeat"/>
-                <label for="tuesday">Tue</label>
-                <input type="checkbox" id="wednesday" value="0b00001000" v-model="newTarget.repeat"/>
-                <label for="wednesday">Wed</label>
-                <input type="checkbox" id="thursday" value="0b00000100" v-model="newTarget.repeat"/>
-                <label for="thursday">Thu</label>
-                <input type="checkbox" id="friday" value="0b00000010" v-model="newTarget.repeat"/>
-                <label for="friday">Fri</label>
-                <input type="checkbox" id="saturday" value="0b00000001" v-model="newTarget.repeat"/>
-                <label for="saturday">Sat</label>
-              </div>
-            </div>
-          </form>
-          <div slot="footer">
-            <button type="button" class="btn btn-default" @click="showModal = false">关闭</button>
-            <button type="button" class="btn btn-primary" @click="addTarget">提交</button>
-          </div>
-        </modal>
+        <el-dialog title="新增一个目标" width="40%" :visible="showDialog" @close="showDialog = false">
+          <el-form ref="form" label-position="left" label-width="100px">
+            <el-form-item label="Title">
+              <el-col :span="18">
+                <el-input v-model="newTarget.title"></el-input>
+              </el-col>
+            </el-form-item>
+            <el-form-item label="Description">
+              <el-col :span="18">
+                <el-input v-model="newTarget.description"></el-input>
+              </el-col>
+            </el-form-item>
+            <el-form-item label="Start date">
+              <el-col :span="12">
+                <el-date-picker type="date" placeholder="Please choose the start date of target"
+                                v-model="newTarget.startDate"></el-date-picker>
+              </el-col>
+            </el-form-item>
+            <el-form-item label="End date">
+              <el-col :span="12">
+                <el-date-picker type="date" placeholder="Please choose the end date of target"
+                                v-model="newTarget.endDate"></el-date-picker>
+              </el-col>
+            </el-form-item>
+            <el-form-item label="Check in start">
+              <el-col :span="12">
+                <el-time-picker type="fixed-time" placeholder="Please choose the start time of check in"
+                                v-model="newTarget.checkinStart"></el-time-picker>
+              </el-col>
+            </el-form-item>
+            <el-form-item label="Check in end">
+              <el-col :span="12">
+                <el-time-picker type="fixed-time" placeholder="Please choose to end time of check in"
+                                v-model="newTarget.checkinEnd"></el-time-picker>
+              </el-col>
+            </el-form-item>
+            <el-form-item label="Repeat">
+              <el-checkbox-group v-model="newTarget.repeat">
+                <el-col :span="2">
+                  <el-checkbox label="0b01000000" class="week">Sun</el-checkbox>
+                </el-col>
+                <el-checkbox label="0b00100000" class="week">Mon</el-checkbox>
+                <el-checkbox label="0b00010000" class="week">Tue</el-checkbox>
+                <el-checkbox label="0b00001000" class="week">Wed</el-checkbox>
+                <el-checkbox label="0b00000100" class="week">Thu</el-checkbox>
+                <el-checkbox label="0b00000010" class="week">Fri</el-checkbox>
+                <el-checkbox label="0b00000001" class="week">Sat</el-checkbox>
+              </el-checkbox-group>
+            </el-form-item>
+          </el-form>
+          <span slot="footer" class="dialog-footer">
+            <el-button size="medium" @click="showDialog = false">关闭</el-button>
+            <el-button type="primary" size="medium" @click="addTarget">提交</el-button>
+          </span>
+        </el-dialog>
       </div>
       <div class="logout" v-else>
         Welcome, new user!!
@@ -96,9 +87,8 @@
 
 <script>
   import {checkToken, fetchTargets, submitLogin, submitTarget} from '../api/api';
-  import {adjust, extractDate, extractTime, home, now} from "../api/util";
+  import {adjust, home, now} from "../api/util";
   import item from "./checkInItem";
-  import modal from "./modal";
 
   export default {
     data() {
@@ -106,13 +96,13 @@
         username: 'i@xlui.me',
         password: 'pass',
         login: false,
-        showModal: false,
+        showDialog: false,
         targets: [],
         newTarget: {
-          startDate: extractDate(now()),
-          endDate: extractDate(adjust(now(), 1)),
-          checkinStart: '09:00',
-          checkinEnd: '18:00',
+          startDate: now(),
+          endDate: adjust(now(), 1),
+          checkinStart: new Date(2018, 10, 26, 9, 0),
+          checkinEnd: new Date(2018, 10, 26, 18, 0),
           repeat: []
         }
       }
@@ -188,7 +178,7 @@
       }
     },
     components: {
-      item, modal
+      item,
     },
   }
 </script>

@@ -1,69 +1,66 @@
 <template>
   <div>
-    <a @click="showModal = true">
+    <a @click="showDialog = true">
       <div class="target" :style="{background: bgColor}">
         <div class="title">{{ target.title }}</div>
         <div class="desc">{{ target.description }}</div>
       </div>
     </a>
-    <modal class="manage" v-if="showModal" @close="showModal = false">
-      <h2 slot="header">{{ target.title }}</h2>
-      <form role="form" class="form-horizontal" slot="body">
-        <div class="form-group form-item">
-          <label for="title" class="col-sm-offset-1 col-sm-3">Title:</label>
-          <div class="col-sm-7">
-            <input type="text" id="title" class="form-control" v-model="target.title"/>
-          </div>
-        </div>
-        <div class="form-group form-item">
-          <label for="description" class="col-sm-offset-1 col-sm-3">Description:</label>
-          <div class="col-sm-7">
-            <input type="text" id="description" class="form-control" v-model="target.description"/>
-          </div>
-        </div>
-        <div class="form-group form-item">
-          <label for="startDate" class="col-sm-offset-1 col-sm-3">Start date:</label>
-          <div class="col-sm-7">
-            <input type="date" id="startDate" class="form-control" v-model="target.startDate"/>
-          </div>
-        </div>
-        <div class="form-group form-item">
-          <label for="endDate" class="col-sm-offset-1 col-sm-3">End date:</label>
-          <div class="col-sm-7">
-            <input type="date" id="endDate" class="form-control" v-model="target.endDate"/>
-          </div>
-        </div>
-        <div class="form-group form-item">
-          <label for="checkinStart" class="col-sm-offset-1 col-sm-3">Check in start:</label>
-          <div class="col-sm-7">
-            <input type="time" id="checkinStart" class="form-control" v-model="target.checkinStart"/>
-          </div>
-        </div>
-        <div class="form-group form-item">
-          <label for="checkinEnd" class="col-sm-offset-1 col-sm-3">Check in end:</label>
-          <div class="col-sm-7">
-            <input type="time" id="checkinEnd" class="form-control" v-model="target.checkinEnd"/>
-          </div>
-        </div>
-        <div class="form-group form-item">
-          <label for="repeat" class="col-sm-offset-1 col-sm-3">Repeat:</label>
-          <div class="col-sm-7">
-            <input type="text" id="repeat" class="form-control" v-model="target.repeat"/>
-          </div>
-        </div>
-      </form>
-      <div slot="footer">
-        <button type="button" class="btn btn-primary" @click="updateTarget">提交</button>
-        <button type="button" class="btn btn-default" @click="showModal = false">关闭</button>
-      </div>
-    </modal>
+    <el-dialog :title="target.title" :visible.sync="showDialog">
+      <el-form ref="form" label-position="left" label-width="150px">
+        <el-form-item label="Title">
+          <el-col :span="18">
+            <el-input v-model="target.title"></el-input>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="Description">
+          <el-col :span="18">
+            <el-input v-model="target.description"></el-input>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="Start date">
+          <el-col :span="9">
+            <el-date-picker type="date" v-model="target.startDate"></el-date-picker>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="End date">
+          <el-col :span="9">
+            <el-date-picker type="date" v-model="target.endDate"></el-date-picker>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="Check in start">
+          <el-col :span="9">
+            <el-time-picker type="fixed-time" v-model="target.checkinStart"></el-time-picker>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="Check in end">
+          <el-col :span="9">
+            <el-time-picker type="fixed-time" v-model="target.checkinEnd"></el-time-picker>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="Repeat">
+          <el-checkbox-group v-model="target.repeat" class="el-col el-col-19">
+            <el-checkbox label="64">Sun</el-checkbox>
+            <el-checkbox label="32">Mon</el-checkbox>
+            <el-checkbox label="16">Tue</el-checkbox>
+            <el-checkbox label="8">Wed</el-checkbox>
+            <el-checkbox label="4">Thu</el-checkbox>
+            <el-checkbox label="2">Fri</el-checkbox>
+            <el-checkbox label="1">Sat</el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="medium" @click="showDialog = false">关闭</el-button>
+        <el-button type="primary" size="medium" @click="updateTarget">提交</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
   import {putTarget} from "../api/api";
-  import {manage, showColor} from "../api/util";
-  import modal from "./modal";
+  import {manage, showColor, weekMap} from "../api/util";
 
   export default {
     props: {
@@ -73,29 +70,43 @@
     },
     data() {
       return {
-        showModal: false,
+        showDialog: false,
         bgColor: '#fff',
       }
     },
     methods: {
       updateTarget() {
+        console.log('Calculate the number value of repeat.');
+        let ret = 0;
+        for (const r of this.target.repeat) {
+          ret += Number(r)
+        }
+        this.target.repeat = ret;
         putTarget(this.target.tid, this.target)
           .then(res => {
             if (res.status === 204) {
               alert('Successfully update target!');
-              this.showModal = false;
+              this.showDialog = false;
+              location.href = manage
             }
           })
           .catch(error => {
             console.log('Catch error: ' + error)
           });
+      },
+      isomerismRepeat() {
+        const ret = [];
+        for (const value of weekMap) {
+          if ((value & this.target.repeat) === value) {
+            ret.push(String(value))
+          }
+        }
+        this.target.repeat = ret;
       }
-    },
-    components: {
-      modal,
     },
     created() {
       showColor(this);
+      this.isomerismRepeat();
     }
   }
 </script>

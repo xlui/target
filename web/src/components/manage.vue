@@ -4,7 +4,8 @@
     <div class="login">
       <template v-if="login">
         <span class="statement">Hello, {{ username }}</span>
-        <button class="btn btn-primary" @click="$router.push('/')">注销</button>
+        <el-button type="primary" size="medium" class="item" @click="$router.push('/')">回到首页</el-button>
+        <el-button type="danger" size="medium" class="item" @click="logout">注销</el-button>
       </template>
     </div>
 
@@ -20,6 +21,7 @@
 
 <script>
   import {fetchTargets} from "../api/api";
+  import {home} from "../api/util";
   import item from "./manageItem";
 
   export default {
@@ -30,7 +32,14 @@
         targets: [],
       }
     },
-    methods: {},
+    methods: {
+      logout() {
+        localStorage.username = '';
+        localStorage.token = '';
+        this.login = false;
+        location.href = home;
+      }
+    },
     created() {
       if (localStorage.token) {
         this.login = true;
