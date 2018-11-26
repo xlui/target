@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/xlui/target.svg?branch=master)](https://travis-ci.org/xlui/target)
 [![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/xlui/target)
 
-一个简单的打卡应用
+一个简单的打卡应用。
 
 ## 项目构思
 
@@ -28,14 +28,6 @@
 1. 广告，不考虑
 1. 社交，仅限于打卡排行，无其他形式互动
 
-## 数据库划分
-
-该项目涉及的模块有（以数据库表为区分）：
-
-- 用户
-- 目标
-- 打卡记录
-
 ## 功能
 
 - 注册、登录、验证、忘记密码
@@ -44,6 +36,46 @@
 - 当月目标统计、往月目标统计
 - 成长记录、打卡周报
 - 打卡排行
+
+## 运行
+
+首先拉取项目：
+
+```bash
+git clone https://github.com/xlui/target.git
+cd target/
+```
+
+### Server
+
+启动服务器端所需容器：
+
+```bash
+cd server/
+# 首次启动运行下面的命令
+docker-compose up -d
+# 非首次启动在目录下运行下面的命令
+docker-compose start
+```
+
+构建、运行：
+
+```bash
+mvn clean package -DskipTests
+java -jar target/target-0.0.1.jar
+```
+
+这样服务器就启动了，这是手动启动的方式，推荐使用 IntelliJ IDEA 打开项目然后运行。
+
+### Frontend
+
+```bash
+cd web/
+yarn install
+npm run dev
+```
+
+浏览器访问 http://127.0.0.1:8081 即可。
 
 # License
 
