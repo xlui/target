@@ -77,7 +77,8 @@ public class TestTargetController {
 	public void testUpdateTarget() throws Exception {
 		Target target = new Target()
 				.setUid(1L)
-				.setTitle("test title");
+				.setTitle("test title")
+				.setRepeat((byte) 64);
 		ApiResponse response = UserUtils.login(mockMvc);
 		mockMvc.perform(put("/target/1").contentType(json).content(mapper.writeValueAsString(target)).header(HttpHeaders.AUTHORIZATION, response.getContent()))
 				.andExpect(status().isNoContent());
@@ -96,7 +97,8 @@ public class TestTargetController {
 	@Test
 	public void testUpdateTargetWithoutTitle() throws Exception {
 		Target target = new Target()
-				.setUid(1L);
+				.setUid(1L)
+				.setRepeat((byte) 64);
 		ApiResponse response = UserUtils.login(mockMvc);
 		mockMvc.perform(put("/target/1").contentType(json).content(mapper.writeValueAsString(target)).header(HttpHeaders.AUTHORIZATION, response.getContent()))
 				.andExpect(status().isBadRequest())
@@ -126,7 +128,8 @@ public class TestTargetController {
 		Target target = new Target()
 				.setUid(1L)
 				.setTitle(faker.book().title())
-				.setDescription(faker.lorem().sentence());
+				.setDescription(faker.lorem().sentence())
+				.setRepeat((byte) 64);
 		ApiResponse response = UserUtils.login(mockMvc);
 		mockMvc.perform(post("/target")
 				.contentType(json)
@@ -140,7 +143,8 @@ public class TestTargetController {
 	public void testPostTargetInvalidTitle() throws Exception {
 		Target target = new Target()
 				.setUid(1)
-				.setTitle(null);
+				.setTitle(null)
+				.setRepeat((byte) 64);
 		ApiResponse response = UserUtils.login(mockMvc);
 		mockMvc.perform(post("/target")
 				.contentType(json)

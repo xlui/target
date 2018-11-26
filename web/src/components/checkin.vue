@@ -64,19 +64,19 @@
             <div class="form-group add">
               <label class="col-sm-offset-1 col-sm-3">Repeat:</label>
               <div class="col-sm-8">
-                <input type="checkbox" id="sunday" value="Sunday" v-model="newTarget.repeat"/>
+                <input type="checkbox" id="sunday" value="0b01000000" v-model="newTarget.repeat"/>
                 <label for="sunday">Sun</label>
-                <input type="checkbox" id="monday" value="Monday" v-model="newTarget.repeat"/>
+                <input type="checkbox" id="monday" value="0b00100000" v-model="newTarget.repeat"/>
                 <label for="monday">Mon</label>
-                <input type="checkbox" id="tuesday" value="Tuesday" v-model="newTarget.repeat"/>
+                <input type="checkbox" id="tuesday" value="0b00010000" v-model="newTarget.repeat"/>
                 <label for="tuesday">Tue</label>
-                <input type="checkbox" id="wednesday" value="Wednesday" v-model="newTarget.repeat"/>
+                <input type="checkbox" id="wednesday" value="0b00001000" v-model="newTarget.repeat"/>
                 <label for="wednesday">Wed</label>
-                <input type="checkbox" id="thursday" value="Thursday" v-model="newTarget.repeat"/>
+                <input type="checkbox" id="thursday" value="0b00000100" v-model="newTarget.repeat"/>
                 <label for="thursday">Thu</label>
-                <input type="checkbox" id="friday" value="Friday" v-model="newTarget.repeat"/>
+                <input type="checkbox" id="friday" value="0b00000010" v-model="newTarget.repeat"/>
                 <label for="friday">Fri</label>
-                <input type="checkbox" id="saturday" value="Saturday" v-model="newTarget.repeat"/>
+                <input type="checkbox" id="saturday" value="0b00000001" v-model="newTarget.repeat"/>
                 <label for="saturday">Sat</label>
               </div>
             </div>
@@ -148,16 +148,24 @@
         })
       },
       addTarget() {
+        console.log('Calculate the number value of repeat.');
+        let ret = 0;
+        for (const r of this.newTarget.repeat) {
+          ret += Number(r)
+        }
+        this.newTarget.repeat = ret;
         submitTarget(this.newTarget)
           .then(res => {
             if (res.status === 201) {
-              console.log('Successfully created new target');
+              console.log('Successfully created new target!');
               alert(res.data.content);
               location.href = home;
             }
           })
           .catch(error => {
-            console.log('Error while adding target: ', error)
+            console.log('Error while adding target: ', error);
+            alert('Please choose at least one item in repeat!');
+            location.href = home;
           })
       }
     },

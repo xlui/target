@@ -2,6 +2,8 @@ package app.xlui.target.entity;
 
 import app.xlui.target.entity.enums.Week;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -35,6 +37,7 @@ public class Target implements Serializable {
 	 * 		0b01000001 represent only Saturday and Sunday
 	 * 		0b00111110 represent only work days
 	 */
+	@Min(1)@Max(127)
 	private byte repeat;			// target repeat rule
 
 	public Target() {
@@ -121,12 +124,12 @@ public class Target implements Serializable {
 		return this;
 	}
 
-	public Target setRepeat(Week week) {
+	public Target setRepeatWithWeek(Week week) {
 		this.repeat = Week.toByte(week);
 		return this;
 	}
 
-	public Target setRepeat(Week ...weeks) {
+	public Target setRepeatWithMultiWeek(Week ...weeks) {
 		this.repeat = 0;
 		for (Week week : weeks) {
 			this.repeat |= Week.toByte(week);
