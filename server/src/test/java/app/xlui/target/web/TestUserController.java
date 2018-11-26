@@ -68,7 +68,7 @@ public class TestUserController {
 		mockMvc.perform(get("/token").header(HttpHeaders.AUTHORIZATION, response.getContent()))
 				.andDo(r -> System.out.println(r.getResponse().getContentAsString()))
 				.andExpect(status().isOk())
-				.andExpect(content().string("pass token auth: " + UserUtils.username));
+				.andExpect(jsonPath(content).value("1"));
 	}
 
 	// login

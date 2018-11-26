@@ -94,17 +94,6 @@ public class TestTargetController {
 	}
 
 	@Test
-	public void testUpdateTargetWithInvalidUID() throws Exception {
-		Target target = new Target()
-				.setUid(23123213112312L)
-				.setTitle("test title");
-		ApiResponse response = UserUtils.login(mockMvc);
-		mockMvc.perform(put("/target/1").contentType(json).content(mapper.writeValueAsString(target)).header(HttpHeaders.AUTHORIZATION, response.getContent()))
-				.andExpect(status().isBadRequest())
-				.andExpect(jsonPath(content).value("Trying to submit a target using invalid parameter: uid"));
-	}
-
-	@Test
 	public void testUpdateTargetWithoutTitle() throws Exception {
 		Target target = new Target()
 				.setUid(1L);
@@ -145,30 +134,6 @@ public class TestTargetController {
 				.header(HttpHeaders.AUTHORIZATION, response.getContent()))
 				.andExpect(status().isCreated())
 				.andExpect(jsonPath(content).value("Successfully add a new target!"));
-	}
-
-	@Test
-	public void testPostTargetWithoutUID() throws Exception {
-		Target target = new Target()
-				.setTitle("test-target-title");
-		ApiResponse response = UserUtils.login(mockMvc);
-		mockMvc.perform(post("/target").contentType(json).content(mapper.writeValueAsString(target)).header(HttpHeaders.AUTHORIZATION, response.getContent()))
-				.andExpect(status().isBadRequest())
-				.andExpect(jsonPath(content).value("uid must be valid positive numbers!"));
-	}
-
-	@Test
-	public void testPostTargetInvalidUID() throws Exception {
-		Target target = new Target()
-				.setUid(-2134123112341L)
-				.setTitle("test-target-title");
-		ApiResponse response = UserUtils.login(mockMvc);
-		mockMvc.perform(post("/target")
-				.contentType(json)
-				.content(mapper.writeValueAsString(target))
-				.header(HttpHeaders.AUTHORIZATION, response.getContent()))
-				.andExpect(status().isBadRequest())
-				.andExpect(jsonPath(content).value("uid must be valid positive numbers!"));
 	}
 
 	@Test
