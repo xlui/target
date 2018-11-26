@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a href="#" @click="checkin">
+    <a @click="checkin">
       <div class="target" :style="{background: bgColor}">
         <div class="title">{{ target.title }}</div>
         <div class="desc">{{ target.description }}</div>

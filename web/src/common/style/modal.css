@@ -1,5 +1,5 @@
 .c-modal-mask {
-  position: fixed;
+  position: absolute;
   z-index: 1050;
   top: 0;
   left: 0;
@@ -17,7 +17,7 @@
 }
 
 .c-modal-container {
-  width: 40%;
+  width: 35%;
   margin: 0 auto;
   padding: 5px;
   background-color: #fff;
