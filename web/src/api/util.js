@@ -7,8 +7,8 @@ export const manage = '/manage';
 
 export const now = () => new Date(Date.now() - offset);
 
-export const adjust = (date, days) => {
-  date.setDate(date.getDate() + days);
+export const adjust = (date, months) => {
+  date.setMonth(date.getMonth() + months);
   return date;
 };
 
