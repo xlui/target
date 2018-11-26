@@ -3,6 +3,7 @@ package app.xlui.target.util;
 import app.xlui.target.entity.Target;
 import app.xlui.target.entity.User;
 import app.xlui.target.entity.enums.Gender;
+import app.xlui.target.entity.enums.Week;
 import app.xlui.target.service.CheckinService;
 import app.xlui.target.service.TargetService;
 import app.xlui.target.service.UserService;
@@ -61,7 +62,7 @@ public class FakeUtils {
 					.setEndDate(faker.date().future(20, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
 					.setCheckinStart(LocalTime.of(faker.random().nextInt(0, 11), faker.random().nextInt(60)))
 					.setCheckinEnd(LocalTime.of(faker.random().nextInt(12, 23), faker.random().nextInt(60)))
-					.setRepeat(faker.random().nextInt(0, 127).byteValue());
+					.setRepeat(faker.random().nextInt(1, 127).byteValue());
 			targetService.save(target);
 		}
 	}
@@ -79,7 +80,10 @@ public class FakeUtils {
 				LocalDate date = LocalDate.ofInstant(fakeDate.toInstant(), ZoneId.systemDefault());
 				LocalTime time = LocalTime.ofInstant(fakeTime.toInstant(), ZoneId.systemDefault());
 				fakeDateTime = LocalDateTime.of(date, time);
-			} while (checkinService.checkedSomeday(tid, fakeDateTime.toLocalDate()) || !targetService.isValidTime(tid, fakeDateTime.toLocalTime()));
+			} while (checkinService.checkedSomeday(tid, fakeDateTime.toLocalDate()) ||
+					!targetService.isValidTime(tid, fakeDateTime.toLocalTime()) ||
+					!targetService.isValidRepeat(tid, Week.toByte(Week.valueOf(fakeDateTime.getDayOfWeek().toString())))
+			);
 			checkinService.checkin(target.getUid(), tid, fakeDateTime);
 		}
 	}

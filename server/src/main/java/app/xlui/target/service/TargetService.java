@@ -62,4 +62,8 @@ public class TargetService {
 	public boolean isValidTime(long tid, LocalTime time) {
 		return targetMapper.isValidTime(tid, time) == 1;
 	}
+
+	public boolean isValidRepeat(long tid, byte repeat) {
+		return targetMapper.isValidRepeat(tid, repeat) == 1;
+	}
 }

@@ -45,4 +45,7 @@ public interface TargetMapper {
 
 	@Select("SELECT IF(COUNT(*), 1, 0) FROM t_target WHERE tid = #{tid} AND #{time} BETWEEN checkinStart AND checkinEnd")
 	int isValidTime(@Param("tid") long tid, @Param("time")LocalTime time);
+
+	@Select("SELECT IF(COUNT(*), 1, 0) FROM t_target WHERE tid = #{tid} AND #{repeat} & `repeat` = #{repeat}")
+	int isValidRepeat(@Param("tid") long tid, @Param("repeat") byte repeat);
 }
