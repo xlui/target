@@ -40,18 +40,9 @@ public class CheckinService {
 	}
 
 	public int checkin(long uid, long tid, LocalDateTime datetime) {
-		AssertUtils.requireFalse(
-				checkedSomeday(tid, datetime.toLocalDate()),
-				() -> new InvalidInputException("You have checked in today!")
-		);
-		AssertUtils.requireFalse(
-				targetService.early(tid, datetime.toLocalTime()),
-				() -> new InvalidInputException("It is too early to check in now!")
-		);
-		AssertUtils.requireFalse(
-				targetService.late(tid, datetime.toLocalTime()),
-				() -> new InvalidInputException("Oops! You have missed the last time to check in today!")
-		);
+		AssertUtils.requireFalse(checkedSomeday(tid, datetime.toLocalDate()), () -> new InvalidInputException("You have checked in today!"));
+		AssertUtils.requireFalse(targetService.early(tid, datetime.toLocalTime()), () -> new InvalidInputException("It is too early to check in now!"));
+		AssertUtils.requireFalse(targetService.late(tid, datetime.toLocalTime()), () -> new InvalidInputException("Oops! You have missed the last time to check in today!"));
 		return recordMapper.save(uid, tid, datetime);
 	}
 

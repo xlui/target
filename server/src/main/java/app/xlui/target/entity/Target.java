@@ -1,7 +1,8 @@
 package app.xlui.target.entity;
 
+import app.xlui.target.entity.enums.Week;
+
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -117,6 +118,19 @@ public class Target implements Serializable {
 
 	public Target setRepeat(byte repeat) {
 		this.repeat = repeat;
+		return this;
+	}
+
+	public Target setRepeat(Week week) {
+		this.repeat = Week.toByte(week);
+		return this;
+	}
+
+	public Target setRepeat(Week ...weeks) {
+		this.repeat = 0;
+		for (Week week : weeks) {
+			this.repeat |= Week.toByte(week);
+		}
 		return this;
 	}
 }
