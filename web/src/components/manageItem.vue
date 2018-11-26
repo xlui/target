@@ -30,12 +30,12 @@
         </el-form-item>
         <el-form-item label="Check in start">
           <el-col :span="9">
-            <el-time-picker type="fixed-time" v-model="target.checkinStart"></el-time-picker>
+            <el-time-picker type="fixed-time" value-format="HH:mm:ss" v-model="target.checkinStart"></el-time-picker>
           </el-col>
         </el-form-item>
         <el-form-item label="Check in end">
           <el-col :span="9">
-            <el-time-picker type="fixed-time" v-model="target.checkinEnd"></el-time-picker>
+            <el-time-picker type="fixed-time" value-format="HH:mm:ss" v-model="target.checkinEnd"></el-time-picker>
           </el-col>
         </el-form-item>
         <el-form-item label="Repeat">
