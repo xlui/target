@@ -51,6 +51,14 @@ public class TargetService {
 		return findByTid(tid) != null;
 	}
 
+	public boolean early(long tid, LocalTime time) {
+		return targetMapper.early(tid, time) == 1;
+	}
+
+	public boolean late(long tid, LocalTime time) {
+		return targetMapper.late(tid, time) == 1;
+	}
+
 	public boolean isValidTime(long tid, LocalTime time) {
 		return targetMapper.isValidTime(tid, time) == 1;
 	}

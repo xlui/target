@@ -37,6 +37,12 @@ public interface TargetMapper {
 	@Delete("TRUNCATE TABLE t_target")
 	void clear();
 
+	@Select("SELECT IF(COUNT(*), 1, 0) FROM t_target WHERE tid = #{tid} AND #{time} < checkinStart")
+	int early(@Param("tid") long tid, @Param("time") LocalTime time);
+
+	@Select("SELECT IF(COUNT(*), 1, 0) FROM t_target WHERE tid = #{tid} AND #{time} > checkinEnd")
+	int late(@Param("tid") long tid, @Param("time") LocalTime time);
+
 	@Select("SELECT IF(COUNT(*), 1, 0) FROM t_target WHERE tid = #{tid} AND #{time} BETWEEN checkinStart AND checkinEnd")
 	int isValidTime(@Param("tid") long tid, @Param("time")LocalTime time);
 }

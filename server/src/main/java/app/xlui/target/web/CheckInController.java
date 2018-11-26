@@ -34,10 +34,10 @@ public class CheckInController {
 	public ApiResponse checkIn(@CurrentUser User user, @PathVariable long tid, @RequestBody @Valid Record param) {
 		AssertUtils.requireEquals(user.getUid(), param.getUid(), () -> new ForbiddenException("Try to checkin for another user! Forbidden"));
 		if (checkinService.checkinedToday(tid)) {
-			return new ApiResponse(HttpStatus.NO_CONTENT, "You have checkined today!");
+			return new ApiResponse(HttpStatus.NO_CONTENT, "You have checked in today!");
 		} else {
 			checkinService.checkin(param.getUid(), tid, param.getCheckinDateTime());
-			return new ApiResponse(HttpStatus.OK, "Successfully checkined!");
+			return new ApiResponse(HttpStatus.OK, "Successfully check in!");
 		}
 	}
 
