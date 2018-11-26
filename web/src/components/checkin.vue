@@ -22,49 +22,62 @@
             <div class="desc">新增一个目标</div>
           </div>
         </a>
-        <modal v-if="showModal" @close="showModal = false">
+        <modal class="new-target" v-if="showModal" @close="showModal = false">
           <h2 slot="header">新增一个目标</h2>
           <form role="form" class="form-horizontal" slot="body">
-            <div class="form-group form-item">
+            <div class="form-group">
               <label for="title" class="col-sm-offset-1 col-sm-3">Title:</label>
               <div class="col-sm-8">
                 <input type="text" id="title" class="form-control" v-model="newTarget.title"/>
               </div>
             </div>
-            <div class="form-group form-item">
+            <div class="form-group">
               <label for="description" class="col-sm-offset-1 col-sm-3">Description:</label>
               <div class="col-sm-8">
                 <input type="text" id="description" class="form-control" v-model="newTarget.description"/>
               </div>
             </div>
-            <div class="form-group form-item">
+            <div class="form-group">
               <label for="startDate" class="col-sm-offset-1 col-sm-3">Start date:</label>
               <div class="col-sm-8">
                 <input type="date" id="startDate" class="form-control" v-model="newTarget.startDate"/>
               </div>
             </div>
-            <div class="form-group form-item">
+            <div class="form-group">
               <label for="endDate" class="col-sm-offset-1 col-sm-3">End date:</label>
               <div class="col-sm-8">
                 <input type="date" id="endDate" class="form-control" v-model="newTarget.endDate"/>
               </div>
             </div>
-            <div class="form-group form-item">
+            <div class="form-group">
               <label for="checkinStart" class="col-sm-offset-1 col-sm-3">Check in start:</label>
               <div class="col-sm-8">
                 <input type="time" id="checkinStart" class="form-control" v-model="newTarget.checkinStart"/>
               </div>
             </div>
-            <div class="form-group form-item">
+            <div class="form-group">
               <label for="checkinEnd" class="col-sm-offset-1 col-sm-3">Check in end:</label>
               <div class="col-sm-8">
                 <input type="time" id="checkinEnd" class="form-control" v-model="newTarget.checkinEnd"/>
               </div>
             </div>
-            <div class="form-group form-item">
-              <label for="repeat" class="col-sm-offset-1 col-sm-3">Repeat:</label>
+            <div class="form-group add">
+              <label class="col-sm-offset-1 col-sm-3">Repeat:</label>
               <div class="col-sm-8">
-                <input type="text" id="repeat" class="form-control" v-model="newTarget.repeat"/>
+                <input type="checkbox" id="sunday" value="Sunday" v-model="newTarget.repeat"/>
+                <label for="sunday">Sun</label>
+                <input type="checkbox" id="monday" value="Monday" v-model="newTarget.repeat"/>
+                <label for="monday">Mon</label>
+                <input type="checkbox" id="tuesday" value="Tuesday" v-model="newTarget.repeat"/>
+                <label for="tuesday">Tue</label>
+                <input type="checkbox" id="wednesday" value="Wednesday" v-model="newTarget.repeat"/>
+                <label for="wednesday">Wed</label>
+                <input type="checkbox" id="thursday" value="Thursday" v-model="newTarget.repeat"/>
+                <label for="thursday">Thu</label>
+                <input type="checkbox" id="friday" value="Friday" v-model="newTarget.repeat"/>
+                <label for="friday">Fri</label>
+                <input type="checkbox" id="saturday" value="Saturday" v-model="newTarget.repeat"/>
+                <label for="saturday">Sat</label>
               </div>
             </div>
           </form>
@@ -99,7 +112,8 @@
           startDate: extractDate(now()),
           endDate: extractDate(adjust(now(), 1)),
           checkinStart: '09:00',
-          checkinEnd: '18:00'
+          checkinEnd: '18:00',
+          repeat: []
         }
       }
     },

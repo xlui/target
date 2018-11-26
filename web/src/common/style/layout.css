@@ -121,6 +121,35 @@ form div > label {
   width: 40%;
 }
 
+.new-target .c-modal-container {
+  width: 50%;
+}
+
+.new-target .add input {
+  display: none;
+}
+
+.new-target input + label {
+  background-color: white;
+  border-radius: 5px;
+  border: 1px solid #d3d3d3;
+  margin: 0 3px;
+  padding: 5px;
+  width: 50px;
+  font-size: 14px;
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.new-target input:checked + label {
+  background-color: #eeeeee;
+}
+
+.new-target input:checked + label:after {
+  content: '\2714';
+}
+
 .footer {
   position: fixed;
   margin: auto;
