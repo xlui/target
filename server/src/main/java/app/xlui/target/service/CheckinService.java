@@ -41,7 +41,7 @@ public class CheckinService {
 		return recordOfSomeday(tid, localDate) != null;
 	}
 
-	public int checkin(long uid, long tid, LocalDateTime datetime) {
+	public void checkin(long uid, long tid, LocalDateTime datetime) {
 		// validate repeat
 		AssertUtils.requireTrue(targetService.isValidRepeat(tid, Week.toByte(Week.valueOf(datetime.getDayOfWeek().toString()))), () -> new ForbiddenException("Forbidden! You should not try checking in today!(as repeat defined)"));
 		// make sure have not checked at the request date
@@ -50,7 +50,37 @@ public class CheckinService {
 		AssertUtils.requireFalse(targetService.early(tid, datetime.toLocalTime()), () -> new InvalidInputException("It is too early to check in now!"));
 		// make sure not too late
 		AssertUtils.requireFalse(targetService.late(tid, datetime.toLocalTime()), () -> new InvalidInputException("Oops! You have missed the last time to check in today!"));
-		return recordMapper.save(uid, tid, datetime);
+		recordMapper.save(uid, tid, datetime);
+
+		// todo: run following target in thread pool.
+		// update continuous checkin data
+		var target = targetService.findByTid(tid);
+		LocalDate lastValidDate = datetime.toLocalDate().minusDays(1L);
+		while (targetService.isNotValidRepeat(tid, Week.toByte(lastValidDate.getDayOfWeek())) &&
+				lastValidDate.compareTo(target.getStartDate()) > 0) {
+			lastValidDate = lastValidDate.minusDays(1L);
+			System.out.println("checkin for tid: " + tid + " fakedate: " + lastValidDate + " is valid: " + targetService.isValidRepeat(tid, Week.toByte(lastValidDate.getDayOfWeek())));
+		}
+		// lastValidDate is between startDate and endDate
+		// this condition indicate that lastValidDate is a valid repeat
+		if (lastValidDate.compareTo(target.getStartDate()) > 0) {
+			if (checkedSomeday(tid, lastValidDate)) {
+				// todo: add a field in t_record to keep track of continuous check in days related to specify record
+				target.setContinuous(target.getContinuous() + 1);
+			} else {
+				// this checkin is the first checkin after last miss
+				target.setContinuous(1);
+			}
+		} else {
+			// this checkin is the first valid checkin of target
+			target.setContinuous(1);
+		}
+		// update max continuous
+		if (target.getMaxContinuous() < target.getContinuous()) {
+			// update max continuous
+			target.setMaxContinuous(target.getContinuous());
+		}
+		targetService.update(target);
 	}
 
 	public boolean checkinedToday(long tid) {

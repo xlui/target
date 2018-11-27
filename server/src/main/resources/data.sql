@@ -30,6 +30,8 @@ CREATE TABLE `t_target` (
   checkinStart  TIME,
   checkinEnd    TIME,
   `repeat`    TINYINT,
+  continuous  INT DEFAULT 0,
+  maxContinuous INT DEFAULT 0,
   INDEX i_target_user (uid)
 )
   ENGINE InnoDB

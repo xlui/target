@@ -39,6 +39,9 @@ public class Target implements Serializable {
 	 */
 	@Min(1)@Max(127)
 	private byte repeat;			// target repeat rule
+	// continuous
+	private int continuous;
+	private int maxContinuous;
 
 	public Target() {
 	}
@@ -134,6 +137,24 @@ public class Target implements Serializable {
 		for (Week week : weeks) {
 			this.repeat |= Week.toByte(week);
 		}
+		return this;
+	}
+
+	public int getContinuous() {
+		return continuous;
+	}
+
+	public Target setContinuous(int continuous) {
+		this.continuous = continuous;
+		return this;
+	}
+
+	public int getMaxContinuous() {
+		return maxContinuous;
+	}
+
+	public Target setMaxContinuous(int maxContinuous) {
+		this.maxContinuous = maxContinuous;
 		return this;
 	}
 }

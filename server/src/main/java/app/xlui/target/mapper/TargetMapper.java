@@ -23,12 +23,12 @@ public interface TargetMapper {
 	List<Long> findTIDs();
 
 	@Update("UPDATE t_target SET " +
-			"title=#{title},description=#{description},startDate=#{startDate},endDate=#{endDate},checkinStart=#{checkinStart},checkinEnd=#{checkinEnd},`repeat`=#{repeat} " +
+			"title=#{title},description=#{description},startDate=#{startDate},endDate=#{endDate},checkinStart=#{checkinStart},checkinEnd=#{checkinEnd},`repeat`=#{repeat},continuous=#{continuous},maxContinuous=#{maxContinuous} " +
 			"WHERE tid = #{tid}")
 	int update(Target target);
 
-	@Insert("INSERT INTO t_target(uid, title, description, startDate, endDate, checkinStart, checkinEnd, `repeat`)" +
-			"VALUES(#{uid}, #{title}, #{description}, #{startDate}, #{endDate}, #{checkinStart}, #{checkinEnd}, #{repeat})")
+	@Insert("INSERT INTO t_target(uid, title, description, startDate, endDate, checkinStart, checkinEnd, `repeat`, continuous, maxContinuous)" +
+			"VALUES(#{uid}, #{title}, #{description}, #{startDate}, #{endDate}, #{checkinStart}, #{checkinEnd}, #{repeat}, #{continuous}, #{maxContinuous})")
 	int save(Target target);
 
 	@Delete("DELETE FROM t_target WHERE tid = #{tid}")
