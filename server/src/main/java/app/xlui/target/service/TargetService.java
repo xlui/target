@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -69,5 +71,10 @@ public class TargetService {
 
 	public boolean isEnd(long tid) {
 		return targetMapper.isEnd(tid) == 1;
+	}
+
+	public long leftToDone(long tid) {
+		var target = findByTid(tid);
+		return LocalDate.now().until(target.getEndDate(), ChronoUnit.DAYS);
 	}
 }

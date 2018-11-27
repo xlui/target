@@ -33,4 +33,7 @@ public interface RecordMapper {
 
 	@Delete("TRUNCATE TABLE t_record")
 	void clearAll();
+
+	@Select("SELECT COUNT(*) FROM t_record WHERE tid = #{tid}")
+	int checkedDays(@Param("tid") long tid);
 }

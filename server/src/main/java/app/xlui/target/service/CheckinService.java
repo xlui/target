@@ -57,6 +57,10 @@ public class CheckinService {
 		return recordMapper.coundRecordToday(tid) > 0;
 	}
 
+	public int checkedDays(long tid) {
+		return recordMapper.checkedDays(tid);
+	}
+
 	public void clearAll() {
 		recordMapper.clearAll();
 	}
