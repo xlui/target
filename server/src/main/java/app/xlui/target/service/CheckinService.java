@@ -21,8 +21,8 @@ public class CheckinService {
 	@Autowired
 	private TargetService targetService;
 
-	public List<Record> recordOfThisMonth(long tid) {
-		return recordMapper.findRecordThisMonth(tid);
+	public List<Record> recordOfMonth(long tid, LocalDate date) {
+		return recordMapper.findRecordSomeMonth(tid, date);
 	}
 
 	public Record recordOfSomeday(long tid, String time) {

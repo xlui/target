@@ -5,6 +5,7 @@ import app.xlui.target.entity.Record;
 import app.xlui.target.entity.User;
 import app.xlui.target.entity.common.ApiResponse;
 import app.xlui.target.exception.specify.ForbiddenException;
+import app.xlui.target.exception.specify.InvalidInputException;
 import app.xlui.target.exception.specify.NotFoundException;
 import app.xlui.target.service.CheckinService;
 import app.xlui.target.util.AssertUtils;
@@ -14,6 +15,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @RestController
@@ -24,7 +27,7 @@ public class CheckInController {
 	// visit check-in record in this month
 	@RequestMapping(value = "/target/{tid}/checkin", method = RequestMethod.GET)
 	public ApiResponse getAllCheckinThisMonth(@PathVariable long tid) {
-		List<Record> records = checkinService.recordOfThisMonth(tid);
+		List<Record> records = checkinService.recordOfMonth(tid, LocalDate.now());
 		AssertUtils.requireNotEmpty(records, () -> new NotFoundException("No checkin records in this month"));
 		return new ApiResponse(HttpStatus.OK, records);
 	}
@@ -48,5 +51,17 @@ public class CheckInController {
 		if (record == null)
 			return new ApiResponse(HttpStatus.NOT_FOUND, "You have not checked in at " + time);
 		return new ApiResponse(HttpStatus.OK, record);
+	}
+
+	// `time` format: 2018-11-01, IOS_LOCAL_DATE
+	@RequestMapping(value = "/target/{tid}/record/{time}", method = RequestMethod.GET)
+	public ApiResponse getRecordOfMonth(@PathVariable long tid, @PathVariable String time) {
+		List<Record> records;
+		try {
+			records = checkinService.recordOfMonth(tid, LocalDate.parse(time));
+		} catch (DateTimeParseException e) {
+			throw new InvalidInputException(e.getMessage());
+		}
+		return new ApiResponse(HttpStatus.OK, records);
 	}
 }
