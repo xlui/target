@@ -52,7 +52,27 @@ public class CheckinService {
 		AssertUtils.requireFalse(targetService.late(tid, datetime.toLocalTime()), () -> new InvalidInputException("Oops! You have missed the last time to check in today!"));
 		recordMapper.save(uid, tid, datetime);
 
+		/*
 		// todo: run following target in thread pool.
+
+		// Think more about when we add ReCheckin into this system, the following code
+		// which update continuous by the following record will be strange and returns
+		// a wrong value of continuous and maxContinuous. This will happened, of course,
+		// for example, the user create a target whose repeat is set to everyday, and
+		// at Monday(it is only a example, I'll try to explain myself clearly) the user
+		// forget to check in. After well add ReCheckin(scheduling), the user choose
+		// to re-checkin for his mistake on Monday,
+		// how can we update continuous and maxContinuous properly?
+
+		// One solution I could think is to store maxContinuous in t_target and continuous
+		// in t_record, only the latest record's <code>continuous</code> is valuable. So
+		// when user re-checkin, we can first set the re-checkin record's <code>continuous
+		// </code> to <code>pre.continuous + 1</code>, and then update all the following
+		// records' <code>continuous</code> until the latest record. During this process
+		// when someone's <code>continuous</code> is greater than <code>maxContinuous</code>
+		// we update maxContinuous in t_target as well. Another way is to store max continuous
+		// in a temporal variable and update it at last.
+
 		// update continuous checkin data
 		var target = targetService.findByTid(tid);
 		LocalDate lastValidDate = datetime.toLocalDate().minusDays(1L);
@@ -81,10 +101,11 @@ public class CheckinService {
 			target.setMaxContinuous(target.getContinuous());
 		}
 		targetService.update(target);
+		*/
 	}
 
-	public boolean checkinedToday(long tid) {
-		return recordMapper.coundRecordToday(tid) > 0;
+	public boolean checkedToday(long tid) {
+		return recordMapper.countRecordToday(tid) > 0;
 	}
 
 	public int checkedDays(long tid) {

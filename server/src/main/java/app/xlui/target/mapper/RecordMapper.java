@@ -23,7 +23,7 @@ public interface RecordMapper {
 	Record findRecordSomeday(@Param("tid") long tid, @Param("checkinDate") LocalDate date);
 
 	@Select("SELECT COUNT(*) FROM t_record WHERE tid = #{tid} AND TO_DAYS(checkinDateTime) = TO_DAYS(NOW())")
-	int coundRecordToday(@Param("tid") long tid);
+	int countRecordToday(@Param("tid") long tid);
 
 	@Insert("INSERT INTO t_record(uid, tid, checkinDateTime) VALUES(#{uid}, #{tid}, #{checkinDateTime})")
 	int save(@Param("uid") long uid, @Param("tid") long tid, @Param("checkinDateTime") LocalDateTime datetime);
