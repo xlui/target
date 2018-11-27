@@ -49,6 +49,14 @@ public class CheckInController {
 		}
 	}
 
+	// re-checkin
+	@RequestMapping(value = "/target/{tid}/recheckin", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ApiResponse reCheckIn(@CurrentUser User user, @PathVariable long tid, @RequestBody @Valid Record paramRecord) {
+		String reason = AssertUtils.orElse(paramRecord.getReason(), "");
+		checkinService.recheckin(user.getUid(), tid, paramRecord.getCheckinDateTime(), reason);
+		return new ApiResponse(HttpStatus.OK, "Successfully recheckin!");
+	}
+
 	// view someday's check-in details
 	@RequestMapping(value = "/target/{tid}/checkin/{time}", method = RequestMethod.GET)
 	public ApiResponse getCheckin(@CurrentUser User user, @PathVariable long tid, @PathVariable String time) {
@@ -75,8 +83,8 @@ public class CheckInController {
 		Map<String, Object> map = new HashMap<>();
 		map.put("checked", checkinService.checkedDays(tid));
 		map.put("leftToDone", targetService.leftToDone(tid));
-		map.put("continuous", 0);
-		map.put("longestContinuous", 0);
+		map.put("continuous", "unsupported now");
+		map.put("longestContinuous", "unsupported now");
 		return new ApiResponse(HttpStatus.OK, map);
 	}
 }

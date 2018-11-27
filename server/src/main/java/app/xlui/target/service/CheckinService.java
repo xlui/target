@@ -104,6 +104,14 @@ public class CheckinService {
 		*/
 	}
 
+	public void recheckin(long uid, long tid, LocalDateTime datetime, String reason) {
+		// validate repeat
+		AssertUtils.requireTrue(targetService.isValidRepeat(tid, Week.toByte(Week.valueOf(datetime.getDayOfWeek().toString()))), () -> new ForbiddenException("Forbidden! Trying to recheckin for a invalid day!(as repeat defined)"));
+		// make sure have not checked at the request date
+		AssertUtils.requireFalse(checkedSomeday(tid, datetime.toLocalDate()), () -> new InvalidInputException("You have checked in at " + datetime.toLocalDate() + ", please don't try recheckin!"));
+		recordMapper.recheckin(uid, tid, datetime, reason);
+	}
+
 	public boolean checkedToday(long tid) {
 		return recordMapper.countRecordToday(tid) > 0;
 	}

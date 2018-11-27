@@ -38,4 +38,8 @@ public class AssertUtils {
 		if (list.size() == 0) throw supplier.get();
 		return list.size();
 	}
+
+	public static <T> T orElse(T t, T other) {
+		return t != null ? t : other;
+	}
 }

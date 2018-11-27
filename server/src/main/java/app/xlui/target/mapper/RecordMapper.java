@@ -26,7 +26,7 @@ public interface RecordMapper {
 	int countRecordToday(@Param("tid") long tid);
 
 	@Insert("INSERT INTO t_record(uid, tid, checkinDateTime) VALUES(#{uid}, #{tid}, #{checkinDateTime})")
-	int save(@Param("uid") long uid, @Param("tid") long tid, @Param("checkinDateTime") LocalDateTime datetime);
+	void save(@Param("uid") long uid, @Param("tid") long tid, @Param("checkinDateTime") LocalDateTime datetime);
 
 	@Delete("DELETE FROM t_record WHERE tid = #{tid}")
 	void clear(@Param("tid") long tid);
@@ -36,4 +36,8 @@ public interface RecordMapper {
 
 	@Select("SELECT COUNT(*) FROM t_record WHERE tid = #{tid}")
 	int checkedDays(@Param("tid") long tid);
+
+	@Insert("INSERT INTO t_record(uid, tid, checkinDateTime, reCheckIn, reason) " +
+			"VALUES(#{uid}, #{tid}, #{checkinDateTime}, TRUE, #{reason})")
+	void recheckin(@Param("uid") long uid, @Param("tid") long tid, @Param("checkinDateTime") LocalDateTime datetime, @Param("reason") String reason);
 }
