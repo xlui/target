@@ -85,35 +85,36 @@
       }
     },
     computed: {
-      showRepeat() {
-        const ret = [];
-        for (const value of weekMap) {
-          if ((value & this.target.repeat) === value) {
-            ret.push(String(value))
+      showRepeat: {
+        get() {
+          const ret = [];
+          for (const value of weekMap) {
+            if ((value & this.target.repeat) === value) {
+              ret.push(String(value))
+            }
           }
+          return ret;
+        },
+        set(value) {
+          let ret = 0;
+          for (const r of value) {
+            ret += Number(r)
+          }
+          this.target.repeat = ret;
         }
-        return ret;
       }
     },
     methods: {
       updateTarget() {
-        console.log('Calculate the number value of repeat.');
-        let ret = 0;
-        for (const r of this.showRepeat) {
-          ret += Number(r)
-        }
-        this.target.repeat = ret;
-        putTarget(this.target.tid, this.target)
-          .then(res => {
-            if (res.status === 204) {
-              alert('Successfully update target!');
-              this.showDialog = false;
-              location.href = manage
-            }
-          })
-          .catch(error => {
-            console.log('Catch error: ' + error)
-          });
+        putTarget(this.target.tid, this.target).then(res => {
+          if (res.status === 204) {
+            alert('Successfully update target!');
+            this.showDialog = false;
+            location.href = manage
+          }
+        }).catch(error => {
+          console.log('Catch error: ' + error)
+        });
       }
     },
     created() {
