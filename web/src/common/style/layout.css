@@ -116,8 +116,16 @@ form div > label {
   font-size: 18px;
 }
 
+.el-checkbox-group {
+  text-align: left;
+}
+
 .el-checkbox+.el-checkbox {
-  margin-left: 7px;
+  margin-left: 0;
+}
+
+.el-checkbox {
+  margin-right: 7px;
 }
 
 .footer {
