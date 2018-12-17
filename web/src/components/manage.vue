@@ -20,7 +20,6 @@
 </template>
 
 <script>
-  import {fetchTargets} from "../api/api";
   import {home} from "../api/util";
   import item from "./manageItem";
 
@@ -29,7 +28,11 @@
       return {
         login: false,
         username: '',
-        targets: [],
+      }
+    },
+    computed: {
+      targets() {
+        return this.$store.getters.getTargets;
       }
     },
     methods: {
@@ -44,15 +47,7 @@
       if (localStorage.token) {
         this.login = true;
         this.username = localStorage.username;
-        fetchTargets({
-          filter: false
-        }).then(res => {
-          if (res.data.status === 'OK') {
-            this.targets = res.data.content;
-          }
-        }).catch(error => {
-          console.log(error);
-        })
+        this.$store.dispatch('fetchAllTargets')
       }
     },
     components: {

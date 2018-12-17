@@ -86,7 +86,7 @@
 </template>
 
 <script>
-  import {checkToken, fetchTargets, submitLogin, submitTarget} from '../api/api';
+  import {checkToken, submitLogin, submitTarget} from '../api/api';
   import {adjust, home, now} from "../api/util";
   import item from "./checkInItem";
 
@@ -97,7 +97,6 @@
         password: 'pass',
         login: false,
         showDialog: false,
-        targets: [],
         newTarget: {
           startDate: now(),
           endDate: adjust(now(), 1),
@@ -105,6 +104,11 @@
           checkinEnd: new Date(2018, 10, 26, 18, 0),
           repeat: []
         }
+      }
+    },
+    computed: {
+      targets() {
+        return this.$store.getters.getTargets;
       }
     },
     name: 'App',
@@ -119,7 +123,7 @@
             localStorage.username = this.username;
             localStorage.token = res.data.content;
             this.login = true;
-            this.getTargets()
+            this.$store.dispatch('fetchFilterTargets')
           }
         })
       },
@@ -129,16 +133,6 @@
         this.login = false;
         location.href = home;
       },
-      getTargets() {
-        fetchTargets({
-          filter: true
-        }).then(res => {
-          if (res.data.status === 'OK') {
-            this.targets = res.data.content;
-            console.log(`Successfully fetch ${res.data.content.length} targets from server.`)
-          }
-        })
-      },
       addTarget() {
         console.log('Calculate the number value of repeat.');
         let ret = 0;
@@ -146,35 +140,32 @@
           ret += Number(r)
         }
         this.newTarget.repeat = ret;
-        submitTarget(this.newTarget)
-          .then(res => {
-            if (res.status === 201) {
-              console.log('Successfully created new target!');
-              alert(res.data.content);
-              location.href = home;
-            }
-          })
-          .catch(error => {
-            console.log('Error while adding target: ', error);
-            alert('Please choose at least one item in repeat!');
+        submitTarget(this.newTarget).then(res => {
+          if (res.status === 201) {
+            console.log('Successfully created new target!');
+            alert(res.data.content);
             location.href = home;
-          })
+          }
+        }).catch(error => {
+          console.log('Error while adding target: ', error);
+          alert('Please choose at least one item in repeat!');
+          location.href = home;
+        })
       }
     },
     created() {
       // check user login or not
       if (localStorage.token) {
-        checkToken(localStorage.token)
-          .then(res => {
-            if (res.status === 200) {
-              console.log('Token check passed.');
-              this.login = true;
-              this.getTargets()
-            }
-          })
-          .catch(error => {
-            console.log('Error while checking token: ', error);
-          });
+        // if local token is valid, use local token to fetch targets.
+        checkToken(localStorage.token).then(res => {
+          if (res.status === 200) {
+            console.log('Token check passed.');
+            this.login = true;
+            this.$store.dispatch('fetchFilterTargets')
+          }
+        }).catch(error => {
+          console.log('Error while checking token: ', error);
+        });
       }
     },
     components: {
