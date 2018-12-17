@@ -61,15 +61,43 @@
         </el-col>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button size="medium" @click="showDialog = false">关闭</el-button>
+        <el-button type="info" size="medium" @click="getStatistics">统计信息</el-button>
+        <el-button type="danger" size="medium" @click="showDialog = false">关闭</el-button>
         <el-button type="primary" size="medium" @click="updateTarget">提交</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog :title="target.title" :visible.sync="showStatistics">
+      <el-form ref="form" label-position="left" label-width="180px" style="text-align: left">
+        <el-col :offset="1" :span="23">
+          <el-form-item label="Checked">
+            <el-tag>{{ statistics.checked }}</el-tag>
+          </el-form-item>
+        </el-col>
+        <el-col :offset="1" :span="23">
+          <el-form-item label="Continuous">
+            <el-tag type="danger">{{ statistics.continuous }}</el-tag>
+          </el-form-item>
+        </el-col>
+        <el-col :offset="1" :span="23">
+          <el-form-item label="Left to Done">
+            <el-tag>{{ statistics.leftToDone }}</el-tag>
+          </el-form-item>
+        </el-col>
+        <el-col :offset="1" :span="23">
+          <el-form-item label="Longest Continuous">
+            <el-tag type="danger">{{ statistics.longestContinuous }}</el-tag>
+          </el-form-item>
+        </el-col>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="danger" size="medium" @click="showStatistics = false">关闭</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
-  import {putTarget} from "../api/api";
+  import {putTarget, fetchStatistics} from "../api/api";
   import {manage, showColor, weekMap} from "../api/util";
 
   export default {
@@ -81,7 +109,9 @@
     data() {
       return {
         showDialog: false,
+        showStatistics: false,
         bgColor: '#fff',
+        statistics: {}
       }
     },
     computed: {
@@ -115,6 +145,14 @@
         }).catch(error => {
           console.log('Catch error: ' + error)
         });
+      },
+      getStatistics() {
+        fetchStatistics(this.target.tid).then(res => {
+          if (res.data.status === 'OK') {
+            this.statistics = res.data.content;
+            this.showStatistics = true;
+          }
+        })
       }
     },
     created() {

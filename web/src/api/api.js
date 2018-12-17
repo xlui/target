@@ -71,6 +71,14 @@ export const fetchCheckIn = (tid, time) => {
   });
 };
 
+export const fetchStatistics = tid => {
+  return axios.get(`${host}/target/${tid}/statistics`, {
+    headers: {
+      Authorization: localStorage.token
+    }
+  })
+};
+
 export const checkToken = token => {
   return axios.get(`${host}/token`, {
     headers: {
