@@ -48,7 +48,7 @@
         </el-col>
         <el-col :span="23" :offset="1">
           <el-form-item label="Repeat">
-            <el-checkbox-group v-model="target.repeat">
+            <el-checkbox-group v-model="showRepeat">
               <el-checkbox label="64">Sun</el-checkbox>
               <el-checkbox label="32">Mon</el-checkbox>
               <el-checkbox label="16">Tue</el-checkbox>
@@ -84,11 +84,22 @@
         bgColor: '#fff',
       }
     },
+    computed: {
+      showRepeat() {
+        const ret = [];
+        for (const value of weekMap) {
+          if ((value & this.target.repeat) === value) {
+            ret.push(String(value))
+          }
+        }
+        return ret;
+      }
+    },
     methods: {
       updateTarget() {
         console.log('Calculate the number value of repeat.');
         let ret = 0;
-        for (const r of this.target.repeat) {
+        for (const r of this.showRepeat) {
           ret += Number(r)
         }
         this.target.repeat = ret;
@@ -103,20 +114,10 @@
           .catch(error => {
             console.log('Catch error: ' + error)
           });
-      },
-      isomerismRepeat() {
-        const ret = [];
-        for (const value of weekMap) {
-          if ((value & this.target.repeat) === value) {
-            ret.push(String(value))
-          }
-        }
-        this.target.repeat = ret;
       }
     },
     created() {
       showColor(this);
-      this.isomerismRepeat();
     }
   }
 </script>
