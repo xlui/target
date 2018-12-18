@@ -4,6 +4,7 @@ import app.xlui.target.entity.Target;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -43,8 +44,11 @@ public interface TargetMapper {
 	@Select("SELECT IF(COUNT(*), 1, 0) FROM t_target WHERE tid = #{tid} AND #{time} > checkinEnd")
 	int late(@Param("tid") long tid, @Param("time") LocalTime time);
 
+	@Select("SELECT IF(COUNT(*), 1, 0) FROM t_target WHERE tid = #{tid} AND #{date} BETWEEN startDate AND endDate")
+	int isValidDate(@Param("tid") long tid, @Param("date") LocalDate date);
+
 	@Select("SELECT IF(COUNT(*), 1, 0) FROM t_target WHERE tid = #{tid} AND #{time} BETWEEN checkinStart AND checkinEnd")
-	int isValidTime(@Param("tid") long tid, @Param("time")LocalTime time);
+	int isValidTime(@Param("tid") long tid, @Param("time") LocalTime time);
 
 	@Select("SELECT IF(COUNT(*), 1, 0) FROM t_target WHERE tid = #{tid} AND #{repeat} & `repeat` = #{repeat}")
 	int isValidRepeat(@Param("tid") long tid, @Param("repeat") byte repeat);

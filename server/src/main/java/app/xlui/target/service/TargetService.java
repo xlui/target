@@ -61,6 +61,10 @@ public class TargetService {
 		return targetMapper.late(tid, time) == 1;
 	}
 
+	public boolean isValidDate(long tid, LocalDate date) {
+		return targetMapper.isValidDate(tid, date) == 1;
+	}
+
 	public boolean isValidTime(long tid, LocalTime time) {
 		return targetMapper.isValidTime(tid, time) == 1;
 	}

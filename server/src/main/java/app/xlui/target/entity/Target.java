@@ -40,8 +40,8 @@ public class Target implements Serializable {
 	@Min(1)@Max(127)
 	private byte repeat;			// target repeat rule
 	// continuous
-	private int continuous;
-	private int maxContinuous;
+	private int continuous = 0;
+	private int maxContinuous = 0;
 
 	public Target() {
 	}

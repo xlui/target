@@ -32,7 +32,7 @@
     },
     computed: {
       targets() {
-        return this.$store.getters.getTargets;
+        return this.$store.getters.getAllTargets;
       }
     },
     methods: {

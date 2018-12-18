@@ -6,12 +6,16 @@ import * as actions from './actions';
 Vue.use(Vuex);
 
 const state = {
-  targets: []
+  filterTargets: [],
+  allTargets: []
 };
 
 const mutations = {
-  UPDATE(state, data) {
-    state.targets = data;
+  FILTER(state, data) {
+    state.filterTargets = data;
+  },
+  ALL(state, data) {
+    state.allTargets = data;
   }
 };
 

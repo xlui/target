@@ -51,7 +51,7 @@
     },
     computed: {
       targets() {
-        return this.$store.getters.getTargets;
+        return this.$store.getters.getFilterTargets;
       }
     },
     name: 'App',

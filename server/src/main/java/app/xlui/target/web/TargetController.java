@@ -32,7 +32,7 @@ public class TargetController {
 	public ApiResponse getTargets(@CurrentUser User user, @RequestParam(required = false, defaultValue = "true") boolean filter) {
 		var targets = targetService.findForUser(user);
 		if (filter) {
-			var week = Week.toByte(LocalDateTime.now().getDayOfWeek());
+			var week = Week.toByte(LocalDateTime.now());
 			targets = targets.stream()
 					.filter(target -> targetService.isValidRepeat(target.getTid(), week))
 					.collect(Collectors.toList());

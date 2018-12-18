@@ -70,22 +70,22 @@
       <el-form ref="form" label-position="left" label-width="180px" style="text-align: left">
         <el-col :offset="1" :span="23">
           <el-form-item label="Checked">
-            <el-tag>{{ statistics.checked }}</el-tag>
+            <el-tag>{{ statistics.checked }} {{ statistics.checked === 1 ? 'Day' : 'Days'}}</el-tag>
           </el-form-item>
         </el-col>
         <el-col :offset="1" :span="23">
           <el-form-item label="Continuous">
-            <el-tag type="danger">{{ statistics.continuous }}</el-tag>
+            <el-tag type="danger">{{ statistics.continuous }} {{ statistics.continuous === 1 ? 'Day' : 'Days'}}</el-tag>
           </el-form-item>
         </el-col>
         <el-col :offset="1" :span="23">
           <el-form-item label="Left to Done">
-            <el-tag>{{ statistics.leftToDone }}</el-tag>
+            <el-tag>{{ statistics.leftToDone }} {{ statistics.leftToDone === 1 ? 'Day' : 'Days'}}</el-tag>
           </el-form-item>
         </el-col>
         <el-col :offset="1" :span="23">
           <el-form-item label="Longest Continuous">
-            <el-tag type="danger">{{ statistics.longestContinuous }}</el-tag>
+            <el-tag type="danger">{{ statistics.longestContinuous }} {{ statistics.longestContinuous === 1 ? 'Day' : 'Days'}}</el-tag>
           </el-form-item>
         </el-col>
       </el-form>

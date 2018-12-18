@@ -58,8 +58,8 @@
         })
       },
     },
-    created() {
+    mounted() {
       showColor(this);
-    }
+    },
   }
 </script>

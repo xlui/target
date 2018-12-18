@@ -44,6 +44,8 @@ public class CheckinService {
 	public void checkin(long uid, long tid, LocalDateTime datetime) {
 		// validate repeat
 		AssertUtils.requireTrue(targetService.isValidRepeat(tid, Week.toByte(Week.valueOf(datetime.getDayOfWeek().toString()))), () -> new ForbiddenException("Forbidden! You should not try checking in today!(as repeat defined)"));
+		// validate checkin date
+		AssertUtils.requireTrue(targetService.isValidDate(tid, datetime.toLocalDate()), () -> new InvalidInputException("Please don't try check in at a invalid date!"));
 		// make sure have not checked at the request date
 		AssertUtils.requireFalse(checkedSomeday(tid, datetime.toLocalDate()), () -> new InvalidInputException("You have checked in today!"));
 		// make sure not too early
@@ -52,15 +54,14 @@ public class CheckinService {
 		AssertUtils.requireFalse(targetService.late(tid, datetime.toLocalTime()), () -> new InvalidInputException("Oops! You have missed the last time to check in today!"));
 		recordMapper.save(uid, tid, datetime);
 
-		/*
-		// todo: run following target in thread pool.
+		// latest consider: why we need to record continuous for rechecked in days?
 
 		// Think more about when we add ReCheckin into this system, the following code
 		// which update continuous by the following record will be strange and returns
 		// a wrong value of continuous and maxContinuous. This will happened, of course,
 		// for example, the user create a target whose repeat is set to everyday, and
 		// at Monday(it is only a example, I'll try to explain myself clearly) the user
-		// forget to check in. After well add ReCheckin(scheduling), the user choose
+		// forget to check in. After we add ReCheckin(scheduling), the user choose
 		// to re-checkin for his mistake on Monday,
 		// how can we update continuous and maxContinuous properly?
 
@@ -73,19 +74,20 @@ public class CheckinService {
 		// we update maxContinuous in t_target as well. Another way is to store max continuous
 		// in a temporal variable and update it at last.
 
+		// todo: run following target in thread pool.
+
 		// update continuous checkin data
 		var target = targetService.findByTid(tid);
 		LocalDate lastValidDate = datetime.toLocalDate().minusDays(1L);
-		while (targetService.isNotValidRepeat(tid, Week.toByte(lastValidDate.getDayOfWeek())) &&
-				lastValidDate.compareTo(target.getStartDate()) > 0) {
+		while (targetService.isNotValidRepeat(tid, Week.toByte(lastValidDate)) &&
+				lastValidDate.compareTo(target.getStartDate()) >= 0) {
 			lastValidDate = lastValidDate.minusDays(1L);
-			System.out.println("checkin for tid: " + tid + " fakedate: " + lastValidDate + " is valid: " + targetService.isValidRepeat(tid, Week.toByte(lastValidDate.getDayOfWeek())));
 		}
 		// lastValidDate is between startDate and endDate
-		// this condition indicate that lastValidDate is a valid repeat
-		if (lastValidDate.compareTo(target.getStartDate()) > 0) {
+		if (lastValidDate.compareTo(target.getStartDate()) >= 0) {
+			// this condition indicate that lastValidDate is a valid repeat
+			// and is within the valid period
 			if (checkedSomeday(tid, lastValidDate)) {
-				// todo: add a field in t_record to keep track of continuous check in days related to specify record
 				target.setContinuous(target.getContinuous() + 1);
 			} else {
 				// this checkin is the first checkin after last miss
@@ -101,12 +103,11 @@ public class CheckinService {
 			target.setMaxContinuous(target.getContinuous());
 		}
 		targetService.update(target);
-		*/
 	}
 
 	public void recheckin(long uid, long tid, LocalDateTime datetime, String reason) {
 		// validate repeat
-		AssertUtils.requireTrue(targetService.isValidRepeat(tid, Week.toByte(Week.valueOf(datetime.getDayOfWeek().toString()))), () -> new ForbiddenException("Forbidden! Trying to recheckin for a invalid day!(as repeat defined)"));
+		AssertUtils.requireTrue(targetService.isValidRepeat(tid, Week.toByte(datetime)), () -> new ForbiddenException("Forbidden! Trying to recheckin for a invalid day!(as repeat defined)"));
 		// make sure have not checked at the request date
 		AssertUtils.requireFalse(checkedSomeday(tid, datetime.toLocalDate()), () -> new InvalidInputException("You have checked in at " + datetime.toLocalDate() + ", please don't try recheckin!"));
 		recordMapper.recheckin(uid, tid, datetime, reason);
