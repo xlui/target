@@ -4,6 +4,7 @@ const offset = new Date().getTimezoneOffset() * 60000;
 
 export const home = '/';
 export const manage = '/manage';
+export const yesterday = '/yesterday';
 export const weekMap = [
   0b01000000, // Sunday
   0b00100000, // Monday
