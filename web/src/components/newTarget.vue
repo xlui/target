@@ -74,14 +74,14 @@
 
 <script>
   import {submitTarget} from "../api/api";
-  import {home, now, adjust, extractTime} from "../api/util";
+  import {adjust, extractTime, home, local} from "../api/util";
 
   export default {
     data() {
       return {
         newTarget: {
-          startDate: now(),
-          endDate: adjust(now(), 1),
+          startDate: new Date(),
+          endDate: adjust(new Date(), 1),
           checkinStart: new Date(2018, 10, 26, 9, 0),
           checkinEnd: new Date(2018, 10, 26, 18, 0),
           repeat: []
@@ -98,8 +98,8 @@
         }
         this.newTarget.repeat = ret;
         // extract time
-        this.newTarget.checkinStart = extractTime(this.newTarget.checkinStart);
-        this.newTarget.checkinEnd = extractTime(this.newTarget.checkinEnd);
+        this.newTarget.checkinStart = extractTime(local(this.newTarget.checkinStart));
+        this.newTarget.checkinEnd = extractTime(local(this.newTarget.checkinEnd));
         submitTarget(this.newTarget).then(res => {
           if (res.status === 201) {
             console.log('Successfully created new target!');

@@ -17,6 +17,8 @@ export const weekMap = [
 
 export const now = () => new Date(Date.now() - offset);
 
+export const local = date => new Date(date - offset);
+
 export const adjust = (date, months) => {
   date.setMonth(date.getMonth() + months);
   return date;
@@ -24,7 +26,7 @@ export const adjust = (date, months) => {
 
 export const extractDate = date => date.toISOString().split('T')[0];
 
-export const extractTime = date => date.toISOString().split('T')[1];
+export const extractTime = date => date.toISOString().split('T')[1].split('.')[0];
 
 export const showColor = function (vue) {
   fetchCheckIn(

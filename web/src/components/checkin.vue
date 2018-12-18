@@ -26,8 +26,8 @@
 </template>
 
 <script>
-  import {checkToken, submitLogin, submitTarget} from '../api/api';
-  import {adjust, home, now} from "../api/util";
+  import {checkToken, submitLogin} from '../api/api';
+  import {home} from "../api/util";
   import item from "./checkInItem";
   import newTarget from './newTarget';
 
