@@ -22,55 +22,63 @@
             <div class="desc">新增一个目标</div>
           </div>
         </a>
-        <el-dialog title="新增一个目标" width="40%" :visible="showDialog" @close="showDialog = false">
+        <el-dialog title="Add a new target!" width="40%" :visible="showDialog" @close="showDialog = false">
           <el-form ref="form" label-position="left" label-width="100px">
-            <el-form-item label="Title">
-              <el-col :span="18">
+            <el-col :span="23" :offset="1">
+              <el-form-item label="Title">
                 <el-input v-model="newTarget.title"></el-input>
-              </el-col>
-            </el-form-item>
-            <el-form-item label="Description">
-              <el-col :span="18">
+              </el-form-item>
+            </el-col>
+            <el-col :span="23" :offset="1">
+              <el-form-item label="Description">
                 <el-input v-model="newTarget.description"></el-input>
-              </el-col>
-            </el-form-item>
-            <el-form-item label="Start date">
-              <el-col :span="12">
-                <el-date-picker type="date" placeholder="Please choose the start date of target"
-                                v-model="newTarget.startDate"></el-date-picker>
-              </el-col>
-            </el-form-item>
-            <el-form-item label="End date">
-              <el-col :span="12">
-                <el-date-picker type="date" placeholder="Please choose the end date of target"
-                                v-model="newTarget.endDate"></el-date-picker>
-              </el-col>
-            </el-form-item>
-            <el-form-item label="Check in start">
-              <el-col :span="12">
-                <el-time-picker type="fixed-time" placeholder="Please choose the start time of check in"
-                                v-model="newTarget.checkinStart"></el-time-picker>
-              </el-col>
-            </el-form-item>
-            <el-form-item label="Check in end">
-              <el-col :span="12">
-                <el-time-picker type="fixed-time" placeholder="Please choose to end time of check in"
-                                v-model="newTarget.checkinEnd"></el-time-picker>
-              </el-col>
-            </el-form-item>
-            <el-form-item label="Repeat">
-              <el-checkbox-group v-model="newTarget.repeat">
-                <el-col :span="2">
-                  <el-checkbox label="0b01000000" class="week">Sun</el-checkbox>
+              </el-form-item>
+            </el-col>
+            <el-col :span="23" :offset="1">
+              <el-form-item label="Start date">
+                <el-col :span="6">
+                  <el-date-picker type="date" placeholder="Please choose the start date of target"
+                                  v-model="newTarget.startDate"></el-date-picker>
                 </el-col>
-                <el-checkbox label="0b00100000" class="week">Mon</el-checkbox>
-                <el-checkbox label="0b00010000" class="week">Tue</el-checkbox>
-                <el-checkbox label="0b00001000" class="week">Wed</el-checkbox>
-                <el-checkbox label="0b00000100" class="week">Thu</el-checkbox>
-                <el-checkbox label="0b00000010" class="week">Fri</el-checkbox>
-                <el-checkbox label="0b00000001" class="week">Sat</el-checkbox>
-              </el-checkbox-group>
-            </el-form-item>
+              </el-form-item>
+            </el-col>
+            <el-col :span="23" :offset="1">
+              <el-form-item label="End date">
+                <el-col :span="6">
+                  <el-date-picker type="date" placeholder="Please choose the end date of target"
+                                  v-model="newTarget.endDate"></el-date-picker>
+                </el-col>
+              </el-form-item>
+            </el-col>
+            <el-col :span="23" :offset="1">
+              <el-form-item label="Check in start">
+                <el-col :span="6">
+                  <el-time-picker type="fixed-time" placeholder="Please choose the start time of check in"
+                                  v-model="newTarget.checkinStart"></el-time-picker>
+                </el-col>
+              </el-form-item>
+            </el-col>
+            <el-col :span="23" :offset="1">
+              <el-form-item label="Check in end">
+                <el-col :span="6">
+                  <el-time-picker type="fixed-time" placeholder="Please choose to end time of check in"
+                                  v-model="newTarget.checkinEnd"></el-time-picker>
+                </el-col>
+              </el-form-item>
+            </el-col>
+            <el-col :span="23" :offset="1">
+              <el-form-item label="Repeat">
+                <el-checkbox-group v-model="newTarget.repeat">
+                  <el-checkbox label="0b01000000" class="week">Sun</el-checkbox>
+                  <el-checkbox label="0b00100000" class="week">Mon</el-checkbox>
+                  <el-checkbox label="0b00010000" class="week">Tue</el-checkbox>
+                  <el-checkbox label="0b00001000" class="week">Wed</el-checkbox>
+                  <el-checkbox label="0b00000100" class="week">Thu</el-checkbox>
+                  <el-checkbox label="0b00000010" class="week">Fri</el-checkbox>
+                  <el-checkbox label="0b00000001" class="week">Sat</el-checkbox>
+                </el-checkbox-group>
+              </el-form-item>
+            </el-col>
           </el-form>
           <span slot="footer" class="dialog-footer">
             <el-button size="medium" @click="showDialog = false">关闭</el-button>
@@ -125,6 +133,8 @@
             this.login = true;
             this.$store.dispatch('fetchFilterTargets')
           }
+        }).catch(error => {
+          alert('Failed to login. Please check the server is up or your network is available or not?');
         })
       },
       logout() {
@@ -165,6 +175,7 @@
           }
         }).catch(error => {
           console.log('Error while checking token: ', error);
+          localStorage.token = '';
         });
       }
     },
