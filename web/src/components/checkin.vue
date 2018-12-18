@@ -2,12 +2,22 @@
   <div class="main">
     <h1 class="main-title">Your targets</h1>
 
-    <div class="login">
-      <el-button type="primary" size="medium" v-if="!login" @click="postLogin">登录</el-button>
+    <div class="navigate">
+      <template v-if="login">
+        <el-tooltip effect="dark" placement="top" content="Nonsupport now!">
+          <el-button type="success" size="medium"
+                     class="left">Yesterday
+          </el-button>
+        </el-tooltip>
+        <el-button type="primary" size="medium"
+                   class="left"
+                   @click="$router.push('/manage')">Target Management
+        </el-button>
+      </template>
+      <el-button type="primary" size="medium" class="right" v-if="!login" @click="postLogin">登录</el-button>
       <template v-else>
-        <span class="statement">Hello, {{ username }}</span>
-        <el-button type="primary" size="medium" class="item" @click="$router.push('/manage')">目标管理</el-button>
-        <el-button type="danger" size="medium" class="item" @click="logout">注销</el-button>
+        <span class="statement right">Hello, {{ username }}</span>
+        <el-button type="danger" size="medium" class="right" @click="logout">注销</el-button>
       </template>
     </div>
 
@@ -18,7 +28,7 @@
         </template>
         <new-target></new-target>
       </div>
-      <div class="logout" v-else>
+      <div class="nologin" v-else>
         Welcome, new user!!
       </div>
     </div>

@@ -1,10 +1,10 @@
 <template>
   <div class="main">
     <h1 class="main-title">This is the manage page</h1>
-    <div class="login">
+    <div class="navigate">
       <template v-if="login">
-        <span class="statement">Hello, {{ username }}</span>
         <el-button type="primary" size="medium" class="item" @click="$router.push('/')">回到首页</el-button>
+        <span class="statement">Hello, {{ username }}</span>
         <el-button type="danger" size="medium" class="item" @click="logout">注销</el-button>
       </template>
     </div>

@@ -86,22 +86,12 @@ form div > label {
   -webkit-box-orient: vertical
 }
 
-.login {
+.navigate {
   margin: 7px;
   text-align: right;
-  display: block;
 }
 
-.login > a {
-  font-size: 1.3em;
-  margin-right: 50px
-}
-
-.login .item {
-  margin-left: 5px;
-}
-
-.logout {
+.nologin {
   margin: 10px;
   padding: 20px;
   font-size: 22px;
