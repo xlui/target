@@ -8,6 +8,7 @@ import app.xlui.target.service.CheckinService;
 import app.xlui.target.service.TargetService;
 import app.xlui.target.service.UserService;
 import com.github.javafaker.Faker;
+import me.tongfei.progressbar.ProgressBar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +20,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 @Component
 public class FakeUtils {
@@ -39,7 +41,7 @@ public class FakeUtils {
 	}
 
 	public static void fakeUser(int count) {
-		for (int i = 0; i < count; i++) {
+		ProgressBar.wrap(Stream.iterate(0, i -> i + 1).limit(count), "Fake User").forEach(i -> {
 			User user = new User()
 					.setNickname(faker.funnyName().name())
 					.setGender(faker.bool().bool() ? Gender.MAN : Gender.WOMAN)
@@ -47,13 +49,13 @@ public class FakeUtils {
 					.setUsername(faker.internet().emailAddress())
 					.setPassword(faker.internet().password());
 			userService.save(user);
-		}
+		});
 	}
 
 	public static void fakeTarget(int count) {
 		targetService.clear();
 		List<Long> uids = userService.findUIDs();
-		for (int i = 0; i < count; i++) {
+		ProgressBar.wrap(Stream.iterate(0, i -> i + 1).limit(count), "Fake Target").forEach(i -> {
 			Target target = new Target()
 					.setUid(uids.get(faker.random().nextInt(uids.size())))
 					.setTitle(faker.book().title())
@@ -64,13 +66,13 @@ public class FakeUtils {
 					.setCheckinEnd(LocalTime.of(faker.random().nextInt(12, 23), faker.random().nextInt(60)))
 					.setRepeat(faker.random().nextInt(63, 127).byteValue());
 			targetService.save(target);
-		}
+		});
 	}
 
 	public static void fakeRecord(int count) {
 		checkinService.clearAll();
 		List<Long> tids = targetService.findTids();
-		for (int i = 0; i < count; i++) {
+		ProgressBar.wrap(Stream.iterate(0, i -> i + 1).limit(count), "Fake Record").forEach(i -> {
 			long tid = tids.get(faker.random().nextInt(tids.size()));
 			Target target = targetService.findByTid(tid);
 			LocalDateTime fakeDateTime = null;
@@ -85,6 +87,6 @@ public class FakeUtils {
 					!targetService.isValidRepeat(tid, Week.toByte(Week.valueOf(fakeDateTime.getDayOfWeek().toString())))
 			);
 			checkinService.checkin(target.getUid(), tid, fakeDateTime);
-		}
+		});
 	}
 }

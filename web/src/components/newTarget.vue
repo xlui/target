@@ -3,7 +3,7 @@
     <a href="#" @click="showDialog = true">
       <div class="target">
         <div class="title">New</div>
-        <div class="desc">新增一个目标</div>
+        <div class="desc">Add a new target!</div>
       </div>
     </a>
     <el-dialog title="Add a new target!" width="40%" :visible="showDialog" @close="showDialog = false">

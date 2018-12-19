@@ -1,5 +1,6 @@
 package app.xlui.target.service;
 
+import app.xlui.target.config.Constant;
 import app.xlui.target.entity.common.Mail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,16 +18,13 @@ public class MailService {
 	private JavaMailSender mailSender;
 	@Value("${spring.mail.username}")
 	private String from;
-	private final String mailSubject = "Password Reset";
-	private final String contentTemplate = "你好，user。你的密码重置链接：http://localhost:8080/reset?token=tokenplaceholder";
-
 
 	public void sendSimpleMail(Mail mail) {
 		SimpleMailMessage message = new SimpleMailMessage();
 		message.setFrom(from);
 		message.setTo(mail.getReceiver());
-		message.setSubject(mailSubject);
-		message.setText(contentTemplate.replace("user", mail.getReceiver()).replace("tokenplaceholder", mail.getToken()));
+		message.setSubject(Constant.mailSubject);
+		message.setText(Constant.mailContentTemplate.replace("user", mail.getReceiver()).replace("tokenplaceholder", mail.getToken()));
 		try {
 			mailSender.send(message);
 			System.out.println("邮件已发送给 " + mail.getReceiver());
@@ -41,8 +39,8 @@ public class MailService {
 			MimeMessageHelper helper = new MimeMessageHelper(message, true);
 			helper.setFrom(from);
 			helper.setTo(mail.getReceiver());
-			helper.setSubject(mailSubject);
-			helper.setText(contentTemplate, true);
+			helper.setSubject(Constant.mailSubject);
+			helper.setText(Constant.mailContentTemplate, true);
 			mailSender.send(message);
 			System.out.println("成功发送 HTML 邮件");
 		} catch (MessagingException e) {

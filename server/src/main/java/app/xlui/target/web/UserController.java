@@ -2,9 +2,9 @@ package app.xlui.target.web;
 
 import app.xlui.target.annotation.CurrentUser;
 import app.xlui.target.config.Constant;
+import app.xlui.target.entity.User;
 import app.xlui.target.entity.common.ApiResponse;
 import app.xlui.target.entity.common.Mail;
-import app.xlui.target.entity.User;
 import app.xlui.target.exception.common.ServerError;
 import app.xlui.target.exception.specify.InvalidInputException;
 import app.xlui.target.service.RabbitService;
@@ -67,6 +67,7 @@ public class UserController {
 		String username = AssertUtils.requireValid(paramUser.getUsername(), () -> new InvalidInputException("Username is invalid!"));
 		AssertUtils.requireTrue(userService.exist(username), () -> new InvalidInputException("The account you try to reset doesn't exist!"));
 		if (paramToken == null) {
+			// first generate token and send a mail to related account.
 			String token = UUID.randomUUID().toString();
 			String current = Constant.currentTime();
 			redisService.set(token, username, Constant.forgetTokenTimeout);
