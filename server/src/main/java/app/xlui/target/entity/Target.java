@@ -7,6 +7,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 /**
@@ -45,6 +46,8 @@ public class Target implements Serializable {
 	// continuous
 	private int continuous = 0;
 	private int maxContinuous = 0;
+	// created
+	private LocalDateTime created;
 
 	public Target() {
 	}
@@ -158,6 +161,15 @@ public class Target implements Serializable {
 
 	public Target setMaxContinuous(int maxContinuous) {
 		this.maxContinuous = maxContinuous;
+		return this;
+	}
+
+	public LocalDateTime getCreated() {
+		return created;
+	}
+
+	public Target setCreated(LocalDateTime created) {
+		this.created = created;
 		return this;
 	}
 }

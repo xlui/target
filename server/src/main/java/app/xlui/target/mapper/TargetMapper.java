@@ -31,8 +31,8 @@ public interface TargetMapper {
 			"WHERE tid = #{tid}")
 	int update(Target target);
 
-	@Insert("INSERT INTO t_target(uid, title, description, startDate, endDate, checkinStart, checkinEnd, `repeat`, continuous, maxContinuous)" +
-			"VALUES(#{uid}, #{title}, #{description}, #{startDate}, #{endDate}, #{checkinStart}, #{checkinEnd}, #{repeat}, #{continuous}, #{maxContinuous})")
+	@Insert("INSERT INTO t_target(uid, title, description, startDate, endDate, checkinStart, checkinEnd, `repeat`, continuous, maxContinuous, created)" +
+			"VALUES(#{uid}, #{title}, #{description}, #{startDate}, #{endDate}, #{checkinStart}, #{checkinEnd}, #{repeat}, #{continuous}, #{maxContinuous}, #{created})")
 	int save(Target target);
 
 	@Delete("DELETE FROM t_target WHERE tid = #{tid}")

@@ -1,9 +1,9 @@
 package app.xlui.target.web;
 
 import app.xlui.target.annotation.CurrentUser;
-import app.xlui.target.entity.common.ApiResponse;
 import app.xlui.target.entity.Target;
 import app.xlui.target.entity.User;
+import app.xlui.target.entity.common.ApiResponse;
 import app.xlui.target.entity.enums.Week;
 import app.xlui.target.exception.common.ServerError;
 import app.xlui.target.exception.specify.InvalidInputException;
@@ -54,7 +54,8 @@ public class TargetController {
 				.setEndDate(param.getEndDate())
 				.setCheckinStart(param.getCheckinStart())
 				.setCheckinEnd(param.getCheckinEnd())
-				.setRepeat(param.getRepeat());
+				.setRepeat(param.getRepeat())
+				.setCreated(LocalDateTime.now());
 		AssertUtils.requireNotZero(targetService.save(target), () -> new ServerError("Failed to save target! Unknown exception occurs, please view server log."));
 		return new ApiResponse(HttpStatus.CREATED, "Successfully add a new target!");
 	}

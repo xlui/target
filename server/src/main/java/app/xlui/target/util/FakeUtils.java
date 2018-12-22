@@ -68,6 +68,13 @@ public class FakeUtils {
 					.setCheckinStart(LocalTime.of(faker.random().nextInt(0, 11), faker.random().nextInt(60)))
 					.setCheckinEnd(LocalTime.of(faker.random().nextInt(12, 23), faker.random().nextInt(60)))
 					.setRepeat(faker.random().nextInt(63, 127).byteValue());
+			target.setCreated(
+					faker.date()
+							.past(10, TimeUnit.DAYS, java.sql.Date.valueOf(target.getStartDate()))
+							.toInstant()
+							.atZone(ZoneId.systemDefault())
+							.toLocalDateTime()
+			);
 			targetService.save(target);
 		});
 	}

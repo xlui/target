@@ -32,6 +32,7 @@ CREATE TABLE `t_target` (
   `repeat`    TINYINT,
   continuous  INT DEFAULT 0,
   maxContinuous INT DEFAULT 0,
+  created     DATETIME,
   INDEX i_target_user (uid)
 )
   ENGINE InnoDB
