@@ -36,6 +36,10 @@ public class CheckinService {
 		return recordMapper.findRecordSomeday(tid, localDate);
 	}
 
+	public List<Record> recordOfUser(long uid) {
+		return recordMapper.findByUid(uid);
+	}
+
 	public boolean checkedSomeday(long tid, String time) {
 		return recordOfSomeday(tid, time) != null;
 	}

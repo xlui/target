@@ -17,6 +17,9 @@ public interface RecordMapper {
 	@Select("SELECT * FROM t_record WHERE uid = #{uid} and tid = #{tid}")
 	List<Record> findByUidAndTid(@Param("uid") long uid, @Param("tid") long tid);
 
+	@Select("SELECT * FROM t_record WHERE uid = #{uid}")
+	List<Record> findByUid(@Param("uid") long uid);
+
 	@Select("SELECT * FROM t_record AS r " +
 			"WHERE r.tid = #{tid} AND " +
 			"DATE_FORMAT(r.checkinDateTime, '%Y%m') = DATE_FORMAT(#{date}, '%Y%m')")

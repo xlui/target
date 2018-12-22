@@ -2,14 +2,14 @@ package app.xlui.target.web;
 
 import app.xlui.target.annotation.CurrentUser;
 import app.xlui.target.config.Constant;
+import app.xlui.target.entity.Record;
+import app.xlui.target.entity.Target;
 import app.xlui.target.entity.User;
 import app.xlui.target.entity.common.ApiResponse;
 import app.xlui.target.entity.common.Mail;
 import app.xlui.target.exception.common.ServerError;
 import app.xlui.target.exception.specify.InvalidInputException;
-import app.xlui.target.service.RabbitService;
-import app.xlui.target.service.RedisService;
-import app.xlui.target.service.UserService;
+import app.xlui.target.service.*;
 import app.xlui.target.util.AssertUtils;
 import app.xlui.target.util.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.UUID;
+import java.time.LocalDateTime;
+import java.util.*;
 
 /**
  * User controller.
@@ -30,6 +31,10 @@ import java.util.UUID;
 public class UserController {
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private TargetService targetService;
+	@Autowired
+	private CheckinService checkinService;
 	@Autowired
 	private RedisService redisService;
 	@Autowired
@@ -92,5 +97,33 @@ public class UserController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		User user = (User) authentication.getPrincipal();
 		return new ApiResponse(HttpStatus.OK, user.getUid());
+	}
+
+	@RequestMapping(value = "/travel", method = RequestMethod.GET)
+	public ApiResponse travel(@CurrentUser User user) {
+		PriorityQueue<Map.Entry<LocalDateTime, String>> queue = new PriorityQueue<>(Map.Entry.comparingByKey());
+		// user
+		queue.add(new AbstractMap.SimpleEntry<>(user.getRegistered(), "Register"));
+		// targets
+		var targets = targetService.findForUser(user);
+		var map = new HashMap<>();
+		for (Target target : targets) {
+			queue.add(new AbstractMap.SimpleEntry<>(target.getCreated(), "Create new target: " + target.getTitle()));
+			map.put(target.getTid(), target.getTitle());
+		}
+		// records
+		var records = checkinService.recordOfUser(user.getUid());
+		for (Record record : records) {
+			var datetime = record.getCheckinDateTime();
+			queue.add(new AbstractMap.SimpleEntry<>(
+					datetime, "Checkin: " + map.get(record.getTid()) + "    " + datetime.toLocalTime()));
+		}
+		// output
+		List<String> result = new ArrayList<>();
+		while (!queue.isEmpty()) {
+			var entity = queue.poll();
+			result.add(entity.getKey().toLocalDate() + "    " + entity.getValue() + "    " + entity.getKey().toLocalTime());
+		}
+		return new ApiResponse(HttpStatus.OK, result);
 	}
 }
