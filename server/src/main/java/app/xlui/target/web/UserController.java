@@ -23,6 +23,9 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
+/**
+ * User controller.
+ */
 @RestController
 public class UserController {
 	@Autowired

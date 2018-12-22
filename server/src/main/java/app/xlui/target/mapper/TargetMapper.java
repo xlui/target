@@ -8,6 +8,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+/**
+ * Mybatis mapper.
+ */
 @Mapper
 @Repository
 public interface TargetMapper {

@@ -5,6 +5,9 @@ import app.xlui.target.exception.common.AssertException;
 import java.util.List;
 import java.util.function.Supplier;
 
+/**
+ * Assert utils. Using java 8 lambda api for easy asserts.
+ */
 @SuppressWarnings("UnusedReturnValue")
 public class AssertUtils {
 	public static <T> T requireNotNull(T obj, Supplier<AssertException> supplier) {

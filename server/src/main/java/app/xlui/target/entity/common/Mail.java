@@ -2,6 +2,10 @@ package app.xlui.target.entity.common;
 
 import java.io.Serializable;
 
+/**
+ * Mail entity stores the details of a mail, and will be sent from rabbitmq sender
+ * to rabbitmq receiver.(In order to send more information)
+ */
 public class Mail implements Serializable {
 	private static final long serialVersionUID = -6953925136327766280L;
 

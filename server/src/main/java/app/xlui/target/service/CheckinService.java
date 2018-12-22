@@ -14,6 +14,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+/**
+ * Checkin service. This service provides api for checkin and related operations.
+ */
 @Service
 public class CheckinService {
 	@Autowired

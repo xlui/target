@@ -9,6 +9,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
+/**
+ * Web Mvc Configurations. Thanks to Java 1.8, now {@link WebMvcConfigurer} has its
+ * default implements. So we needn't to inherit
+ * {@link org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter}
+ * which is now being marked as deprecated.
+ *
+ * In this configuration class, we add our argument resolver for
+ * {@link app.xlui.target.annotation.CurrentUser}, and configure a global cors strategy.
+ */
 @Configuration
 public class WebMvcConfiguration implements WebMvcConfigurer {
 	@Autowired

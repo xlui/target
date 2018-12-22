@@ -5,6 +5,9 @@ import javax.validation.constraints.Positive;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * Record entity, stores the check in record.
+ */
 public class Record implements Serializable {
 	private static final long serialVersionUID = 4360591147896856267L;
 

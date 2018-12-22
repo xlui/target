@@ -12,6 +12,9 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+/**
+ * Target server. This service provides api for target operations.
+ */
 @Service
 public class TargetService {
 	@Autowired

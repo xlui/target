@@ -6,6 +6,10 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * Rabbitmq service. This server provides api for send message({@code Object}) to
+ * rabbitmq.
+ */
 @Service
 public class RabbitService {
 	@Autowired

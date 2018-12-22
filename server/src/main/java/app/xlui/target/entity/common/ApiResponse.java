@@ -3,7 +3,7 @@ package app.xlui.target.entity.common;
 import org.springframework.http.HttpStatus;
 
 /**
- * Common response.
+ * Common response of web controller method.
  */
 public class ApiResponse {
 	private HttpStatus status;

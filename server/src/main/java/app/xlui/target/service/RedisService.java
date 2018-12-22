@@ -6,6 +6,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 
+/**
+ * Redis service. This server provides apis for operating redis. Actually is a
+ * simple package of native apis.
+ */
 @Service
 public class RedisService {
 	@Autowired

@@ -8,6 +8,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Mybatis mapper. Actually this is the final of our service.
+ */
 @Mapper
 @Repository
 public interface RecordMapper {

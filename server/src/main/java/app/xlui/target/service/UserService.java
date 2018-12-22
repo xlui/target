@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * User service. This service provides api for user operations.
+ */
 @Service
 public class UserService {
 	private final UserMapper userMapper;

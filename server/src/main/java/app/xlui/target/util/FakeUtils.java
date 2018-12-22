@@ -22,6 +22,9 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
+/**
+ * Generate fake data.
+ */
 @Component
 public class FakeUtils {
 	private static Faker faker = new Faker();

@@ -25,7 +25,15 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 处理 Token 认证
+ * Token authentication filter.
+ *
+ * First get username from token. And then query user entity from database. When
+ * we have the user entity, do {@link JwtUtils#verify(String token, String username, String password)}.
+ *
+ * After passing the verification, we store user instance reference into
+ * {@link SecurityContextHolder} for {@link app.xlui.target.annotation.CurrentUser}.
+ *
+ * @see app.xlui.target.annotation.CurrentUserMethodArgumentResolver
  */
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {

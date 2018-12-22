@@ -9,6 +9,9 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+/**
+ * Target entity
+ */
 public class Target implements Serializable {
 	private static final long serialVersionUID = 3986690845367985790L;
 

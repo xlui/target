@@ -2,6 +2,9 @@ package app.xlui.target.entity.enums;
 
 import java.util.Arrays;
 
+/**
+ * Gender of users.
+ */
 public enum Gender {
 	MAN(1), WOMAN(-1), UNKNOWN(0);
 

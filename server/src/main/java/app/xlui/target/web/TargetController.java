@@ -20,6 +20,9 @@ import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
+/**
+ * Target controller.
+ */
 @RestController
 public class TargetController {
 	@Autowired

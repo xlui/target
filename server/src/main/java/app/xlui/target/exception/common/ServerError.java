@@ -1,5 +1,8 @@
 package app.xlui.target.exception.common;
 
+/**
+ * Another skeleton for unchecked exceptions.
+ */
 public class ServerError extends RuntimeException {
 	public ServerError() {
 		super();

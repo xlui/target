@@ -1,5 +1,9 @@
 package app.xlui.target.exception.common;
 
+/**
+ * Common exceptions, provide a abstract interface for method arguments. In order
+ * to serve mode universal exception logical
+ */
 public class AssertException extends RuntimeException {
 	public AssertException() {
 		super();

@@ -7,6 +7,9 @@ import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+/**
+ * User entity.
+ */
 public class User implements Serializable {
 	private static final long serialVersionUID = -7393308506048597682L;
 

@@ -3,6 +3,10 @@ package app.xlui.target.entity.enums;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+/**
+ * A model for `repeat` of target. This application supports `repeat` targets.
+ * For a target, you can specify when you want to count the target of a week.
+ */
 public enum Week {
 	SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY;
 

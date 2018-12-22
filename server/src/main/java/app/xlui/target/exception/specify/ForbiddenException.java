@@ -2,6 +2,9 @@ package app.xlui.target.exception.specify;
 
 import app.xlui.target.exception.common.AssertException;
 
+/**
+ * Forbidden exception, a subclass of AssertException. Always return 403.
+ */
 public class ForbiddenException extends AssertException {
 	public ForbiddenException() {
 		super();

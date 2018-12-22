@@ -4,6 +4,9 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Global constants. In order to avoid hard-coded.
+ */
 public interface Constant {
 	String host = "http://localhost:8080";
 	Duration loginTokenExpire = Duration.ofHours(24);
@@ -16,10 +19,16 @@ public interface Constant {
 			Constant.host + "/reset?token=tokenplaceholder 。" +
 			"此链接 " + Constant.forgetTokenTimeout.toMinutes() + " 分钟内有效。";
 
+	/**
+	 * Return the timestamp when token expires.
+	 */
 	static long expire() {
 		return System.currentTimeMillis() + loginTokenExpire.toMillis();
 	}
 
+	/**
+	 * Return current time in specify format.
+	 */
 	static String currentTime() {
 		return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 	}

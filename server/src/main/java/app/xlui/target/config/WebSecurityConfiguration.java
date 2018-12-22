@@ -9,6 +9,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * Configuration class for spring security. This configuration controls web endpoints'
+ * access rights and filters. Overall, this configuration is related to the web app's
+ * security, just as its name.
+ */
 @Configuration
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired

@@ -2,6 +2,9 @@ package app.xlui.target.exception.specify;
 
 import app.xlui.target.exception.common.AssertException;
 
+/**
+ * Not found exception, a subclass of AssertException. Always return 404.
+ */
 public class NotFoundException extends AssertException {
 	public NotFoundException() {
 		super();

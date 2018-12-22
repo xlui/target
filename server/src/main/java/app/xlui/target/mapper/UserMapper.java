@@ -6,6 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Mybatis mapper.
+ */
 @Mapper
 @Repository
 public interface UserMapper {

@@ -2,6 +2,9 @@ package app.xlui.target.exception.specify;
 
 import app.xlui.target.exception.common.AssertException;
 
+/**
+ * Null input exception, a subclass of AssertException. Always return 401.
+ */
 public class NullInputException extends AssertException {
 	public NullInputException() {
 		super();

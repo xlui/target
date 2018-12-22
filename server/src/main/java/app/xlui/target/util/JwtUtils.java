@@ -8,6 +8,9 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 
 import java.util.Date;
 
+/**
+ * Generate and verify token.
+ */
 public class JwtUtils {
 	public static String generate(String username, String password) {
 		Algorithm algorithm = Algorithm.HMAC256(password);

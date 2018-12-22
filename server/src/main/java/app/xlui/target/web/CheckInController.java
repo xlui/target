@@ -22,6 +22,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Check in controller.
+ */
 @RestController
 public class CheckInController {
 	@Autowired

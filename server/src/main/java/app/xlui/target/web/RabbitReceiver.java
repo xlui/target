@@ -5,6 +5,9 @@ import app.xlui.target.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * Receive message from rabbitmq and resolve.
+ */
 @Component
 public class RabbitReceiver {
 	@Autowired

@@ -20,8 +20,12 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import java.util.List;
 
+/**
+ * Controller advice. Resolve all specified exceptions thrown in controller methods.
+ */
 @RestControllerAdvice
 public class GlobalControllerAdvice {
+	// define a variable in property file to show exception log or not.
 	@Value("${target.printStackTrace}")
 	private boolean printStackTrace;
 
@@ -36,6 +40,11 @@ public class GlobalControllerAdvice {
 		return new ApiResponse(HttpStatus.BAD_REQUEST, e.getMessage());
 	}
 
+	/**
+	 * Throw {@link MethodArgumentNotValidException} when validation on an argument
+	 * annotated with {@code @Valid} fails. The default output is different from
+	 * {@link ApiResponse}, so package it here.
+	 */
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ApiResponse validateFailed(MethodArgumentNotValidException e) {

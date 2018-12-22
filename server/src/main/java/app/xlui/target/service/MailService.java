@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
+/**
+ * Mail service. This service provides api for sending mail.
+ */
 @Service
 public class MailService {
 	@Autowired
