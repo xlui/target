@@ -48,7 +48,7 @@ public class UserService {
 	}
 
 	public boolean register(User user) {
-		return userMapper.save(user) > 0;
+		return save(user) > 0;
 	}
 
 	public boolean login(String username, String password) {

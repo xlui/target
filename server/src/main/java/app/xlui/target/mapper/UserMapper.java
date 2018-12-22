@@ -24,7 +24,8 @@ public interface UserMapper {
 	@Update("UPDATE t_user SET password = #{password} WHERE username = #{username}")
 	int updatePassword(@Param("username") String username, @Param("password") String password);
 
-	@Insert("INSERT INTO t_user(nickname, gender, birthday, username, password) VALUES(#{nickname}, #{gender}, #{birthday}, #{username}, #{password})")
+	@Insert("INSERT INTO t_user(nickname, gender, birthday, username, password, registered) " +
+			"VALUES(#{nickname}, #{gender}, #{birthday}, #{username}, #{password}, #{registered})")
 	int save(User user);
 
 	@Delete("DELETE FROM t_user WHERE uid = #{uid}")

@@ -50,7 +50,14 @@ public class FakeUtils {
 					.setGender(faker.bool().bool() ? Gender.MAN : Gender.WOMAN)
 					.setBirthday(LocalDate.parse(faker.date().birthday().toString()))
 					.setUsername(faker.internet().emailAddress())
-					.setPassword(faker.internet().password());
+					.setPassword(faker.internet().password())
+					.setRegistered(
+							faker.date()
+									.between(faker.date().past(20, TimeUnit.DAYS),
+											faker.date().future(20, TimeUnit.DAYS))
+									.toInstant()
+									.atZone(ZoneId.systemDefault())
+									.toLocalDateTime());
 			userService.save(user);
 		});
 	}

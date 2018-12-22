@@ -6,6 +6,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * User entity.
@@ -24,6 +25,7 @@ public class User implements Serializable {
 	@NotBlank(message = "Password should be valid!(not null, not empty, not blank)")
 	private String password;		// 密码
 //	private String salt;			// 密码的盐
+	private LocalDateTime registered;
 
 	public User() {
 	}
@@ -33,6 +35,7 @@ public class User implements Serializable {
 		this.password = password;
 		this.nickname = username;
 		this.gender = Gender.UNKNOWN;
+		this.registered = LocalDateTime.now();
 	}
 
 	@Override
@@ -91,6 +94,15 @@ public class User implements Serializable {
 
 	public User setPassword(String password) {
 		this.password = password;
+		return this;
+	}
+
+	public LocalDateTime getRegistered() {
+		return registered;
+	}
+
+	public User setRegistered(LocalDateTime registered) {
+		this.registered = registered;
 		return this;
 	}
 }
