@@ -99,6 +99,9 @@ public class UserController {
 		return new ApiResponse(HttpStatus.OK, user.getUid());
 	}
 
+	/**
+	 * todo: this API cost a lot.
+	 */
 	@RequestMapping(value = "/travel", method = RequestMethod.GET)
 	public ApiResponse travel(@CurrentUser User user) {
 		PriorityQueue<Map.Entry<LocalDateTime, String>> queue = new PriorityQueue<>(Map.Entry.comparingByKey());
@@ -119,7 +122,7 @@ public class UserController {
 					datetime, "Checkin: " + map.get(record.getTid()) + "    " + datetime.toLocalTime()));
 		}
 		// output
-		List<String> result = new ArrayList<>();
+		List<String> result = new ArrayList<>(queue.size());
 		while (!queue.isEmpty()) {
 			var entity = queue.poll();
 			result.add(entity.getKey().toLocalDate() + "    " + entity.getValue() + "    " + entity.getKey().toLocalTime());
