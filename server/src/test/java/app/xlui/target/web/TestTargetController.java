@@ -29,9 +29,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 public class TestTargetController {
 	private MockMvc mockMvc;
-	private MediaType json = MediaType.APPLICATION_JSON_UTF8;
-	private ObjectMapper mapper = new ObjectMapper();
+	private ObjectMapper mapper = UserUtils.mapper;
+	private MediaType json = UserUtils.json;
 	private String content = "$.content";
+
 	@Autowired
 	private WebApplicationContext wac;
 
