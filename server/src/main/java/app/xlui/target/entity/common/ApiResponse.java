@@ -17,6 +17,10 @@ public class ApiResponse {
 		this.content = content;
 	}
 
+	public static ApiResponse of(HttpStatus status, Object content) {
+		return new ApiResponse(status, content);
+	}
+
 	@Override
 	public String toString() {
 		return "ApiResponse[status = " + status + ", content = " + content + "]";

@@ -66,7 +66,7 @@
         <el-button type="primary" size="medium" @click="updateTarget">提交</el-button>
       </span>
     </el-dialog>
-    <el-dialog :title="target.title" :visible.sync="showStatistics">
+    <el-dialog :title="target.title" :visible.sync="showStatistics" width="25%">
       <el-form ref="form" label-position="left" label-width="180px" style="text-align: left">
         <el-col :offset="1" :span="23">
           <el-form-item label="Checked">

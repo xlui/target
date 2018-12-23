@@ -46,7 +46,7 @@ public class UserController {
 		AssertUtils.requireFalse(userService.exist(username), () -> new InvalidInputException("Username has been registered! Please choose another."));
 		User user = new User(username, password);
 		if (userService.register(user)) {
-			return new ApiResponse(HttpStatus.CREATED, "Successfully register! Welcome!");
+			return ApiResponse.of(HttpStatus.CREATED, "Successfully register! Welcome!");
 		} else {
 			throw new ServerError("Oops! An error occurs while registering...");
 		}
@@ -56,7 +56,7 @@ public class UserController {
 	public ApiResponse login(@RequestBody @Valid User paramUser) {
 		String username = paramUser.getUsername(), password = paramUser.getPassword();
 		if (userService.login(username, password)) {
-			return new ApiResponse(HttpStatus.OK, JwtUtils.generate(username, password));
+			return ApiResponse.of(HttpStatus.OK, JwtUtils.generate(username, password));
 		} else {
 			throw new InvalidInputException("Username or password is wrong!");
 		}
@@ -67,7 +67,7 @@ public class UserController {
 		String username = paramUser.getUsername(), password = paramUser.getPassword();
 		AssertUtils.requireEquals(username, user.getUsername(), () -> new InvalidInputException("Username mismatch with token! Please don't try to modify another user's password"));
 		userService.updatePassword(username, password);
-		return new ApiResponse(HttpStatus.OK, "Successfully update user's password");
+		return ApiResponse.of(HttpStatus.OK, "Successfully update user's password");
 	}
 
 	@RequestMapping(value = "/reset", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -80,7 +80,7 @@ public class UserController {
 			String current = Constant.currentTime();
 			redisService.set(token, username, Constant.forgetTokenTimeout);
 			rabbitService.sendEmail(new Mail(username, token, current));
-			return new ApiResponse(HttpStatus.OK, "Successfully send password reset Email.");
+			return ApiResponse.of(HttpStatus.OK, "Successfully send password reset Email.");
 		} else {
 			// verify token
 			String originUsername = AssertUtils.requireNotNull(redisService.get(paramToken), () -> new InvalidInputException("Token is invalid or expired!"));
@@ -88,7 +88,7 @@ public class UserController {
 			String newPassword = AssertUtils.requireNotNull(paramUser.getPassword(), () -> new InvalidInputException("New password must not be null!"));
 			// update password
 			userService.updatePassword(username, newPassword);
-			return new ApiResponse(HttpStatus.CREATED, "Successfully update password!");
+			return ApiResponse.of(HttpStatus.CREATED, "Successfully update password!");
 		}
 	}
 
@@ -96,22 +96,22 @@ public class UserController {
 	public ApiResponse test() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		User user = (User) authentication.getPrincipal();
-		return new ApiResponse(HttpStatus.OK, user.getUid());
+		return ApiResponse.of(HttpStatus.OK, user.getUid());
 	}
 
 	/**
 	 * todo: this API cost a lot.
 	 */
-	@RequestMapping(value = "/travel", method = RequestMethod.GET)
-	public ApiResponse travel(@CurrentUser User user) {
+	@RequestMapping(value = "/journey", method = RequestMethod.GET)
+	public ApiResponse journey(@CurrentUser User user) {
 		PriorityQueue<Map.Entry<LocalDateTime, String>> queue = new PriorityQueue<>(Map.Entry.comparingByKey());
 		// user
-		queue.add(new AbstractMap.SimpleEntry<>(user.getRegistered(), "Register"));
+		queue.add(Map.entry(user.getRegistered(), "Register"));
 		// targets
 		var targets = targetService.findForUser(user);
 		var map = new HashMap<>();
 		for (Target target : targets) {
-			queue.add(new AbstractMap.SimpleEntry<>(target.getCreated(), "Create new target: " + target.getTitle()));
+			queue.add(Map.entry(target.getCreated(), "Create new target: " + target.getTitle()));
 			map.put(target.getTid(), target.getTitle());
 		}
 		// records
@@ -122,11 +122,11 @@ public class UserController {
 					datetime, "Checkin: " + map.get(record.getTid()) + "    " + datetime.toLocalTime()));
 		}
 		// output
-		List<String> result = new ArrayList<>(queue.size());
+		List<Map> result = new ArrayList<>(queue.size());
 		while (!queue.isEmpty()) {
 			var entity = queue.poll();
-			result.add(entity.getKey().toLocalDate() + "    " + entity.getValue() + "    " + entity.getKey().toLocalTime());
+			result.add(Map.of("date", entity.getKey().toLocalDate(), "journey", entity.getValue(), "time", entity.getKey().toLocalTime()));
 		}
-		return new ApiResponse(HttpStatus.OK, result);
+		return ApiResponse.of(HttpStatus.OK, result);
 	}
 }
