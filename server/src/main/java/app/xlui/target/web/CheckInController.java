@@ -4,8 +4,6 @@ import app.xlui.target.annotation.CurrentUser;
 import app.xlui.target.entity.Record;
 import app.xlui.target.entity.User;
 import app.xlui.target.entity.common.ApiResponse;
-import app.xlui.target.exception.specify.InvalidInputException;
-import app.xlui.target.exception.specify.NotFoundException;
 import app.xlui.target.service.CheckinService;
 import app.xlui.target.service.TargetService;
 import app.xlui.target.util.AssertUtils;
@@ -17,10 +15,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoField;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * Check in controller.
@@ -51,37 +49,35 @@ public class CheckInController {
 		return new ApiResponse(HttpStatus.OK, "Successfully recheckin!");
 	}
 
-	// todo: show specify month's record map.
 	// view this month's checkin record.
 	@RequestMapping(value = "/target/{tid}/checkin/{year}/{month}", method = RequestMethod.GET)
-	public ApiResponse getAllCheckinThisMonth(@PathVariable long tid, @PathVariable int year, @PathVariable int month) {
+	public ApiResponse getCheckinSomeMonth(@PathVariable long tid, @PathVariable int year, @PathVariable int month) {
 		var yearMonth = YearMonth.of(year, month);
 		var records = checkinService.recordOfMonth(tid, yearMonth.atDay(1));
-		AssertUtils.requireNotEmpty(records, () -> new NotFoundException("No checkin records in this month"));
-		return new ApiResponse(HttpStatus.OK, records);
+		Map<Integer, Boolean> map = new HashMap<>();
+
+		// update map mark records as true
+		records.stream()
+				.map(Record::getCheckinDateTime)
+				.map(datetime -> datetime.get(ChronoField.DAY_OF_MONTH))
+				.forEach(day -> map.put(day, Boolean.TRUE));
+		// update map mark unchecked as false
+		Stream.iterate(1, i -> i + 1)
+				.limit(yearMonth.lengthOfMonth())
+				.filter(i -> !map.containsKey(i))
+				.forEach(i -> map.put(i, Boolean.FALSE));
+		return ApiResponse.of(HttpStatus.OK, map);
 	}
 
-	// todo: year-month-day refactor
 	// view someday's checkin details
-	@RequestMapping(value = "/target/{tid}/checkin/{time}", method = RequestMethod.GET)
-	public ApiResponse getCheckin(@CurrentUser User user, @PathVariable long tid, @PathVariable String time) {
-		Record record = checkinService.recordOfSomeday(tid, time);
+	@RequestMapping(value = "/target/{tid}/checkin/{year}/{month}/{day}", method = RequestMethod.GET)
+	public ApiResponse getCheckin(@PathVariable long tid, @PathVariable int year, @PathVariable int month, @PathVariable int day) {
+		var date = LocalDate.of(year, month, day);
+		Record record = checkinService.recordOfSomeday(tid, date);
+		// return 200 to avoid too many error in frontend
 		if (record == null)
-			return new ApiResponse(HttpStatus.NOT_FOUND, "You have not checked in at " + time);
-		return new ApiResponse(HttpStatus.OK, record);
-	}
-
-	// todo: API 精简
-	// `time` format: 2018-11-01, IOS_LOCAL_DATE
-	@RequestMapping(value = "/target/{tid}/record/{time}", method = RequestMethod.GET)
-	public ApiResponse getRecordOfMonth(@PathVariable long tid, @PathVariable String time) {
-		List<Record> records;
-		try {
-			records = checkinService.recordOfMonth(tid, LocalDate.parse(time));
-		} catch (DateTimeParseException e) {
-			throw new InvalidInputException(e.getMessage());
-		}
-		return new ApiResponse(HttpStatus.OK, records);
+			return new ApiResponse(HttpStatus.NOT_FOUND, "You have not checked in at " + date);
+		return ApiResponse.of(HttpStatus.OK, record);
 	}
 
 	@RequestMapping(value = "/target/{tid}/statistics", method = RequestMethod.GET)

@@ -43,7 +43,7 @@ export const fetchTarget = tid => {
 };
 
 export const putTarget = (tid, params) => {
-  let specifyTarget = `${targetBaseUrl}/${tid}`
+  let specifyTarget = `${targetBaseUrl}/${tid}`;
   return axios.put(specifyTarget, JSON.stringify(params), {
     headers: {
       Authorization: localStorage.token,
@@ -63,7 +63,7 @@ export const submitCheckIn = (tid, params) => {
 };
 
 export const fetchCheckIn = (tid, time) => {
-  let someday = `${targetBaseUrl}/${tid}/checkin/${time}`;
+  let someday = `${targetBaseUrl}/${tid}/checkin/${time.getFullYear()}/${time.getMonth() + 1}/${time.getDate()}`;
   return axios.get(someday, {
     headers: {
       Authorization: localStorage.token
@@ -72,7 +72,7 @@ export const fetchCheckIn = (tid, time) => {
 };
 
 export const fetchStatistics = tid => {
-  return axios.get(`${host}/target/${tid}/statistics`, {
+  return axios.get(`${targetBaseUrl}/${tid}/statistics`, {
     headers: {
       Authorization: localStorage.token
     }

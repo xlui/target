@@ -31,7 +31,7 @@ export const extractTime = date => date.toISOString().split('T')[1].split('.')[0
 export const showColor = function (vue) {
   fetchCheckIn(
     vue.target.tid,
-    extractDate(now())
+    now()
   ).then(res => {
     if (res.status === 200 && res.data.status === 'OK') {
       vue.bgColor = '#ffd633';
