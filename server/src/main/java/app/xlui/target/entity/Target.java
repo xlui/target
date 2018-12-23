@@ -1,9 +1,5 @@
 package app.xlui.target.entity;
 
-import app.xlui.target.entity.enums.Week;
-
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -26,23 +22,6 @@ public class Target implements Serializable {
 	private LocalDate endDate;		// target end date
 	private LocalTime checkinStart;	// target checkin start time
 	private LocalTime checkinEnd;	// target checkin end time
-	/**
-	 * use 7 bit to represent Sunday to Saturday.
-	 * For example:
-	 * 		0b01000000 represent the Sunday
-	 * 		0b00100000 represent the Monday
-	 * 		0b00010000 represent the Tuesday
-	 * 		0b00001000 represent the Wednesday
-	 * 		0b00000100 represent the Thursday
-	 * 		0b00000010 represent the Friday
-	 * 		0b00000001 represent the Saturday
-	 * And:
-	 * 		0b01111111 represent all days
-	 * 		0b01000001 represent only Saturday and Sunday
-	 * 		0b00111110 represent only work days
-	 */
-	@Min(1)@Max(127)
-	private byte repeat;			// target repeat rule
 	// continuous
 	private int continuous = 0;
 	private int maxContinuous = 0;
@@ -121,28 +100,6 @@ public class Target implements Serializable {
 
 	public Target setCheckinEnd(LocalTime checkinEnd) {
 		this.checkinEnd = checkinEnd;
-		return this;
-	}
-
-	public byte getRepeat() {
-		return repeat;
-	}
-
-	public Target setRepeat(byte repeat) {
-		this.repeat = repeat;
-		return this;
-	}
-
-	public Target setRepeatWithWeek(Week week) {
-		this.repeat = Week.toByte(week);
-		return this;
-	}
-
-	public Target setRepeatWithMultiWeek(Week ...weeks) {
-		this.repeat = 0;
-		for (Week week : weeks) {
-			this.repeat |= Week.toByte(week);
-		}
 		return this;
 	}
 

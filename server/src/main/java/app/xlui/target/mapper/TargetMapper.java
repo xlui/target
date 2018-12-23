@@ -27,12 +27,12 @@ public interface TargetMapper {
 	List<Long> findTIDs();
 
 	@Update("UPDATE t_target SET " +
-			"title=#{title},description=#{description},startDate=#{startDate},endDate=#{endDate},checkinStart=#{checkinStart},checkinEnd=#{checkinEnd},`repeat`=#{repeat},continuous=#{continuous},maxContinuous=#{maxContinuous} " +
+			"title=#{title},description=#{description},startDate=#{startDate},endDate=#{endDate},checkinStart=#{checkinStart},checkinEnd=#{checkinEnd},continuous=#{continuous},maxContinuous=#{maxContinuous} " +
 			"WHERE tid = #{tid}")
 	int update(Target target);
 
-	@Insert("INSERT INTO t_target(uid, title, description, startDate, endDate, checkinStart, checkinEnd, `repeat`, continuous, maxContinuous, created)" +
-			"VALUES(#{uid}, #{title}, #{description}, #{startDate}, #{endDate}, #{checkinStart}, #{checkinEnd}, #{repeat}, #{continuous}, #{maxContinuous}, #{created})")
+	@Insert("INSERT INTO t_target(uid, title, description, startDate, endDate, checkinStart, checkinEnd, continuous, maxContinuous, created)" +
+			"VALUES(#{uid}, #{title}, #{description}, #{startDate}, #{endDate}, #{checkinStart}, #{checkinEnd}, #{continuous}, #{maxContinuous}, #{created})")
 	int save(Target target);
 
 	@Delete("DELETE FROM t_target WHERE tid = #{tid}")
@@ -52,9 +52,6 @@ public interface TargetMapper {
 
 	@Select("SELECT IF(COUNT(*), 1, 0) FROM t_target WHERE tid = #{tid} AND #{time} BETWEEN checkinStart AND checkinEnd")
 	int isValidTime(@Param("tid") long tid, @Param("time") LocalTime time);
-
-	@Select("SELECT IF(COUNT(*), 1, 0) FROM t_target WHERE tid = #{tid} AND #{repeat} & `repeat` = #{repeat}")
-	int isValidRepeat(@Param("tid") long tid, @Param("repeat") byte repeat);
 
 	@Select("SELECT IF(COUNT(*), 1, 0) FROM t_target WHERE tid = #{tid} AND TO_DAYS(NOW()) > TO_DAYS(endDate)")
 	int isEnd(@Param("tid") long tid);

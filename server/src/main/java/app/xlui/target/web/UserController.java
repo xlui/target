@@ -124,7 +124,11 @@ public class UserController {
 		List<Map> result = new ArrayList<>(queue.size());
 		while (!queue.isEmpty()) {
 			var entity = queue.poll();
-			result.add(Map.of("date", entity.getKey().toLocalDate(), "journey", entity.getValue(), "time", entity.getKey().toLocalTime()));
+			result.add(Map.of(
+					"date", entity.getKey().toLocalDate(),
+					"journey", entity.getValue(),
+					"time", entity.getKey().toLocalTime())
+			);
 		}
 		return ApiResponse.of(HttpStatus.OK, result);
 	}

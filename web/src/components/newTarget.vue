@@ -50,19 +50,6 @@
             </el-col>
           </el-form-item>
         </el-col>
-        <el-col :span="23" :offset="1">
-          <el-form-item label="Repeat">
-            <el-checkbox-group v-model="newTarget.repeat">
-              <el-checkbox label="0b01000000" class="week">Sun</el-checkbox>
-              <el-checkbox label="0b00100000" class="week">Mon</el-checkbox>
-              <el-checkbox label="0b00010000" class="week">Tue</el-checkbox>
-              <el-checkbox label="0b00001000" class="week">Wed</el-checkbox>
-              <el-checkbox label="0b00000100" class="week">Thu</el-checkbox>
-              <el-checkbox label="0b00000010" class="week">Fri</el-checkbox>
-              <el-checkbox label="0b00000001" class="week">Sat</el-checkbox>
-            </el-checkbox-group>
-          </el-form-item>
-        </el-col>
       </el-form>
       <span slot="footer" class="dialog-footer">
             <el-button size="medium" @click="showDialog = false">关闭</el-button>
@@ -84,19 +71,12 @@
           endDate: adjust(new Date(), 1),
           checkinStart: new Date(2018, 10, 26, 9, 0),
           checkinEnd: new Date(2018, 10, 26, 18, 0),
-          repeat: []
         },
         showDialog: false
       }
     },
     methods: {
       addTarget() {
-        console.log('Calculate the number value of repeat.');
-        let ret = 0;
-        for (const r of this.newTarget.repeat) {
-          ret += Number(r)
-        }
-        this.newTarget.repeat = ret;
         // extract time
         this.newTarget.checkinStart = extractTime(local(this.newTarget.checkinStart));
         this.newTarget.checkinEnd = extractTime(local(this.newTarget.checkinEnd));
@@ -109,7 +89,6 @@
         }).catch(error => {
           console.log('Error while adding target: ', error);
           console.log(JSON.stringify(error));
-          alert('Please choose at least one item in repeat!');
           location.href = home;
         })
       }

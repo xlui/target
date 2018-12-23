@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 /**
  * A model for `repeat` of target. This application supports `repeat` targets.
  * For a target, you can specify when you want to count the target of a week.
+ * @deprecated
  */
 public enum Week {
 	SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY;

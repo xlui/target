@@ -31,7 +31,6 @@ CREATE TABLE `t_target`
   endDate       DATE,
   checkinStart  TIME,
   checkinEnd    TIME,
-  `repeat`      TINYINT,
   continuous    INT DEFAULT 0,
   maxContinuous INT DEFAULT 0,
   created       DATETIME,

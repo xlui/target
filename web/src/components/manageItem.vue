@@ -46,19 +46,6 @@
             </el-col>
           </el-form-item>
         </el-col>
-        <el-col :span="23" :offset="1">
-          <el-form-item label="Repeat">
-            <el-checkbox-group v-model="showRepeat">
-              <el-checkbox label="64">Sun</el-checkbox>
-              <el-checkbox label="32">Mon</el-checkbox>
-              <el-checkbox label="16">Tue</el-checkbox>
-              <el-checkbox label="8">Wed</el-checkbox>
-              <el-checkbox label="4">Thu</el-checkbox>
-              <el-checkbox label="2">Fri</el-checkbox>
-              <el-checkbox label="1">Sat</el-checkbox>
-            </el-checkbox-group>
-          </el-form-item>
-        </el-col>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button type="info" size="medium" @click="getStatistics">统计信息</el-button>
@@ -85,7 +72,9 @@
         </el-col>
         <el-col :offset="1" :span="23">
           <el-form-item label="Longest Continuous">
-            <el-tag type="danger">{{ statistics.longestContinuous }} {{ statistics.longestContinuous === 1 ? 'Day' : 'Days'}}</el-tag>
+            <el-tag type="danger">{{ statistics.longestContinuous }} {{ statistics.longestContinuous === 1 ? 'Day' :
+              'Days'}}
+            </el-tag>
           </el-form-item>
         </el-col>
       </el-form>
@@ -112,26 +101,6 @@
         showStatistics: false,
         bgColor: '#fff',
         statistics: {}
-      }
-    },
-    computed: {
-      showRepeat: {
-        get() {
-          const ret = [];
-          for (const value of weekMap) {
-            if ((value & this.target.repeat) === value) {
-              ret.push(String(value))
-            }
-          }
-          return ret;
-        },
-        set(value) {
-          let ret = 0;
-          for (const r of value) {
-            ret += Number(r)
-          }
-          this.target.repeat = ret;
-        }
       }
     },
     methods: {

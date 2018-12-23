@@ -1,7 +1,7 @@
 package app.xlui.target.web;
 
-import app.xlui.target.entity.common.ApiResponse;
 import app.xlui.target.entity.Target;
+import app.xlui.target.entity.common.ApiResponse;
 import app.xlui.target.util.FakeUtils;
 import app.xlui.target.util.UserUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -77,8 +77,7 @@ public class TestTargetController {
 	public void testUpdateTarget() throws Exception {
 		Target target = new Target()
 				.setUid(1L)
-				.setTitle("test title")
-				.setRepeat((byte) 64);
+				.setTitle("test title");
 		ApiResponse response = UserUtils.login(mockMvc);
 		mockMvc.perform(put("/target/1").contentType(json).content(mapper.writeValueAsString(target)).header(HttpHeaders.AUTHORIZATION, response.getContent()))
 				.andExpect(status().isNoContent());
@@ -97,8 +96,7 @@ public class TestTargetController {
 	@Test
 	public void testUpdateTargetWithoutTitle() throws Exception {
 		Target target = new Target()
-				.setUid(1L)
-				.setRepeat((byte) 64);
+				.setUid(1L);
 		ApiResponse response = UserUtils.login(mockMvc);
 		mockMvc.perform(put("/target/1").contentType(json).content(mapper.writeValueAsString(target)).header(HttpHeaders.AUTHORIZATION, response.getContent()))
 				.andExpect(status().isBadRequest())
@@ -128,8 +126,7 @@ public class TestTargetController {
 		Target target = new Target()
 				.setUid(1L)
 				.setTitle(faker.book().title())
-				.setDescription(faker.lorem().sentence())
-				.setRepeat((byte) 64);
+				.setDescription(faker.lorem().sentence());
 		ApiResponse response = UserUtils.login(mockMvc);
 		mockMvc.perform(post("/target")
 				.contentType(json)
@@ -143,8 +140,7 @@ public class TestTargetController {
 	public void testPostTargetInvalidTitle() throws Exception {
 		Target target = new Target()
 				.setUid(1)
-				.setTitle(null)
-				.setRepeat((byte) 64);
+				.setTitle(null);
 		ApiResponse response = UserUtils.login(mockMvc);
 		mockMvc.perform(post("/target")
 				.contentType(json)
