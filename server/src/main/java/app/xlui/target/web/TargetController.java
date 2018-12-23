@@ -28,7 +28,7 @@ public class TargetController {
 	@RequestMapping(value = "/target", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
 	public ApiResponse getTargets(@CurrentUser User user, @RequestParam(required = false, defaultValue = "true") boolean filter) {
-		return ApiResponse.of(HttpStatus.OK, targetService.findForUser(user));
+		return ApiResponse.of(HttpStatus.OK, targetService.findByUser(user));
 	}
 
 	@RequestMapping(value = "/target", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)

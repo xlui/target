@@ -5,6 +5,7 @@ import app.xlui.target.entity.User;
 import app.xlui.target.mapper.TargetMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -16,6 +17,7 @@ import java.util.List;
  * Target server. This service provides api for target operations.
  */
 @Service
+@Validated
 public class TargetService {
 	@Autowired
 	private TargetMapper targetMapper;
@@ -24,7 +26,7 @@ public class TargetService {
 		return targetMapper.findByTID(tid);
 	}
 
-	public List<Target> findForUser(@NotNull User user) {
+	public List<Target> findByUser(@NotNull User user) {
 		return targetMapper.findByUID(user.getUid());
 	}
 

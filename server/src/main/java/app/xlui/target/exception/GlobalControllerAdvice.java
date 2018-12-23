@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 /**
@@ -90,7 +91,7 @@ public class GlobalControllerAdvice {
 		return new ApiResponse(HttpStatus.METHOD_NOT_ALLOWED, e.getMessage());
 	}
 
-	@ExceptionHandler(ServerError.class)
+	@ExceptionHandler({ServerError.class, ConstraintViolationException.class})
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public ApiResponse serverError(Exception e) {
 		if (printStackTrace) e.printStackTrace();

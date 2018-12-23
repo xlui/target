@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
-import java.time.YearMonth;
+import java.time.*;
 import java.time.temporal.ChronoField;
 import java.util.*;
 import java.util.stream.Stream;
@@ -67,6 +66,41 @@ public class StatisticsController {
 		return ApiResponse.of(HttpStatus.OK, map);
 	}
 
+	@RequestMapping(value = "/weekly/{year}/{month}/{day}", method = RequestMethod.GET)
+	public ApiResponse weekly(@CurrentUser User user, @PathVariable int year, @PathVariable int month, @PathVariable int day) {
+		double sum = 0, complete = 0;
+		var date = LocalDate.of(year, month, day);
+		var monday = date.with(DayOfWeek.MONDAY);
+		var sunday = date.with(DayOfWeek.SUNDAY);
+		var targets = targetService.findByUser(user);
+
+		complete = checkinService.countRecordsBetween(user, monday, sunday);
+
+		for (Target target : targets) {
+			if (target.getStartDate().compareTo(monday) < 0) {
+				if (target.getEndDate().compareTo(sunday) > 0) {
+					sum += Period.between(monday, sunday).getDays() + 1;
+				} else {
+					sum += Period.between(monday, target.getEndDate()).getDays() + 1;
+				}
+			} else {
+				if (target.getEndDate().compareTo(sunday) > 0) {
+					sum += Period.between(target.getStartDate(), sunday).getDays() + 1;
+				} else {
+					sum += Period.between(target.getStartDate(), target.getEndDate()).getDays() + 1;
+				}
+			}
+		}
+
+		return ApiResponse.of(HttpStatus.OK, Map.of(
+				"WeekStart", monday,
+				"WeekEnd", sunday,
+				"TotalCheckIn", complete,
+				"ShouldCheckIn", sum,
+				"CompletePercentage", complete / sum * 100
+		));
+	}
+
 	/**
 	 * todo: this API cost a lot.
 	 * <p>
@@ -78,7 +112,7 @@ public class StatisticsController {
 		// user
 		queue.add(Map.entry(user.getRegistered(), "Register"));
 		// targets
-		var targets = targetService.findForUser(user);
+		var targets = targetService.findByUser(user);
 		var map = new HashMap<>();
 		for (Target target : targets) {
 			queue.add(Map.entry(target.getCreated(), "Create new target: " + target.getTitle()));

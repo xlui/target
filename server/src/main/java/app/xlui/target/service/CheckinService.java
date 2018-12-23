@@ -1,6 +1,7 @@
 package app.xlui.target.service;
 
 import app.xlui.target.entity.Record;
+import app.xlui.target.entity.User;
 import app.xlui.target.exception.specify.InvalidInputException;
 import app.xlui.target.mapper.RecordMapper;
 import app.xlui.target.util.AssertUtils;
@@ -21,6 +22,14 @@ public class CheckinService {
 	private RecordMapper recordMapper;
 	@Autowired
 	private TargetService targetService;
+
+	public List<Record> recordsBetween(User user, LocalDate start, LocalDate end) {
+		return recordMapper.findBetween(user.getUid(), start, end);
+	}
+
+	public int countRecordsBetween(User user, LocalDate start, LocalDate end) {
+		return recordMapper.countBetween(user.getUid(), start, end);
+	}
 
 	public List<Record> recordOfMonth(long tid, LocalDate date) {
 		return recordMapper.findRecordSomeMonth(tid, date);

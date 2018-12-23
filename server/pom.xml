@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>target</name>
-    <description>A punch in app</description>
+    <description>A check in app</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -28,6 +28,7 @@
         <jwt.version>3.4.1</jwt.version>
         <faker.version>0.16</faker.version>
         <processbar.version>0.7.2</processbar.version>
+        <guava.version>27.0.1-jre</guava.version>
     </properties>
 
     <dependencies>
@@ -65,6 +66,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
 
         <!-- java faker -->
         <dependency>
@@ -72,6 +78,7 @@
             <artifactId>javafaker</artifactId>
             <version>${faker.version}</version>
         </dependency>
+        <!-- command line progress bar -->
         <dependency>
             <groupId>me.tongfei</groupId>
             <artifactId>progressbar</artifactId>
