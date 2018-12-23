@@ -2,8 +2,6 @@ package app.xlui.target.web;
 
 import app.xlui.target.annotation.CurrentUser;
 import app.xlui.target.config.Constant;
-import app.xlui.target.entity.Record;
-import app.xlui.target.entity.Target;
 import app.xlui.target.entity.User;
 import app.xlui.target.entity.common.ApiResponse;
 import app.xlui.target.entity.common.Mail;
@@ -21,8 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.UUID;
 
 /**
  * User controller.
@@ -97,39 +94,5 @@ public class UserController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		User user = (User) authentication.getPrincipal();
 		return ApiResponse.of(HttpStatus.OK, user.getUid());
-	}
-
-	/**
-	 * todo: this API cost a lot.
-	 */
-	@RequestMapping(value = "/journey", method = RequestMethod.GET)
-	public ApiResponse journey(@CurrentUser User user) {
-		PriorityQueue<Map.Entry<LocalDateTime, String>> queue = new PriorityQueue<>(Map.Entry.comparingByKey());
-		// user
-		queue.add(Map.entry(user.getRegistered(), "Register"));
-		// targets
-		var targets = targetService.findForUser(user);
-		var map = new HashMap<>();
-		for (Target target : targets) {
-			queue.add(Map.entry(target.getCreated(), "Create new target: " + target.getTitle()));
-			map.put(target.getTid(), target.getTitle());
-		}
-		// records
-		var records = checkinService.recordOfUser(user.getUid());
-		for (Record record : records) {
-			var datetime = record.getCheckinDateTime();
-			queue.add(Map.entry(datetime, "Checkin: " + map.get(record.getTid())));
-		}
-		// output
-		List<Map> result = new ArrayList<>(queue.size());
-		while (!queue.isEmpty()) {
-			var entity = queue.poll();
-			result.add(Map.of(
-					"date", entity.getKey().toLocalDate(),
-					"journey", entity.getValue(),
-					"time", entity.getKey().toLocalTime())
-			);
-		}
-		return ApiResponse.of(HttpStatus.OK, result);
 	}
 }
