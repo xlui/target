@@ -118,8 +118,7 @@ public class UserController {
 		var records = checkinService.recordOfUser(user.getUid());
 		for (Record record : records) {
 			var datetime = record.getCheckinDateTime();
-			queue.add(new AbstractMap.SimpleEntry<>(
-					datetime, "Checkin: " + map.get(record.getTid()) + "    " + datetime.toLocalTime()));
+			queue.add(Map.entry(datetime, "Checkin: " + map.get(record.getTid())));
 		}
 		// output
 		List<Map> result = new ArrayList<>(queue.size());

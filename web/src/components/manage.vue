@@ -12,6 +12,22 @@
       </template>
     </div>
 
+    <el-dialog :title="'Journey'" :visible.sync="showJourney" style="text-align: left">
+      <el-form ref="form" label-position="left" label-width="100px">
+        <template v-for="journey in journeys">
+          <el-col :offset="1" :span="23">
+            <el-form-item :label="journey.date">
+              <el-tag>{{ journey.journey }}</el-tag>
+              <el-tag type="warning">{{ journey.time }}</el-tag>
+            </el-form-item>
+          </el-col>
+        </template>
+      </el-form>
+      <span slot="footer">
+        <el-button type="danger" size="medium" @click="showJourney = false">关闭</el-button>
+      </span>
+    </el-dialog>
+
     <div class="box">
       <div v-if="login">
         <template v-for="target in targets">
@@ -23,6 +39,7 @@
 </template>
 
 <script>
+  import {fetchJourney} from "../api/api";
   import {home} from "../api/util";
   import item from "./manageItem";
 
@@ -31,6 +48,8 @@
       return {
         login: false,
         username: '',
+        showJourney: false,
+        journeys: []
       }
     },
     computed: {
@@ -47,6 +66,12 @@
       },
       getJourney() {
         // todo: fetch journey from server.
+        fetchJourney().then(res => {
+          if (res.data.status === 'OK') {
+            this.journeys = res.data.content;
+            this.showJourney = true;
+          }
+        })
       }
     },
     created() {

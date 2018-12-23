@@ -79,6 +79,14 @@ export const fetchStatistics = tid => {
   })
 };
 
+export const fetchJourney = () => {
+  return axios.get(`${host}/journey`, {
+    headers: {
+      Authorization: localStorage.token
+    }
+  })
+};
+
 export const checkToken = token => {
   return axios.get(`${host}/token`, {
     headers: {
