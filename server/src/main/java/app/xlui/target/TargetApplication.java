@@ -30,8 +30,8 @@ public class TargetApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		System.out.println("Current time: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm:ss")));
 		System.out.println("Server start!");
+		System.out.println("Current time: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm:ss")) + ".");
 		if (init) {
 			System.out.println("Initializing database....");
 			this.init();
@@ -41,10 +41,12 @@ public class TargetApplication implements CommandLineRunner {
 
 	@RequestMapping("/t/init")
 	public String init() {
+		System.out.println("Initializing user....");
+		FakeUtils.fakeUser(10);
 		System.out.println("Initializing target....");
-		FakeUtils.fakeTarget(10);
+		FakeUtils.fakeTarget(50);
 		System.out.println("Initializing record....");
-		FakeUtils.fakeRecord(20);
+		FakeUtils.fakeRecord(100);
 		return "init succeed!";
 	}
 }

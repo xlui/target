@@ -1,13 +1,18 @@
 package app.xlui.target.web;
 
 import app.xlui.target.annotation.CurrentUser;
+import app.xlui.target.config.Constant;
 import app.xlui.target.entity.Record;
 import app.xlui.target.entity.Target;
 import app.xlui.target.entity.User;
 import app.xlui.target.entity.common.ApiResponse;
+import app.xlui.target.exception.specify.InvalidInputException;
 import app.xlui.target.service.CheckinService;
+import app.xlui.target.service.RedisService;
 import app.xlui.target.service.TargetService;
+import app.xlui.target.util.AssertUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,11 +28,13 @@ import java.util.stream.Stream;
 public class StatisticsController {
 	private final CheckinService checkinService;
 	private final TargetService targetService;
+	private final RedisService redisService;
 
 	@Autowired
-	public StatisticsController(CheckinService checkinService, TargetService targetService) {
+	public StatisticsController(CheckinService checkinService, TargetService targetService, RedisService redisService) {
 		this.checkinService = checkinService;
 		this.targetService = targetService;
+		this.redisService = redisService;
 	}
 
 	/**
@@ -68,7 +75,7 @@ public class StatisticsController {
 
 	@RequestMapping(value = "/weekly/{year}/{month}/{day}", method = RequestMethod.GET)
 	public ApiResponse weekly(@CurrentUser User user, @PathVariable int year, @PathVariable int month, @PathVariable int day) {
-		double sum = 0, complete = 0;
+		double sum = 0, complete;
 		var date = LocalDate.of(year, month, day);
 		var monday = date.with(DayOfWeek.MONDAY);
 		var sunday = date.with(DayOfWeek.SUNDAY);
@@ -98,6 +105,69 @@ public class StatisticsController {
 				"TotalCheckIn", complete,
 				"ShouldCheckIn", sum,
 				"CompletePercentage", complete / sum * 100
+		));
+	}
+
+	// todo: show rank.
+	@RequestMapping(value = "/rank/{epoch}", method = RequestMethod.GET)
+	public ApiResponse rankWeekly(@CurrentUser User user, @PathVariable String epoch) {
+		var date = LocalDate.now();
+		String key;
+		List<Record> records;
+		switch (epoch.toLowerCase()) {
+			case "weekly": {
+				key = Constant.zsetRankWeekly;
+				records = checkinService.recordsBetween(
+						date.with(DayOfWeek.MONDAY),
+						date.with(DayOfWeek.SUNDAY)
+				);
+			} break;
+			case "monthly": {
+				key = Constant.zsetRankMonthly;
+				records = checkinService.recordsBetween(
+						date.withDayOfMonth(1),
+						date.withDayOfMonth(date.lengthOfMonth())
+				);
+			} break;
+			case "total": {
+				key = Constant.zsetRankTotal;
+				records = checkinService.findAll();
+			} break;
+			default: throw new InvalidInputException("Invalid epoch!");
+		}
+
+		if (records.isEmpty()) {
+			return ApiResponse.of(HttpStatus.NO_CONTENT, "There is nothing in this epoch!");
+		}
+
+		// map entries: uid-checkinCount
+		Map<Long, Integer> map = new HashMap<>();
+		for (Record record : records) {
+			var uid = record.getUid();
+			map.put(uid, map.getOrDefault(uid, 0) + 1);
+		}
+		redisService.zDelete(key);
+		for (Map.Entry<Long, Integer> entry : map.entrySet()) {
+			redisService.zSet(key, entry.getKey(), entry.getValue());
+		}
+
+		var sorted = redisService.zReverseRange(key, 0, map.size());
+		// result entries: uid-[checkinCount, rank]
+		List<Map<String, ? extends Number>> result = new ArrayList<>(sorted.size());
+		for (ZSetOperations.TypedTuple<Long> tuple : sorted) {
+			var uid = AssertUtils.orElse(tuple.getValue(), -1L);
+			var score = AssertUtils.orElse(tuple.getScore(), -1L);
+			var rank = redisService.zGetReverseRank(key, uid);
+			result.add(Map.of(
+					"uid", uid,
+					"checkin", score,
+					"rank", rank
+			));
+		}
+
+		return ApiResponse.of(HttpStatus.OK, Map.of(
+				"myself", redisService.zGetReverseRank(key, user.getUid()),
+				"total", result
 		));
 	}
 

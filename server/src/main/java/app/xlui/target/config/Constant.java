@@ -18,6 +18,9 @@ public interface Constant {
 	String mailContentTemplate = "你好，user。这是你的密码重置链接： " +
 			Constant.host + "/reset?token=tokenplaceholder 。" +
 			"此链接 " + Constant.forgetTokenTimeout.toMinutes() + " 分钟内有效。";
+	String zsetRankWeekly = "checkin.rank.weekly";
+	String zsetRankMonthly = "checkin.rank.monthly";
+	String zsetRankTotal = "checkin.rank.total";
 
 	/**
 	 * Return the timestamp when token expires.

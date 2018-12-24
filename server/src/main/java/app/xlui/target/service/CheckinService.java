@@ -23,6 +23,14 @@ public class CheckinService {
 	@Autowired
 	private TargetService targetService;
 
+	public List<Record> findAll() {
+		return recordMapper.findAll();
+	}
+
+	public List<Record> recordsBetween(LocalDate start, LocalDate end) {
+		return recordMapper.findAllBetween(start, end);
+	}
+
 	public List<Record> recordsBetween(User user, LocalDate start, LocalDate end) {
 		return recordMapper.findBetween(user.getUid(), start, end);
 	}

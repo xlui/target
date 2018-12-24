@@ -47,7 +47,7 @@ public class FakeUtils {
 			User user = new User()
 					.setNickname(faker.funnyName().name())
 					.setGender(faker.bool().bool() ? Gender.MAN : Gender.WOMAN)
-					.setBirthday(LocalDate.parse(faker.date().birthday().toString()))
+					.setBirthday(faker.date().birthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
 					.setUsername(faker.internet().emailAddress())
 					.setPassword(faker.internet().password())
 					.setRegistered(

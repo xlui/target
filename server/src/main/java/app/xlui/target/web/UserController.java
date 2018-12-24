@@ -80,7 +80,7 @@ public class UserController {
 			return ApiResponse.of(HttpStatus.OK, "Successfully send password reset Email.");
 		} else {
 			// verify token
-			String originUsername = AssertUtils.requireNotNull(redisService.get(paramToken), () -> new InvalidInputException("Token is invalid or expired!"));
+			String originUsername = AssertUtils.requireNotNull(redisService.sGet(paramToken), () -> new InvalidInputException("Token is invalid or expired!"));
 			AssertUtils.requireEquals(originUsername, username, () -> new InvalidInputException("Username mismatch! Please don't modify the password reset url!"));
 			String newPassword = AssertUtils.requireNotNull(paramUser.getPassword(), () -> new InvalidInputException("New password must not be null!"));
 			// update password

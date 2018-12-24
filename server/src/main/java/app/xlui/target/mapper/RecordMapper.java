@@ -20,8 +20,14 @@ public interface RecordMapper {
 	@Select("SELECT * FROM t_record WHERE uid = #{uid}")
 	List<Record> findByUid(@Param("uid") long uid);
 
+	@Select("SELECT * FROM t_record")
+	List<Record> findAll();
+
 	@Select("SELECT * FROM t_record AS r WHERE r.uid = #{uid} AND r.checkinDateTime BETWEEN #{start} AND #{end}")
 	List<Record> findBetween(long uid, LocalDate start, LocalDate end);
+
+	@Select("SELECT * FROM t_record AS r WHERE r.checkinDateTime BETWEEN #{start} AND #{end}")
+	List<Record> findAllBetween(LocalDate start, LocalDate end);
 
 	@Select("SELECT COUNT(*) FROM t_record AS r WHERE r.uid = #{uid} AND r.checkinDateTime BETWEEN #{start} AND #{end}")
 	int countBetween(long uid, LocalDate start, LocalDate end);
