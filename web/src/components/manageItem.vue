@@ -21,14 +21,14 @@
         <el-col :span="23" :offset="1">
           <el-form-item label="Start date">
             <el-col :span="6">
-              <el-date-picker type="date" v-model="target.startDate"></el-date-picker>
+              <el-date-picker type="date" v-model="target.startDate" :picker-options="dateStart"></el-date-picker>
             </el-col>
           </el-form-item>
         </el-col>
         <el-col :span="23" :offset="1">
           <el-form-item label="End date">
             <el-col :span="6">
-              <el-date-picker type="date" v-model="target.endDate"></el-date-picker>
+              <el-date-picker type="date" v-model="target.endDate" :picker-options="dateEnd"></el-date-picker>
             </el-col>
           </el-form-item>
         </el-col>
@@ -48,9 +48,9 @@
         </el-col>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button type="info" size="medium" @click="getStatistics">统计信息</el-button>
-        <el-button type="danger" size="medium" @click="showDialog = false">关闭</el-button>
-        <el-button type="primary" size="medium" @click="updateTarget">提交</el-button>
+        <el-button type="info" size="medium" @click="getStatistics">Statistics</el-button>
+        <el-button type="danger" size="medium" @click="showDialog = false">Close</el-button>
+        <el-button type="primary" size="medium" @click="updateTarget">Submit</el-button>
       </span>
     </el-dialog>
     <el-dialog :title="target.title" :visible.sync="showStatistics" width="25%">
@@ -100,7 +100,17 @@
         showDialog: false,
         showStatistics: false,
         bgColor: '#fff',
-        statistics: {}
+        statistics: {},
+        dateStart: {
+          disabledDate: (time) => {
+            return time.getTime() > new Date(this.target.endDate);
+          }
+        },
+        dateEnd: {
+          disabledDate: (time) => {
+            return time.getTime() < new Date(this.target.startDate);
+          }
+        }
       }
     },
     methods: {

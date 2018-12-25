@@ -24,7 +24,7 @@
         </template>
       </el-form>
       <span slot="footer">
-        <el-button type="danger" size="medium" @click="showJourney = false">关闭</el-button>
+        <el-button type="danger" size="medium" @click="showJourney = false">Close</el-button>
       </span>
     </el-dialog>
 

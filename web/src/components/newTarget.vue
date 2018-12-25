@@ -21,16 +21,22 @@
         <el-col :span="23" :offset="1">
           <el-form-item label="Start date">
             <el-col :span="6">
-              <el-date-picker type="date" placeholder="Choose the start date of target"
-                              v-model="newTarget.startDate"></el-date-picker>
+              <el-date-picker type="date"
+                              placeholder="Choose the start date of target"
+                              v-model="newTarget.startDate"
+                              :picker-options="dateStart"
+              ></el-date-picker>
             </el-col>
           </el-form-item>
         </el-col>
         <el-col :span="23" :offset="1">
           <el-form-item label="End date">
             <el-col :span="6">
-              <el-date-picker type="date" placeholder="Choose the end date of target"
-                              v-model="newTarget.endDate"></el-date-picker>
+              <el-date-picker type="date"
+                              placeholder="Choose the end date of target"
+                              v-model="newTarget.endDate"
+                              :picker-options="dateEnd"
+              ></el-date-picker>
             </el-col>
           </el-form-item>
         </el-col>
@@ -52,8 +58,8 @@
         </el-col>
       </el-form>
       <span slot="footer" class="dialog-footer">
-            <el-button size="medium" @click="showDialog = false">关闭</el-button>
-            <el-button type="primary" size="medium" @click="addTarget">提交</el-button>
+            <el-button type="danger" size="medium" @click="showDialog = false">Close</el-button>
+            <el-button type="primary" size="medium" @click="addTarget">Submit</el-button>
           </span>
     </el-dialog>
   </div>
@@ -72,7 +78,17 @@
           checkinStart: new Date(2018, 10, 26, 9, 0),
           checkinEnd: new Date(2018, 10, 26, 18, 0),
         },
-        showDialog: false
+        showDialog: false,
+        dateStart: {
+          disabledDate: (time) => {
+            return time.getTime() > new Date(this.newTarget.endDate);
+          }
+        },
+        dateEnd: {
+          disabledDate: (time) => {
+            return time.getTime() < new Date(this.newTarget.startDate);
+          }
+        }
       }
     },
     methods: {

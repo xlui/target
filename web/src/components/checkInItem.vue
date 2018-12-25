@@ -9,7 +9,7 @@
     <el-dialog :title="target.title" :visible.sync="showDialog" width="30%">
       <span class="statement">{{ prompt }}</span>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" size="medium" @click="showDialog = false">确定</el-button>
+        <el-button type="primary" size="medium" @click="showDialog = false">OK</el-button>
       </span>
     </el-dialog>
   </div>
