@@ -69,8 +69,8 @@ public class FakeUtils {
 					.setUid(uids.get(faker.random().nextInt(uids.size())))
 					.setTitle(faker.book().title())
 					.setDescription(faker.lorem().sentence())
-					.setStartDate(faker.date().past(20, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
-					.setEndDate(faker.date().future(20, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
+					.setStartDate(faker.date().past(365, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
+					.setEndDate(faker.date().future(365, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
 					.setCheckinStart(LocalTime.of(faker.random().nextInt(0, 11), faker.random().nextInt(60)))
 					.setCheckinEnd(LocalTime.of(faker.random().nextInt(12, 23), faker.random().nextInt(60)));
 			target.setCreated(
@@ -89,17 +89,24 @@ public class FakeUtils {
 		List<Long> tids = targetService.findTids();
 		ProgressBar.wrap(Stream.iterate(0, i -> i + 1).limit(count), "Fake Record").forEach(i -> {
 			long tid = tids.get(faker.random().nextInt(tids.size()));
+			var loop = 0;
 			Target target = targetService.findByTid(tid);
 			LocalDateTime fakeDateTime = null;
 			do {
+				if (loop > 300) {
+					break;
+				}
 				java.util.Date fakeDate = faker.date().between(Date.valueOf(target.getStartDate()), Date.valueOf(target.getEndDate()));
 				java.util.Date fakeTime = faker.date().between(Time.valueOf(target.getCheckinStart()), Time.valueOf(target.getCheckinEnd()));
 				LocalDate date = LocalDate.ofInstant(fakeDate.toInstant(), ZoneId.systemDefault());
 				LocalTime time = LocalTime.ofInstant(fakeTime.toInstant(), ZoneId.systemDefault());
 				fakeDateTime = LocalDateTime.of(date, time);
+				loop++;
 			} while (checkinService.checkedSomeday(tid, fakeDateTime.toLocalDate()) ||
 					!targetService.isValidTime(tid, fakeDateTime.toLocalTime()));
-			checkinService.checkin(target.getUid(), tid, fakeDateTime);
+			if (loop <= 100) {
+				checkinService.checkin(target.getUid(), tid, fakeDateTime);
+			}
 		});
 	}
 }

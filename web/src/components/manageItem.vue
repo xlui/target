@@ -6,7 +6,7 @@
         <div class="desc">{{ target.description }}</div>
       </div>
     </a>
-    <el-dialog :title="target.title" :visible.sync="showDialog">
+    <el-dialog :title="target.title" :visible.sync="showDialog" width="45%">
       <el-form ref="form" label-position="left" label-width="150px">
         <el-col :span="23" :offset="1">
           <el-form-item label="Title">

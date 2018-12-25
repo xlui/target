@@ -44,9 +44,9 @@ public class TargetApplication implements CommandLineRunner {
 		System.out.println("Initializing user....");
 		FakeUtils.fakeUser(10);
 		System.out.println("Initializing target....");
-		FakeUtils.fakeTarget(50);
+		FakeUtils.fakeTarget(586);
 		System.out.println("Initializing record....");
-		FakeUtils.fakeRecord(100);
+		FakeUtils.fakeRecord(2000);
 		return "init succeed!";
 	}
 }

@@ -17,7 +17,7 @@
 
 <script>
   import {submitCheckIn} from "../api/api";
-  import {now, showColor} from "../api/util";
+  import {nowISO, showColor} from "../api/util";
 
   export default {
     props: {
@@ -37,7 +37,7 @@
         submitCheckIn(this.target.tid, {
           uid: this.target.uid,
           tid: this.target.tid,
-          checkinDateTime: now().toISOString()
+          checkinDateTime: nowISO().toISOString()
         }).then(res => {
           if (res.status === 200) {
             this.prompt = res.data.content;
@@ -58,7 +58,7 @@
         })
       },
     },
-    mounted() {
+    created() {
       showColor(this);
     },
   }

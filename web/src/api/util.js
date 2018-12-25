@@ -15,7 +15,9 @@ export const weekMap = [
   0b00000001, // Saturday
 ];
 
-export const now = () => new Date(Date.now() - offset);
+export const nowISO = () => new Date(Date.now() - offset);
+
+export const nowLocal = () => new Date();
 
 export const local = date => new Date(date - offset);
 
@@ -31,7 +33,7 @@ export const extractTime = date => date.toISOString().split('T')[1].split('.')[0
 export const showColor = function (vue) {
   fetchCheckIn(
     vue.target.tid,
-    now()
+    nowLocal()
   ).then(res => {
     if (res.status === 200 && res.data.status === 'OK') {
       vue.bgColor = '#ffd633';

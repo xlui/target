@@ -6,9 +6,9 @@
         <el-tooltip effect="dark" placement="top" content="Your journey in this project">
           <el-button type="success" size="medium" class="item" @click="getJourney">Journey</el-button>
         </el-tooltip>
-        <el-button type="primary" size="medium" class="item" @click="$router.push('/')">回到首页</el-button>
+        <el-button type="primary" size="medium" class="item" @click="$router.push('/')">Home</el-button>
         <span class="statement">Hello, {{ username }}</span>
-        <el-button type="danger" size="medium" class="item" @click="logout">注销</el-button>
+        <el-button type="danger" size="medium" class="item" @click="logout">Logout</el-button>
       </template>
     </div>
 

@@ -14,10 +14,10 @@
                    @click="$router.push('/manage')">Target Management
         </el-button>
       </template>
-      <el-button type="primary" size="medium" class="right" v-if="!login" @click="postLogin">登录</el-button>
+      <el-button type="primary" size="medium" class="right" v-if="!login" @click="postLogin">Login</el-button>
       <template v-else>
         <span class="statement right">Hello, {{ username }}</span>
-        <el-button type="danger" size="medium" class="right" @click="logout">注销</el-button>
+        <el-button type="danger" size="medium" class="right" @click="logout">Logout</el-button>
       </template>
     </div>
 
