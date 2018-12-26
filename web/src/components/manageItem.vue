@@ -79,7 +79,7 @@
         </el-col>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button type="danger" size="medium" @click="showStatistics = false">关闭</el-button>
+        <el-button type="danger" size="medium" @click="showStatistics = false">Close</el-button>
       </span>
     </el-dialog>
   </div>

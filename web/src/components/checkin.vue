@@ -30,7 +30,7 @@
       </template>
     </div>
 
-    <div class="box">
+    <div class="box" v-loading.fullscreen.lock="loading">
       <div v-if="login">
         <template v-for="target in targets">
           <item :target="target"></item>
@@ -112,6 +112,7 @@
         rankEpoch: 'weekly',
         totalRanks: {},
         myRank: 0,
+        loading: false,
       }
     },
     computed: {
@@ -122,6 +123,7 @@
     name: 'App',
     methods: {
       postLogin() {
+        this.loading = true;
         submitLogin({
           username: this.username,
           password: this.password
@@ -135,7 +137,8 @@
           }
         }).catch(error => {
           alert('Failed to login. Please check the server is up or your network is available or not?');
-        })
+        });
+        this.loading = false;
       },
       logout() {
         localStorage.username = '';
@@ -172,6 +175,7 @@
     created() {
       // check user login or not
       if (localStorage.token) {
+        this.loading = true;
         // if local token is valid, use local token to fetch targets.
         checkToken(localStorage.token).then(res => {
           if (res.status === 200) {
@@ -183,6 +187,7 @@
           console.log('Error while checking token: ', error);
           localStorage.token = '';
         });
+        this.loading = false;
       }
     },
     components: {
