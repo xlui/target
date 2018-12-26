@@ -20,7 +20,7 @@ public interface Constant {
 			"此链接 " + Constant.forgetTokenTimeout.toMinutes() + " 分钟内有效。";
 	String zsetRankWeekly = "checkin.rank.weekly";
 	String zsetRankMonthly = "checkin.rank.monthly";
-	String zsetRankTotal = "checkin.rank.total";
+	String zsetRankTotal = "checkin.rank.totally";
 
 	/**
 	 * Return the timestamp when token expires.

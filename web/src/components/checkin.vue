@@ -78,7 +78,7 @@
       <el-tabs center="true" v-model="rankEpoch" @tab-click="getRank(rankEpoch)">
         <el-tab-pane label="Weekly" name="weekly"></el-tab-pane>
         <el-tab-pane label="Monthly" name="monthly"></el-tab-pane>
-        <el-tab-pane label="Total" name="total"></el-tab-pane>
+        <el-tab-pane label="Totally" name="totally"></el-tab-pane>
       </el-tabs>
       <el-table :data="totalRanks" :row-class-name="highlightMyRank">
         <el-table-column prop="rank" label="Rank" align="center"></el-table-column>

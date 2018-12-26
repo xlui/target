@@ -132,7 +132,7 @@ public class StatisticsController {
 						date.withDayOfMonth(date.lengthOfMonth())
 				);
 			} break;
-			case "total": {
+			case "totally": {
 				key = Constant.zsetRankTotal;
 				records = checkinService.findAll();
 			} break;
@@ -151,11 +151,13 @@ public class StatisticsController {
 		}
 		redisService.zDelete(key);
 		for (Map.Entry<Long, Integer> entry : map.entrySet()) {
+			// add uid and user's checkin count into redis, rank
 			redisService.zSet(key, entry.getKey(), entry.getValue());
 		}
 
+		// fetch all sorted data
 		var sorted = redisService.zReverseRange(key, 0, map.size());
-		// result entries: uid-[checkinCount, rank]
+		// result entries: [user:nickname, checkin:checkinCount, rank:rankIndex]
 		List<Map<String, Object>> result = new ArrayList<>(sorted.size());
 		for (ZSetOperations.TypedTuple<Long> tuple : sorted) {
 			var uid = AssertUtils.orElse(tuple.getValue(), -1L);
