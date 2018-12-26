@@ -3,16 +3,16 @@
     <h1 class="main-title">This is the manage page</h1>
     <div class="navigate">
       <template v-if="login">
+        <el-button type="primary" size="medium" class="left" @click="$router.push('/')">Home</el-button>
         <el-tooltip effect="dark" placement="top" content="Your journey in this project">
-          <el-button type="success" size="medium" class="item" @click="getJourney">Journey</el-button>
+          <el-button type="success" size="medium" class="left" @click="getJourney">Journey</el-button>
         </el-tooltip>
-        <el-button type="primary" size="medium" class="item" @click="$router.push('/')">Home</el-button>
         <span class="statement">Hello, {{ username }}</span>
         <el-button type="danger" size="medium" class="item" @click="logout">Logout</el-button>
       </template>
     </div>
 
-    <el-dialog :title="'Journey'" :visible.sync="showJourney" style="text-align: left">
+    <el-dialog :title="'Journey'" :visible.sync="showJourney" style="text-align: left" width="40%">
       <el-form ref="form" label-position="left" label-width="100px">
         <template v-for="journey in journeys">
           <el-col :offset="1" :span="23">

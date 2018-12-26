@@ -4,15 +4,14 @@
 
     <div class="navigate">
       <template v-if="login">
-        <el-tooltip effect="dark" placement="top" content="Nonsupport now!">
-          <el-button type="success" size="medium"
-                     class="left">Yesterday
-          </el-button>
-        </el-tooltip>
-        <el-button type="primary" size="medium"
+        <el-button type="primary"
+                   size="medium"
                    class="left"
                    @click="$router.push('/manage')">Target Management
         </el-button>
+        <el-tooltip effect="dark" placement="top" content="Nonsupport now!">
+          <el-button type="success" size="medium" class="left">Yesterday</el-button>
+        </el-tooltip>
       </template>
       <el-button type="primary" size="medium" class="right" v-if="!login" @click="postLogin">Login</el-button>
       <template v-else>
