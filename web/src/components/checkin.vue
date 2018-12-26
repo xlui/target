@@ -7,7 +7,12 @@
         <el-button type="primary"
                    size="medium"
                    class="left"
-                   @click="$router.push('/manage')">Target Management
+                   @click="$router.push('/manage')">Manage
+        </el-button>
+        <el-button type="success"
+                   size="medium"
+                   class="left"
+                   @click="getWeeklyReport">Weekly Report
         </el-button>
         <el-tooltip effect="dark" placement="top" content="Nonsupport now!">
           <el-button type="success" size="medium" class="left">Yesterday</el-button>
@@ -31,12 +36,45 @@
         Welcome, new user!!
       </div>
     </div>
+
+    <el-dialog title="Weekly Report" :visible.sync="showWeekly" width="30%">
+      <el-form ref="form" label-position="left" label-width="150px" style="text-align: left">
+        <el-col :offset="3" :span="23">
+          <el-form-item label="Week start">
+            <el-tag>{{ weekly.WeekStart }}</el-tag>
+          </el-form-item>
+        </el-col>
+        <el-col :offset="3" :span="23">
+          <el-form-item label="Week end">
+            <el-tag>{{ weekly.WeekEnd }}</el-tag>
+          </el-form-item>
+        </el-col>
+        <el-col :offset="3" :span="23">
+          <el-form-item label="Total check in">
+            <el-tag type="success">{{ weekly.TotalCheckIn }}</el-tag>
+          </el-form-item>
+        </el-col>
+        <el-col :offset="3" :span="23">
+          <el-form-item label="Should check in">
+            <el-tag type="success">{{ weekly.ShouldCheckIn }}</el-tag>
+          </el-form-item>
+        </el-col>
+        <el-col :offset="3" :span="23">
+          <el-form-item label="Complete percentage">
+            <el-tag type="warning">{{ weekly.CompletePercentage.toFixed(2) }}%</el-tag>
+          </el-form-item>
+        </el-col>
+      </el-form>
+      <span slot="footer">
+        <el-button type="danger" size="medium" @click="showWeekly = false">Close</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-  import {checkToken, submitLogin} from '../api/api';
-  import {home} from "../api/util";
+  import {checkToken, submitLogin, fetchWeekly} from '../api/api';
+  import {home, nowLocal} from "../api/util";
   import item from "./checkInItem";
   import newTarget from './newTarget';
 
@@ -46,6 +84,10 @@
         username: 'i@xlui.me',
         password: 'pass',
         login: false,
+        showWeekly: false,
+        weekly: {
+          CompletePercentage: 0.0
+        }
       }
     },
     computed: {
@@ -76,6 +118,16 @@
         localStorage.token = '';
         this.login = false;
         location.href = home;
+      },
+      getWeeklyReport() {
+        fetchWeekly(nowLocal()).then(res => {
+          if (res.data.status === 'OK') {
+            this.weekly = res.data.content;
+            this.showWeekly = true;
+          }
+        }).catch(err => {
+          console.log(`Error while fetching weekly report: ${err}`)
+        })
       }
     },
     created() {

@@ -79,6 +79,14 @@ export const fetchStatistics = tid => {
   })
 };
 
+export const fetchWeekly = date => {
+  return axios.get(`${host}/weekly/${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`, {
+    headers: {
+      Authorization: localStorage.token
+    }
+  })
+};
+
 export const fetchJourney = () => {
   return axios.get(`${host}/journey`, {
     headers: {
