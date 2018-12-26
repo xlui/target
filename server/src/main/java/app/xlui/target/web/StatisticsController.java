@@ -10,6 +10,7 @@ import app.xlui.target.exception.specify.InvalidInputException;
 import app.xlui.target.service.CheckinService;
 import app.xlui.target.service.RedisService;
 import app.xlui.target.service.TargetService;
+import app.xlui.target.service.UserService;
 import app.xlui.target.util.AssertUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ZSetOperations;
@@ -29,12 +30,14 @@ public class StatisticsController {
 	private final CheckinService checkinService;
 	private final TargetService targetService;
 	private final RedisService redisService;
+	private final UserService userService;
 
 	@Autowired
-	public StatisticsController(CheckinService checkinService, TargetService targetService, RedisService redisService) {
+	public StatisticsController(CheckinService checkinService, TargetService targetService, RedisService redisService, UserService userService) {
 		this.checkinService = checkinService;
 		this.targetService = targetService;
 		this.redisService = redisService;
+		this.userService = userService;
 	}
 
 	/**
@@ -153,13 +156,14 @@ public class StatisticsController {
 
 		var sorted = redisService.zReverseRange(key, 0, map.size());
 		// result entries: uid-[checkinCount, rank]
-		List<Map<String, ? extends Number>> result = new ArrayList<>(sorted.size());
+		List<Map<String, Object>> result = new ArrayList<>(sorted.size());
 		for (ZSetOperations.TypedTuple<Long> tuple : sorted) {
 			var uid = AssertUtils.orElse(tuple.getValue(), -1L);
 			var score = AssertUtils.orElse(tuple.getScore(), -1L);
 			var rank = redisService.zGetReverseRank(key, uid);
+			var nickname = userService.findNickname(uid);
 			result.add(Map.of(
-					"uid", uid,
+					"user", nickname,
 					"checkin", score,
 					"rank", rank
 			));

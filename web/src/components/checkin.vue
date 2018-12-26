@@ -14,8 +14,13 @@
                    class="left"
                    @click="getWeeklyReport">Weekly Report
         </el-button>
+        <el-button type="success"
+                   size="medium"
+                   class="left"
+                   @click="getRank('weekly')">Rank
+        </el-button>
         <el-tooltip effect="dark" placement="top" content="Nonsupport now!">
-          <el-button type="success" size="medium" class="left">Yesterday</el-button>
+          <el-button type="warning" size="medium" class="left">Yesterday</el-button>
         </el-tooltip>
       </template>
       <el-button type="primary" size="medium" class="right" v-if="!login" @click="postLogin">Login</el-button>
@@ -69,11 +74,26 @@
         <el-button type="danger" size="medium" @click="showWeekly = false">Close</el-button>
       </span>
     </el-dialog>
+    <el-dialog title="Rank" :visible.sync="showRank" width="50">
+      <el-tabs center="true" v-model="rankEpoch" @tab-click="getRank(rankEpoch)">
+        <el-tab-pane label="Weekly" name="weekly"></el-tab-pane>
+        <el-tab-pane label="Monthly" name="monthly"></el-tab-pane>
+        <el-tab-pane label="Total" name="total"></el-tab-pane>
+      </el-tabs>
+      <el-table :data="totalRanks" :row-class-name="highlightMyRank">
+        <el-table-column prop="rank" label="Rank" align="center"></el-table-column>
+        <el-table-column prop="user" label="User" align="center"></el-table-column>
+        <el-table-column prop="checkin" label="Check in count" align="center"></el-table-column>
+      </el-table>
+      <span slot="footer">
+        <el-button type="danger" size="medium" @click="showRank = false">Close</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-  import {checkToken, submitLogin, fetchWeekly} from '../api/api';
+  import {checkToken, submitLogin, fetchWeekly, fetchRank} from '../api/api';
   import {home, nowLocal} from "../api/util";
   import item from "./checkInItem";
   import newTarget from './newTarget';
@@ -87,7 +107,11 @@
         showWeekly: false,
         weekly: {
           CompletePercentage: 0.0
-        }
+        },
+        showRank: false,
+        rankEpoch: 'weekly',
+        totalRanks: {},
+        myRank: 0,
       }
     },
     computed: {
@@ -128,6 +152,21 @@
         }).catch(err => {
           console.log(`Error while fetching weekly report: ${err}`)
         })
+      },
+      getRank(epoch = 'weekly') {
+        fetchRank(epoch).then(res => {
+          if (res.data.status === 'OK') {
+            this.myRank = res.data.content.myself;
+            this.totalRanks = res.data.content.total;
+            this.rankEpoch = epoch;
+            this.showRank = true;
+          }
+        })
+      },
+      highlightMyRank({row, rowIndex}) {
+        if (rowIndex + 1 === this.myRank) {
+          return 'myself';
+        }
       }
     },
     created() {

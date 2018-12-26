@@ -115,12 +115,20 @@ form div > label {
   text-align: left;
 }
 
-.el-checkbox+.el-checkbox {
+.el-checkbox + .el-checkbox {
   margin-left: 0;
 }
 
 .el-checkbox {
   margin-right: 7px;
+}
+
+.el-table .myself {
+  background: gold;
+}
+
+.el-table--enable-row-hover .el-table__body tr[class~=myself]:hover > td {
+  background-color: gold;
 }
 
 .footer {

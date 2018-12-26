@@ -87,6 +87,14 @@ export const fetchWeekly = date => {
   })
 };
 
+export const fetchRank = epoch => {
+  return axios.get(`${host}/rank/${epoch}`, {
+    headers: {
+      Authorization: localStorage.token
+    }
+  })
+};
+
 export const fetchJourney = () => {
   return axios.get(`${host}/journey`, {
     headers: {

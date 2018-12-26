@@ -31,6 +31,10 @@ public class UserService {
 		return AssertUtils.requireNotNull(user, () -> new NullInputException("The username have not been registered!"));
 	}
 
+	public String findNickname(long uid) {
+		return userMapper.findNickname(uid);
+	}
+
 	public List<Long> findUIDs() {
 		return userMapper.findUIDs();
 	}
