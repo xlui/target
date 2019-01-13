@@ -161,11 +161,15 @@
       },
       getRank(epoch = 'weekly') {
         fetchRank(epoch).then(res => {
-          if (res.data.status === 'OK') {
-            this.myRank = res.data.content.myself;
-            this.totalRanks = res.data.content.total;
-            this.rankEpoch = epoch;
-            this.showRank = true;
+          switch (res.data.status) {
+            case 'OK': {
+              this.myRank = res.data.content.myself;
+              this.totalRanks = res.data.content.total;
+              this.rankEpoch = epoch;
+              this.showRank = true;
+            }
+              break;
+            case 'NO_CONTENT': alert(res.data.content); break;
           }
         })
       },
