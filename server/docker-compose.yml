@@ -2,22 +2,35 @@ version: "3"
 services:
   redis:
     image: redis
-    ports:
-    - 127.0.0.1:6379:6379
+    networks:
+      - naive
   mysql:
     image: mysql:8
-    ports:
-    - 127.0.0.1:3306:3306
     environment:
-    - MYSQL_ALLOW_EMPTY_PASSWORD=yes
-    - TZ=Asia/Shanghai
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - TZ=Asia/Shanghai
     volumes:
-    - $PWD/src/main/resources/data.sql:/docker-entrypoint-initdb.d/data.sql:ro
+      - $PWD/src/main/resources/data.sql:/docker-entrypoint-initdb.d/data.sql:ro
+    networks:
+      - naive
   rabbitmq:
-    image: rabbitmq:3-management
-    ports:
-    - 127.0.0.1:5672:5672
-    - 127.0.0.1:15672:15672
+    image: rabbitmq
     environment:
-    - RABBITMQ_DEFAULT_USER=user
-    - RABBITMQ_DEFAULT_PASS=user
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=user
+    networks:
+      - naive
+  server:
+    image: xlui/target-server
+    ports:
+      - 127.0.0.1:8080:8080
+    links:
+      - redis
+      - mysql
+      - rabbitmq
+    networks:
+      - naive
+
+networks:
+    naive:
+        driver: bridge

@@ -34,13 +34,24 @@ public class TargetApplication implements CommandLineRunner {
 		System.out.println("Current time: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm:ss")) + ".");
 		if (init) {
 			System.out.println("Initializing database....");
-			this.init();
+			this.initNormal();
 			System.out.println("Initialize succeed!");
 		}
 	}
 
-	@RequestMapping("/t/init")
-	public String init() {
+	@RequestMapping("/t/init/normal")
+	public String initNormal() {
+		System.out.println("Initializing user....");
+		FakeUtils.fakeUser(10);
+		System.out.println("Initializing target....");
+		FakeUtils.fakeTarget(30);
+		System.out.println("Initializing record....");
+		FakeUtils.fakeRecord(100);
+		return "init succeed!";
+	}
+
+	@RequestMapping("/t/init/heavy")
+	public String initHeavy() {
 		System.out.println("Initializing user....");
 		FakeUtils.fakeUser(10);
 		System.out.println("Initializing target....");
