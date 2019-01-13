@@ -138,7 +138,10 @@
         }).catch(error => {
           alert('Failed to login. Please check the server is up or your network is available or not?');
         });
-        this.loading = false;
+        // this.loading = false;
+        setTimeout(() => {
+          this.loading = false;
+        }, 1000);
       },
       logout() {
         localStorage.username = '';
