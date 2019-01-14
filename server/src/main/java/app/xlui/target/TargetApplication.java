@@ -23,6 +23,8 @@ public class TargetApplication implements CommandLineRunner {
 	private TargetService targetService;
 	@Value("${target.init}")
 	private boolean init;
+	@Value("${spring.profiles.active}")
+	private String profiles;
 
 	public static void main(String[] args) {
 		SpringApplication.run(TargetApplication.class, args);
@@ -31,6 +33,7 @@ public class TargetApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		System.out.println("Server start!");
+		System.out.println("Current active profiles: " + profiles);
 		System.out.println("Current time: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm:ss")) + ".");
 		if (init) {
 			System.out.println("Initializing database....");

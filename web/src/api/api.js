@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const host = `${process.env.NODE_ENV === 'production' ? 'https://target.xlui.app':'http://localhost:8080'}`;
+const host = `${process.env.NODE_ENV === 'production' ? 'https://target.xlui.app/api':'http://localhost:8080'}`;
 const targetBaseUrl = `${host}/target`;
 const contentType = 'application/json;charset=utf-8';
 
