@@ -45,11 +45,11 @@ public class TargetApplication implements CommandLineRunner {
 	@RequestMapping("/t/init/normal")
 	public String initNormal() {
 		System.out.println("Initializing user....");
-		FakeUtils.fakeUser(10);
+		FakeUtils.fakeUser(4);
 		System.out.println("Initializing target....");
-		FakeUtils.fakeTarget(30);
+		FakeUtils.fakeTarget(20);
 		System.out.println("Initializing record....");
-		FakeUtils.fakeRecord(100);
+		FakeUtils.fakeRecord(50);
 		return "init succeed!";
 	}
 

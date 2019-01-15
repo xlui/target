@@ -80,6 +80,7 @@ public class FakeUtils {
 							.atZone(ZoneId.systemDefault())
 							.toLocalDateTime()
 			);
+			System.out.println("Fake new target, tid [" + target.getTid() + "], name [" + target.getTitle() + "], start date [" + target.getStartDate() + "], end date [" + target.getEndDate() + "], check in start [" + target.getCheckinStart() + "], check in end [" + target.getCheckinEnd() + "]");
 			targetService.save(target);
 		});
 	}
