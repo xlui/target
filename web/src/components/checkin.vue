@@ -28,7 +28,7 @@
       </template>
       <template v-else>
         <el-button type="success" size="medium" class="right" @click="showRegister = true">Register</el-button>
-        <el-button type="primary" size="medium" class="right" @click="postLogin">Login</el-button>
+        <el-button type="primary" size="medium" class="right" @click="showLogin = true">Login</el-button>
       </template>
     </div>
 
@@ -92,7 +92,8 @@
       </span>
     </el-dialog>
     <el-dialog title="Register" :visible.sync="showRegister" width="30%">
-      <el-form status-icon ref="registerForm" :model="registerUser" :rules="registerRules" label-position="left" label-width="150px" style="text-align: left">
+      <el-form status-icon ref="registerForm" :model="registerUser" :rules="registerRules" label-position="left"
+               label-width="150px" style="text-align: left">
         <el-form-item label="Username" prop="username">
           <el-input v-model="registerUser.username"></el-input>
         </el-form-item>
@@ -106,6 +107,20 @@
       <span slot="footer">
         <el-button type="danger" size="medium" @click="showRegister = false">Close</el-button>
         <el-button type="primary" size="medium" @click="postRegister">Register</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog title="Login" :visible.sync="showLogin" width="30%">
+      <el-form status-icon ref="loginForm" :model="loginUser" :rules="loginRules" label-width="150px" label-position="left">
+        <el-form-item label="Username" prop="username">
+          <el-input v-model="loginUser.username"></el-input>
+        </el-form-item>
+        <el-form-item label="Password" prop="password">
+          <el-input v-model="loginUser.password"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer">
+        <el-button type="danger" size="medium" @click="showLogin = false">Close</el-button>
+        <el-button type="primary" size="medium" @click="postLogin">Login</el-button>
       </span>
     </el-dialog>
   </div>
@@ -130,8 +145,19 @@
       };
 
       return {
-        username: 'i@xlui.me',
-        password: 'pass',
+        showLogin: false,
+        loginUser: {
+          username: 'i@xlui.me',
+          password: 'pass'
+        },
+        loginRules: {
+          username: [
+            {required: true, message: 'Please input your username', trigger: 'blur'}
+          ],
+          password: [
+            {required: true, message: 'Please input your password', trigger: 'blur'}
+          ]
+        },
         login: false,
 
         showRegister: false,
@@ -193,25 +219,28 @@
         })
       },
       postLogin() {
-        this.loading = true;
-        submitLogin({
-          username: this.username,
-          password: this.password
-        }).then(res => {
-          if (res.data.status === 'OK') {
-            console.log('Successfully login using default user information.');
-            localStorage.username = this.username;
-            localStorage.token = res.data.content;
-            this.login = true;
-            this.$store.dispatch('fetchFilterTargets')
+        this.$refs['loginForm'].validate((valid) => {
+          if (valid) {
+            this.loading = true;
+            submitLogin(this.loginUser).then(res => {
+              if (res.data.status === 'OK') {
+                console.log('Successfully login using default user information.');
+                localStorage.username = this.username;
+                localStorage.token = res.data.content;
+                this.login = true;
+                this.$store.dispatch('fetchFilterTargets')
+                this.showLogin = false;
+              }
+            }).catch(error => {
+              alert('Failed to login. Please check the server is up or your network is available or not?');
+            });
+            setTimeout(() => {
+              this.loading = false;
+            }, 1000);
+          } else {
+            alert("Please check your input!");
           }
-        }).catch(error => {
-          alert('Failed to login. Please check the server is up or your network is available or not?');
         });
-        // this.loading = false;
-        setTimeout(() => {
-          this.loading = false;
-        }, 1000);
       },
       logout() {
         localStorage.username = '';
@@ -239,7 +268,9 @@
               this.showRank = true;
             }
               break;
-            case 'NO_CONTENT': alert(res.data.content); break;
+            case 'NO_CONTENT':
+              alert(res.data.content);
+              break;
           }
         })
       },
