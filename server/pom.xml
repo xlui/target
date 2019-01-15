@@ -29,6 +29,7 @@
         <faker.version>0.16</faker.version>
         <processbar.version>0.7.2</processbar.version>
         <guava.version>27.0.1-jre</guava.version>
+        <lettuce.pool.version>2.6.0</lettuce.pool.version>
     </properties>
 
     <dependencies>
@@ -44,6 +45,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+            <version>${lettuce.pool.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
