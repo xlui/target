@@ -22,11 +22,13 @@
         <el-tooltip effect="dark" placement="top" content="Nonsupport now!">
           <el-button type="warning" size="medium" class="left">Yesterday</el-button>
         </el-tooltip>
-      </template>
-      <el-button type="primary" size="medium" class="right" v-if="!login" @click="postLogin">Login</el-button>
-      <template v-else>
+
         <span class="statement right">Hello, {{ username }}</span>
         <el-button type="danger" size="medium" class="right" @click="logout">Logout</el-button>
+      </template>
+      <template v-else>
+        <el-button type="success" size="medium" class="right" @click="showRegister = true">Register</el-button>
+        <el-button type="primary" size="medium" class="right" @click="postLogin">Login</el-button>
       </template>
     </div>
 
@@ -89,29 +91,75 @@
         <el-button type="danger" size="medium" @click="showRank = false">Close</el-button>
       </span>
     </el-dialog>
+    <el-dialog title="Register" :visible.sync="showRegister" width="30%">
+      <el-form status-icon ref="registerForm" :model="registerUser" :rules="registerRules" label-position="left" label-width="150px" style="text-align: left">
+        <el-form-item label="Username" prop="username">
+          <el-input v-model="registerUser.username"></el-input>
+        </el-form-item>
+        <el-form-item label="Password" prop="password">
+          <el-input type="password" v-model="registerUser.password"></el-input>
+        </el-form-item>
+        <el-form-item label="Retype password" prop="checkPassword">
+          <el-input type="password" v-model="registerUser.checkPassword"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer">
+        <el-button type="danger" size="medium" @click="showRegister = false">Close</el-button>
+        <el-button type="primary" size="medium" @click="postRegister">Register</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-  import {checkToken, submitLogin, fetchWeekly, fetchRank} from '../api/api';
+  import {checkToken, submitLogin, submitRegister, fetchWeekly, fetchRank} from '../api/api';
   import {home, nowLocal} from "../api/util";
   import item from "./checkInItem";
   import newTarget from './newTarget';
 
   export default {
     data() {
+      let checkPassword = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('Please input the password again!'));
+        } else if (value !== this.registerUser.password) {
+          callback(new Error("The two password don't match!"));
+        } else {
+          callback();
+        }
+      };
+
       return {
         username: 'i@xlui.me',
         password: 'pass',
         login: false,
+
+        showRegister: false,
+        registerUser: {},
+        registerRules: {
+          username: [
+            {required: true, message: 'Please input the username!', trigger: 'change'},
+            {type: 'email', message: 'Username must be a valid email address', trigger: 'change'}
+          ],
+          password: [
+            {required: true, message: 'Please input the password!', trigger: 'change'},
+            {min: 8, max: 128, message: 'Password must between 8 and 128 characters', trigger: ['change', 'blur']}
+          ],
+          checkPassword: [
+            {validator: checkPassword, trigger: ['change', 'blur']}
+          ]
+        },
+
         showWeekly: false,
         weekly: {
           CompletePercentage: 0.0
         },
+
         showRank: false,
         rankEpoch: 'weekly',
         totalRanks: {},
         myRank: 0,
+
         loading: false,
       }
     },
@@ -122,6 +170,28 @@
     },
     name: 'App',
     methods: {
+      postRegister() {
+        this.$refs['registerForm'].validate((valid) => {
+          if (valid) {
+            delete this.registerUser.checkPassword;
+            submitRegister(this.registerUser).then(res => {
+              if (res.data.status === 'CREATED') {
+                alert('Successfully register!');
+                this.showRegister = false;
+              }
+            }).catch(error => {
+              if (error.response.status === 400) {
+                alert('Username has been registered!');
+                this.registerUser = {};
+              } else {
+                console.log(`register response: ${JSON.stringify(res.data)}`);
+              }
+            })
+          } else {
+            alert('Please check your input!');
+          }
+        })
+      },
       postLogin() {
         this.loading = true;
         submitLogin({

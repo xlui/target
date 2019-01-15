@@ -4,6 +4,15 @@ const host = `${process.env.NODE_ENV === 'production' ? 'https://target.xlui.app
 const targetBaseUrl = `${host}/target`;
 const contentType = 'application/json;charset=utf-8';
 
+export const submitRegister = params => {
+  let register = `${host}/register`;
+  return axios.post(register, JSON.stringify(params), {
+    headers: {
+      'Content-Type': contentType
+    }
+  })
+};
+
 export const submitLogin = params => {
   let login = `${host}/login`;
   return axios.post(login, JSON.stringify(params), {
