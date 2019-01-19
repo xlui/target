@@ -1,10 +1,10 @@
-import {fetchCheckIn} from './api';
+import {fetchCheckIn} from './api'
 
-const offset = new Date().getTimezoneOffset() * 60000;
+const offset = new Date().getTimezoneOffset() * 60000
 
-export const home = '/';
-export const manage = '/manage';
-export const yesterday = '/yesterday';
+export const home = '/'
+export const manage = '/manage'
+export const yesterday = '/yesterday'
 export const weekMap = [
   0b01000000, // Sunday
   0b00100000, // Monday
@@ -13,22 +13,27 @@ export const weekMap = [
   0b00000100, // Thursday
   0b00000010, // Friday
   0b00000001, // Saturday
-];
+]
 
-export const nowISO = () => new Date(Date.now() - offset);
+export const nowISO = () => new Date(Date.now() - offset)
 
-export const nowLocal = () => new Date();
+export const nowLocal = () => new Date()
 
-export const local = date => new Date(date - offset);
+export const local = date => new Date(date - offset)
 
-export const adjust = (date, months) => {
-  date.setMonth(date.getMonth() + months);
-  return date;
-};
+export const adjustDay = (date, day) => {
+  date.setDate(date.getDate() + day)
+  return date
+}
 
-export const extractDate = date => date.toISOString().split('T')[0];
+export const adjustMonth = (date, months) => {
+  date.setMonth(date.getMonth() + months)
+  return date
+}
 
-export const extractTime = date => date.toISOString().split('T')[1].split('.')[0];
+export const extractDate = date => date.toISOString().split('T')[0]
+
+export const extractTime = date => date.toISOString().split('T')[1].split('.')[0]
 
 export const showColor = function (vue) {
   fetchCheckIn(
@@ -36,9 +41,9 @@ export const showColor = function (vue) {
     nowLocal()
   ).then(res => {
     if (res.status === 200 && res.data.status === 'OK') {
-      vue.bgColor = '#ffd633';
+      vue.bgColor = '#ffd633'
     }
   }).catch(error => {
-    vue.bgColor = '#fff';
+    vue.bgColor = '#fff'
   })
-};
+}

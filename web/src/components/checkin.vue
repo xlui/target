@@ -7,9 +7,7 @@
         <el-button type="primary" size="medium" class="left" @click="$router.push('/manage')">Manage</el-button>
         <el-button type="success" size="medium" class="left" @click="getWeeklyReport">Weekly Report</el-button>
         <el-button type="success" size="medium" class="left" @click="getRank('weekly')">Rank</el-button>
-        <el-tooltip effect="dark" placement="top" content="Not supported now!">
-          <el-button type="warning" size="medium" class="left">Yesterday</el-button>
-        </el-tooltip>
+        <el-button type="warning" size="medium" class="left" @click="$router.push('/yesterday')">Yesterday</el-button>
 
         <span class="statement right">Hello, {{ loginUser.username }}</span>
         <el-button type="danger" size="medium" class="right" @click="logout">Logout</el-button>

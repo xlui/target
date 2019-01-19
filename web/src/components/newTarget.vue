@@ -67,14 +67,14 @@
 
 <script>
   import {submitTarget} from "../api/api";
-  import {adjust, extractTime, home, local} from "../api/util";
+  import {adjustMonth, extractTime, home, local} from "../api/util";
 
   export default {
     data() {
       return {
         newTarget: {
           startDate: new Date(),
-          endDate: adjust(new Date(), 1),
+          endDate: adjustMonth(new Date(), 1),
           checkinStart: new Date(2018, 10, 26, 9, 0),
           checkinEnd: new Date(2018, 10, 26, 18, 0),
         },

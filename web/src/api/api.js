@@ -1,26 +1,26 @@
-import axios from 'axios';
+import axios from 'axios'
 
-const host = `${process.env.NODE_ENV === 'production' ? 'https://target.xlui.app/api':'http://localhost:8080'}`;
-const targetBaseUrl = `${host}/target`;
-const contentType = 'application/json;charset=utf-8';
+const host = `${process.env.NODE_ENV === 'production' ? 'https://target.xlui.app/api' : 'http://localhost:8080'}`
+const targetBaseUrl = `${host}/target`
+const contentType = 'application/json;charset=utf-8'
 
 export const submitRegister = params => {
-  let register = `${host}/register`;
+  let register = `${host}/register`
   return axios.post(register, JSON.stringify(params), {
     headers: {
       'Content-Type': contentType
     }
   })
-};
+}
 
 export const submitLogin = params => {
-  let login = `${host}/login`;
+  let login = `${host}/login`
   return axios.post(login, JSON.stringify(params), {
     headers: {
       'Content-Type': contentType
     }
   })
-};
+}
 
 export const fetchTargets = (filter = true) => {
   return axios.get(targetBaseUrl, {
@@ -30,8 +30,8 @@ export const fetchTargets = (filter = true) => {
     headers: {
       Authorization: localStorage.token
     }
-  });
-};
+  })
+}
 
 export const submitTarget = params => {
   return axios.post(targetBaseUrl, JSON.stringify(params), {
@@ -40,45 +40,53 @@ export const submitTarget = params => {
       Authorization: localStorage.token
     }
   })
-};
+}
+
+export const fetchTargetsYesterday = () => {
+  return axios.get(`${targetBaseUrl}/yesterday`, {
+    headers: {
+      Authorization: localStorage.token
+    }
+  })
+}
 
 export const fetchTarget = tid => {
-  let specifyTarget = `${targetBaseUrl}/${tid}`;
+  let specifyTarget = `${targetBaseUrl}/${tid}`
   return axios.get(specifyTarget, {
     headers: {
       Authorization: localStorage.token
     }
-  });
-};
+  })
+}
 
 export const putTarget = (tid, params) => {
-  let specifyTarget = `${targetBaseUrl}/${tid}`;
+  let specifyTarget = `${targetBaseUrl}/${tid}`
   return axios.put(specifyTarget, JSON.stringify(params), {
     headers: {
       Authorization: localStorage.token,
       'Content-Type': contentType
     }
   })
-};
+}
 
 export const submitCheckIn = (tid, params) => {
-  let checkin = `${targetBaseUrl}/${tid}/checkin`;
+  let checkin = `${targetBaseUrl}/${tid}/checkin`
   return axios.post(checkin, JSON.stringify(params), {
     headers: {
       'Content-Type': contentType,
       Authorization: localStorage.token
     }
-  });
-};
+  })
+}
 
 export const fetchCheckIn = (tid, time) => {
-  let someday = `${targetBaseUrl}/${tid}/checkin/${time.getFullYear()}/${time.getMonth() + 1}/${time.getDate()}`;
+  let someday = `${targetBaseUrl}/${tid}/checkin/${time.getFullYear()}/${time.getMonth() + 1}/${time.getDate()}`
   return axios.get(someday, {
     headers: {
       Authorization: localStorage.token
     }
-  });
-};
+  })
+}
 
 export const fetchStatistics = tid => {
   return axios.get(`${targetBaseUrl}/${tid}/statistics`, {
@@ -86,7 +94,7 @@ export const fetchStatistics = tid => {
       Authorization: localStorage.token
     }
   })
-};
+}
 
 export const fetchWeekly = date => {
   return axios.get(`${host}/weekly/${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`, {
@@ -94,7 +102,7 @@ export const fetchWeekly = date => {
       Authorization: localStorage.token
     }
   })
-};
+}
 
 export const fetchRank = epoch => {
   return axios.get(`${host}/rank/${epoch}`, {
@@ -102,7 +110,7 @@ export const fetchRank = epoch => {
       Authorization: localStorage.token
     }
   })
-};
+}
 
 export const fetchJourney = () => {
   return axios.get(`${host}/journey`, {
@@ -110,7 +118,7 @@ export const fetchJourney = () => {
       Authorization: localStorage.token
     }
   })
-};
+}
 
 export const checkToken = token => {
   return axios.get(`${host}/token`, {
@@ -118,11 +126,11 @@ export const checkToken = token => {
       Authorization: token
     }
   })
-};
+}
 
 axios.interceptors.request.use(config => {
   return config
 }, error => {
-  alert('请求超时！');
+  alert('请求超时！')
   return Promise.resolve(error)
-});
+})
