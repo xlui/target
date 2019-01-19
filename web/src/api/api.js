@@ -79,6 +79,15 @@ export const submitCheckIn = (tid, params) => {
   })
 }
 
+export const submitCheckInYesterday = (tid, params) => {
+  return axios.post(`${targetBaseUrl}/${tid}/recheckin`, JSON.stringify(params), {
+    headers: {
+      'Content-Type': contentType,
+      Authorization: localStorage.token
+    }
+  })
+}
+
 export const fetchCheckIn = (tid, time) => {
   let someday = `${targetBaseUrl}/${tid}/checkin/${time.getFullYear()}/${time.getMonth() + 1}/${time.getDate()}`
   return axios.get(someday, {

@@ -21,6 +21,8 @@ export const nowLocal = () => new Date()
 
 export const yesterdayISO = () => adjustDay(nowISO(), -1)
 
+export const yesterdayLocal = () => adjustDay(nowLocal(), -1)
+
 export const local = date => new Date(date - offset)
 
 export const adjustDay = (date, day) => {

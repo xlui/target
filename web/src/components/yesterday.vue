@@ -16,27 +16,13 @@
 </template>
 
 <script>
-  import {fetchTargets, fetchTargetsYesterday, submitCheckIn} from "../api/api"
-  import {nowISO, adjustDay} from "../api/util"
+  import {fetchTargetsYesterday} from "../api/api"
   import YesterdayItem from './yesterdayItem'
 
   export default {
     data() {
       return {
         targets: {},
-        bgColor: '#fff',
-        showDialog: false,
-        prompt: '',
-      }
-    },
-    methods: {
-      checkinYesterday(target) {
-        //   submitCheckIn(target.tid, {
-        //     uid: this.target.uid,
-        //     tid: this.target.tid,
-        //     checkinDateTime: nowISO().toISOString()
-        //   })
-        console.log(nowISO().toISOString())
       }
     },
     created() {
