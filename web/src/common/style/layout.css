@@ -96,6 +96,10 @@ form div > label {
   float: left;
 }
 
+.navigate .right {
+  /*float: right;*/
+}
+
 .nologin {
   margin: 10px;
   padding: 20px;

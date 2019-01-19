@@ -4,26 +4,14 @@
 
     <div class="navigate">
       <template v-if="login">
-        <el-button type="primary"
-                   size="medium"
-                   class="left"
-                   @click="$router.push('/manage')">Manage
-        </el-button>
-        <el-button type="success"
-                   size="medium"
-                   class="left"
-                   @click="getWeeklyReport">Weekly Report
-        </el-button>
-        <el-button type="success"
-                   size="medium"
-                   class="left"
-                   @click="getRank('weekly')">Rank
-        </el-button>
-        <el-tooltip effect="dark" placement="top" content="Nonsupport now!">
+        <el-button type="primary" size="medium" class="left" @click="$router.push('/manage')">Manage</el-button>
+        <el-button type="success" size="medium" class="left" @click="getWeeklyReport">Weekly Report</el-button>
+        <el-button type="success" size="medium" class="left" @click="getRank('weekly')">Rank</el-button>
+        <el-tooltip effect="dark" placement="top" content="Not supported now!">
           <el-button type="warning" size="medium" class="left">Yesterday</el-button>
         </el-tooltip>
 
-        <span class="statement right">Hello, {{ username }}</span>
+        <span class="statement right">Hello, {{ loginUser.username }}</span>
         <el-button type="danger" size="medium" class="right" @click="logout">Logout</el-button>
       </template>
       <template v-else>
@@ -115,7 +103,7 @@
           <el-input v-model="loginUser.username"></el-input>
         </el-form-item>
         <el-form-item label="Password" prop="password">
-          <el-input v-model="loginUser.password"></el-input>
+          <el-input type="password" v-model="loginUser.password"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer">
