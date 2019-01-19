@@ -113,6 +113,11 @@ form div > label {
 
 .statement {
   font-size: 18px;
+  display: inline-block;
+  line-height: 1;
+  white-space: nowrap;
+  border: none;
+  padding: 8px 20px;
 }
 
 .el-checkbox-group {

@@ -2,20 +2,14 @@
   <div class="main">
     <h1 class="main-title">Yesterday's targets</h1>
 
+    <div class="navigate">
+      <el-button type="primary" size="medium" class="left" @click="$router.push('/')">Home</el-button>
+      <span class="statement right">Keep being better step by step!</span>
+    </div>
+
     <div class="box">
       <template v-for="target in targets">
-        <a @click="checkinYesterday(target)">
-          <div class="target" :style="{background: bgColor}">
-            <div class="title">{{ target.title }}</div>
-            <div class="desc">{{ target.description }}</div>
-          </div>
-        </a>
-        <el-dialog :title="target.title" :visible.sync="showDialog" width="30%">
-          <span class="statement">{{ prompt }}</span>
-          <span slot="footer" class="dialog-footer">
-          <el-button type="primary" size="medium" @click="showDialog = false">OK</el-button>
-        </span>
-        </el-dialog>
+        <YesterdayItem :target="target"></YesterdayItem>
       </template>
     </div>
   </div>
@@ -24,6 +18,7 @@
 <script>
   import {fetchTargets, fetchTargetsYesterday, submitCheckIn} from "../api/api"
   import {nowISO, adjustDay} from "../api/util"
+  import YesterdayItem from './yesterdayItem'
 
   export default {
     data() {
@@ -50,6 +45,9 @@
           this.targets = res.data.content
         }
       })
+    },
+    components: {
+      YesterdayItem
     }
   }
 </script>
