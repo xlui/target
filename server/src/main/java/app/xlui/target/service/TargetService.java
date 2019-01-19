@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Target server. This service provides api for target operations.
@@ -28,6 +29,13 @@ public class TargetService {
 
 	public List<Target> findByUser(@NotNull User user) {
 		return targetMapper.findByUID(user.getUid());
+	}
+
+	public List<Target> findValidTargets(User user, LocalDate date) {
+		var targets = findByUser(user);
+		return targets.stream()
+				.filter(target -> isValidDate(target.getTid(), date))
+				.collect(Collectors.toList());
 	}
 
 	public List<Long> findTids() {

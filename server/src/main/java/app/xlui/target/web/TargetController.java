@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -28,7 +29,7 @@ public class TargetController {
 	@RequestMapping(value = "/target", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
 	public ApiResponse getTargets(@CurrentUser User user, @RequestParam(required = false, defaultValue = "true") boolean filter) {
-		return ApiResponse.of(HttpStatus.OK, targetService.findByUser(user));
+		return ApiResponse.of(HttpStatus.OK, targetService.findValidTargets(user, LocalDate.now()));
 	}
 
 	@RequestMapping(value = "/target", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -45,6 +46,12 @@ public class TargetController {
 				.setCreated(LocalDateTime.now());
 		AssertUtils.requireNotZero(targetService.save(target), () -> new ServerError("Failed to save target! Unknown exception occurs, please view server log."));
 		return ApiResponse.of(HttpStatus.CREATED, "Successfully add a new target!");
+	}
+
+	@RequestMapping(value = "/target/yesterday", method = RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK)
+	public ApiResponse getTargetsYesterday(@CurrentUser User user) {
+		return ApiResponse.of(HttpStatus.OK, targetService.findValidTargets(user, LocalDate.now().minusDays(1)));
 	}
 
 	@RequestMapping(value = "/target/{tid}", method = RequestMethod.GET)
