@@ -56,5 +56,6 @@ CREATE TABLE `t_record`
 # init
 INSERT INTO t_user (nickname, gender, username, password, registered)
 VALUES ('xlui', 1, 'i@xlui.me', 'pass', NOW());
-INSERT INTO t_target(uid, title, description, created)
-VALUES (1, 'Moab Is My Washpot', 'Accusamus excepturi quo rem cupiditate qui qui.', NOW());
+INSERT INTO t_target(uid, title, description, startDate, endDate, checkinStart, checkinEnd, created)
+VALUES (1, 'Moab Is My Washpot', 'Accusamus excepturi quo rem cupiditate qui qui.', '2019-01-20', '2019-12-20',
+        '09:00:00', '21:00:00', NOW());

@@ -111,7 +111,6 @@ public class StatisticsController {
 		));
 	}
 
-	// todo: show rank.
 	@RequestMapping(value = "/rank/{epoch}", method = RequestMethod.GET)
 	public ApiResponse rankWeekly(@CurrentUser User user, @PathVariable String epoch) {
 		var date = LocalDate.now();
