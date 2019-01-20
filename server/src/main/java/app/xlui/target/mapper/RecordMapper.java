@@ -50,7 +50,7 @@ public interface RecordMapper {
 	void save(@Param("uid") long uid, @Param("tid") long tid, @Param("checkinDateTime") LocalDateTime datetime);
 
 	@Delete("DELETE FROM t_record WHERE tid = #{tid}")
-	void clear(@Param("tid") long tid);
+	void delete(@Param("tid") long tid);
 
 	@Delete("TRUNCATE TABLE t_record")
 	void clearAll();

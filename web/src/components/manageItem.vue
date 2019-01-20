@@ -48,8 +48,8 @@
         </el-col>
       </el-form>
       <span slot="footer" class="dialog-footer">
+        <el-button type="danger" size="medium" @click="deleteTarget">Delete</el-button>
         <el-button type="info" size="medium" @click="getStatistics">Statistics</el-button>
-        <el-button type="danger" size="medium" @click="showDialog = false">Close</el-button>
         <el-button type="primary" size="medium" @click="updateTarget">Submit</el-button>
       </span>
     </el-dialog>
@@ -86,7 +86,7 @@
 </template>
 
 <script>
-  import {putTarget, fetchStatistics} from "../api/api";
+  import {putTarget, fetchStatistics, removeTarget} from "../api/api";
   import {manage, showColor, weekMap} from "../api/util";
 
   export default {
@@ -131,6 +131,14 @@
             this.statistics = res.data.content;
             this.showStatistics = true;
           }
+        })
+      },
+      deleteTarget() {
+        removeTarget(this.target.tid).then(res => {
+          alert(res.data.content)
+          location.href = manage
+        }).catch(error => {
+          alert(error.response.data.content)
         })
       }
     },

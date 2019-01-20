@@ -14,14 +14,15 @@
         </div>
       </div>
       <span slot="footer">
+        <el-button type="danger" size="medium" @click="showReason = false">Close</el-button>
         <el-button type="primary" size="medium" @click="recheckin">OK</el-button>
       </span>
     </el-dialog>
     <el-dialog :title="target.title" :visible.sync="showResponse" width="30%">
       <span class="statement">{{ prompt }}</span>
       <span slot="footer" class="dialog-footer">
-          <el-button type="primary" size="medium" @click="showResponse = false">OK</el-button>
-        </span>
+        <el-button type="primary" size="medium" @click="showResponse = false">OK</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>

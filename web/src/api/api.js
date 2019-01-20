@@ -69,6 +69,14 @@ export const putTarget = (tid, params) => {
   })
 }
 
+export const removeTarget = tid => {
+  return axios.delete(`${targetBaseUrl}/${tid}`, {
+    headers: {
+      Authorization: localStorage.token,
+    }
+  })
+}
+
 export const submitCheckIn = (tid, params) => {
   let checkin = `${targetBaseUrl}/${tid}/checkin`
   return axios.post(checkin, JSON.stringify(params), {

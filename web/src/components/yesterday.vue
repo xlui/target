@@ -11,6 +11,9 @@
       <template v-for="target in targets">
         <YesterdayItem :target="target"></YesterdayItem>
       </template>
+      <template v-if="targets.length === 0">
+        <p class="statement">No targets valid yesterday!</p>
+      </template>
     </div>
   </div>
 </template>
@@ -22,7 +25,7 @@
   export default {
     data() {
       return {
-        targets: {},
+        targets: [],
       }
     },
     created() {

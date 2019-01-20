@@ -2,6 +2,7 @@ package app.xlui.target.service;
 
 import app.xlui.target.entity.Target;
 import app.xlui.target.entity.User;
+import app.xlui.target.mapper.RecordMapper;
 import app.xlui.target.mapper.TargetMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,8 @@ import java.util.stream.Collectors;
 public class TargetService {
 	@Autowired
 	private TargetMapper targetMapper;
+	@Autowired
+	private RecordMapper recordMapper;
 
 	public Target findByTid(long tid) {
 		return targetMapper.findByTID(tid);
@@ -50,12 +53,13 @@ public class TargetService {
 		return targetMapper.save(target);
 	}
 
-	public int delete(Target target) {
-		return delete(target.getTid());
+	public void delete(Target target) {
+		delete(target.getTid());
 	}
 
-	public int delete(long tid) {
-		return targetMapper.delete(tid);
+	public void delete(long tid) {
+		targetMapper.delete(tid);
+		recordMapper.delete(tid);
 	}
 
 	public void clear() {
