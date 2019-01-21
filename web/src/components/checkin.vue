@@ -211,7 +211,7 @@
             submitLogin(this.loginUser).then(res => {
               if (res.data.status === 'OK') {
                 console.log('Successfully login using default user information.');
-                localStorage.username = this.username;
+                localStorage.username = this.loginUser.username;
                 localStorage.token = res.data.content;
                 this.login = true;
                 this.$store.dispatch('fetchFilterTargets')

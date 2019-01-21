@@ -65,7 +65,6 @@
         location.href = home;
       },
       getJourney() {
-        // todo: fetch journey from server.
         fetchJourney().then(res => {
           if (res.data.status === 'OK') {
             this.journeys = res.data.content;

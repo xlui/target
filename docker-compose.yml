@@ -10,7 +10,7 @@ services:
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
       - TZ=Asia/Shanghai
     volumes:
-      - $PWD/server/src/main/resources/data.sql:/docker-entrypoint-initdb.d/data.sql:ro
+      - ./server/src/main/resources/data.sql:/docker-entrypoint-initdb.d/data.sql:ro
     networks:
       - naive
   rabbitmq:
