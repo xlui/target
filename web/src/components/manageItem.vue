@@ -87,7 +87,7 @@
 
 <script>
   import {putTarget, fetchStatistics, removeTarget} from "../api/api";
-  import {manage, showColor, weekMap} from "../api/util";
+  import {home, manage, showColor, weekMap} from "../api/util";
 
   export default {
     props: {
@@ -136,7 +136,7 @@
       deleteTarget() {
         removeTarget(this.target.tid).then(res => {
           alert(res.data.content)
-          location.href = manage
+          location.href = home
         }).catch(error => {
           alert(error.response.data.content)
         })
