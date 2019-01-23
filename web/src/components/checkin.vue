@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <h1 class="main-title">Your targets</h1>
+    <h1 class="header">Your targets</h1>
 
     <div class="navigate">
       <template v-if="login">
@@ -290,3 +290,7 @@
     },
   }
 </script>
+
+<style lang="less">
+  @import "../common/style/layout.less";
+</style>

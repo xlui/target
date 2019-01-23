@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <h1 class="main-title">This is the manage page</h1>
+    <h1 class="header">This is the manage page</h1>
     <div class="navigate">
       <template v-if="login">
         <el-button type="primary" size="medium" class="left" @click="$router.push('/')">Home</el-button>
@@ -85,3 +85,7 @@
     }
   }
 </script>
+
+<style lang="less">
+  @import "../common/style/layout.less";
+</style>

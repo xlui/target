@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <h1 class="main-title">Yesterday's targets</h1>
+    <h1 class="header">Yesterday's targets</h1>
 
     <div class="navigate">
       <el-button type="primary" size="medium" class="left" @click="$router.push('/')">Home</el-button>
@@ -40,3 +40,7 @@
     }
   }
 </script>
+
+<style lang="less">
+  @import "../common/style/layout.less";
+</style>

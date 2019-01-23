@@ -8,6 +8,3 @@
   export default {};
 </script>
 
-<style>
-  @import "./common/style/layout.css";
-</style>
